@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "B56BA0A0-1B7C-4218-A5FF-8CF59BC9894F",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:Joiefull.xcodeproj",
+          "identifier" : "4333578C2D3A6C860027478C",
+          "name" : "Joiefull"
+        }
+      ]
+    },
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Joiefull.xcodeproj",
+      "identifier" : "4333578C2D3A6C860027478C",
+      "name" : "Joiefull"
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Joiefull.xcodeproj",
+        "identifier" : "43BABE302D3AB6570079B4E8",
+        "name" : "JoiefullTests"
+      }
+    }
+  ],
+  "version" : 1
+}
