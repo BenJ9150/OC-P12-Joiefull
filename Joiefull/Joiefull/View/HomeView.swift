@@ -27,7 +27,6 @@ struct HomeView: View {
         } detail: {
             Text("Select item")
         }
-
     }
 }
 
