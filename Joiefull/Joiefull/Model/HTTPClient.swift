@@ -1,5 +1,5 @@
 //
-//  NetworkingProtocol.swift
+//  HTTPClient.swift
 //  Joiefull
 //
 //  Created by Benjamin LEFRANCOIS on 17/01/2025.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol Networking {
+protocol HTTPClient {
     func data(from url: URL) async throws -> (Data, URLResponse)
 }
 
-extension URLSession: Networking {}
+extension URLSession: HTTPClient {}

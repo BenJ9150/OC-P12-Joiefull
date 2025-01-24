@@ -9,10 +9,10 @@ import Foundation
 
 class NetworkClient {
 
-    private let networking: Networking
+    private let httpClient: HTTPClient
 
-    init(networking: Networking = URLSession.shared) {
-        self.networking = networking
+    init(using httpClient: HTTPClient = URLSession.shared) {
+        self.httpClient = httpClient
     }
 }
 
@@ -26,7 +26,7 @@ extension NetworkClient {
             throw URLError(.badURL)
         }
         // Fetch data
-        let (data, response) = try await networking.data(from: url)
+        let (data, response) = try await httpClient.data(from: url)
 
         // Check response
         guard let httpResponse = response as? HTTPURLResponse,

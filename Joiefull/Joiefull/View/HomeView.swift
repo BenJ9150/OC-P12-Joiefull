@@ -15,12 +15,15 @@ struct HomeView: View {
         NavigationSplitView {
             List(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
                 if let clothes = viewModel.clothesByCategory[category] {
-                    CategoryRow(category: category, items: clothes)
+                    CategoryRowView(category: category, items: clothes)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
                 }
             }
             .listStyle(PlainListStyle())
+            .refreshable {
+                viewModel.fetchClothes()
+            }
         } detail: {
             Text("Select item")
         }

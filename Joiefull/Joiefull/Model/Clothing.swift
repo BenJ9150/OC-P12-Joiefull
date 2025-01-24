@@ -43,6 +43,6 @@ extension Clothing {
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
 
-        return formatter.string(from: NSNumber(value: number)) ?? "\(Int(number))" + "€"
+        return (formatter.string(from: NSNumber(value: number)) ?? "\(Int(number))") + "€"
     }
 }

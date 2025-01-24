@@ -13,7 +13,10 @@ class HomeViewModel: ObservableObject {
     @Published var fetchingClothes = true
     @Published var fetchClothesError = ""
 
-    init() {
+    private let httpClient: HTTPClient
+
+    init(using httpClient: HTTPClient = URLSession.shared) {
+        self.httpClient = httpClient
         fetchClothes()
     }
 }
@@ -22,18 +25,13 @@ class HomeViewModel: ObservableObject {
 
 extension HomeViewModel {
 
-    func refreshClothes() {
-        guard clothesByCategory.isEmpty else {
-            return
-        }
-        fetchClothes()
-    }
-
-    private func fetchClothes() {
+    func fetchClothes() {
         fetchingClothes = true
+        fetchClothesError = ""
+
         Task(priority: .background) {
             do {
-                let fetchedclothes = try await ClothingService().fetchClothes()
+                let fetchedclothes = try await ClothingService(using: httpClient).fetchClothes()
                 await MainActor.run {
                     clothesByCategory = Dictionary(grouping: fetchedclothes, by: { $0.category })
                     fetchingClothes = false

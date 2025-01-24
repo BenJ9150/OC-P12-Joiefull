@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */; };
 		43BABE542D3AB6740079B4E8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43BABE4A2D3AB6740079B4E8 /* Preview Assets.xcassets */; };
 		43BABE552D3AB6740079B4E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */; };
 		43BABE562D3AB6740079B4E8 /* JoiefullApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE4D2D3AB6740079B4E8 /* JoiefullApp.swift */; };
@@ -14,16 +15,16 @@
 		43BABE5D2D3AB6AD0079B4E8 /* ClothingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE592D3AB6AD0079B4E8 /* ClothingService.swift */; };
 		43BABE5E2D3AB6AD0079B4E8 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */; };
 		43BABE5F2D3AB6AD0079B4E8 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */; };
-		43BABE612D3AB70C0079B4E8 /* NetworkingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE602D3AB70C0079B4E8 /* NetworkingProtocol.swift */; };
+		43BABE612D3AB70C0079B4E8 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */; };
 		43BABE672D3AB7A10079B4E8 /* NetworkingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE662D3AB7A10079B4E8 /* NetworkingMock.swift */; };
 		43BABE682D3AB7A10079B4E8 /* clothesExample.json in Resources */ = {isa = PBXBuildFile; fileRef = 43BABE652D3AB7A10079B4E8 /* clothesExample.json */; };
 		43BABE6C2D3AB7EA0079B4E8 /* ClothingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE6A2D3AB7EA0079B4E8 /* ClothingServiceTests.swift */; };
 		43BABE6D2D3AB7EA0079B4E8 /* NetworkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE6B2D3AB7EA0079B4E8 /* NetworkClientTests.swift */; };
 		43BABE902D3ACF2B0079B4E8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE8F2D3ACF2B0079B4E8 /* HomeView.swift */; };
 		43BABE922D3ACF410079B4E8 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE912D3ACF410079B4E8 /* HomeViewModel.swift */; };
-		43BABE942D3AD4300079B4E8 /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE932D3AD4300079B4E8 /* CategoryRow.swift */; };
+		43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE932D3AD4300079B4E8 /* CategoryRowView.swift */; };
 		43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE952D3AD4EB0079B4E8 /* DetailView.swift */; };
-		43BABE982D3AD5270079B4E8 /* CategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE972D3AD5270079B4E8 /* CategoryItem.swift */; };
+		43BABE982D3AD5270079B4E8 /* CategoryItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE972D3AD5270079B4E8 /* CategoryItemView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		43BABE312D3AB6570079B4E8 /* JoiefullTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JoiefullTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BABE4A2D3AB6740079B4E8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -47,7 +49,7 @@
 		43BABE592D3AB6AD0079B4E8 /* ClothingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingService.swift; sourceTree = "<group>"; };
 		43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
-		43BABE602D3AB70C0079B4E8 /* NetworkingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingProtocol.swift; sourceTree = "<group>"; };
+		43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		43BABE652D3AB7A10079B4E8 /* clothesExample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clothesExample.json; sourceTree = "<group>"; };
 		43BABE662D3AB7A10079B4E8 /* NetworkingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingMock.swift; sourceTree = "<group>"; };
 		43BABE6A2D3AB7EA0079B4E8 /* ClothingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingServiceTests.swift; sourceTree = "<group>"; };
@@ -55,9 +57,9 @@
 		43BABE6E2D3AB8270079B4E8 /* Joiefull.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Joiefull.xctestplan; sourceTree = "<group>"; };
 		43BABE8F2D3ACF2B0079B4E8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		43BABE912D3ACF410079B4E8 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		43BABE932D3AD4300079B4E8 /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
+		43BABE932D3AD4300079B4E8 /* CategoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRowView.swift; sourceTree = "<group>"; };
 		43BABE952D3AD4EB0079B4E8 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		43BABE972D3AD5270079B4E8 /* CategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItem.swift; sourceTree = "<group>"; };
+		43BABE972D3AD5270079B4E8 /* CategoryItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItemView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,10 +102,10 @@
 		43BABE492D3AB6740079B4E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				43BABE602D3AB70C0079B4E8 /* NetworkingProtocol.swift */,
-				43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */,
 				43BABE582D3AB6AD0079B4E8 /* Clothing.swift */,
 				43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */,
+				43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */,
+				43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */,
 				43BABE592D3AB6AD0079B4E8 /* ClothingService.swift */,
 			);
 			path = Model;
@@ -131,8 +133,8 @@
 			isa = PBXGroup;
 			children = (
 				43BABE8F2D3ACF2B0079B4E8 /* HomeView.swift */,
-				43BABE932D3AD4300079B4E8 /* CategoryRow.swift */,
-				43BABE972D3AD5270079B4E8 /* CategoryItem.swift */,
+				43BABE932D3AD4300079B4E8 /* CategoryRowView.swift */,
+				43BABE972D3AD5270079B4E8 /* CategoryItemView.swift */,
 				43BABE952D3AD4EB0079B4E8 /* DetailView.swift */,
 			);
 			path = View;
@@ -164,6 +166,7 @@
 				43BABE692D3AB7D60079B4E8 /* MockData */,
 				43BABE6B2D3AB7EA0079B4E8 /* NetworkClientTests.swift */,
 				43BABE6A2D3AB7EA0079B4E8 /* ClothingServiceTests.swift */,
+				437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */,
 			);
 			path = JoiefullTests;
 			sourceTree = "<group>";
@@ -307,14 +310,14 @@
 			files = (
 				43BABE562D3AB6740079B4E8 /* JoiefullApp.swift in Sources */,
 				43BABE922D3ACF410079B4E8 /* HomeViewModel.swift in Sources */,
-				43BABE942D3AD4300079B4E8 /* CategoryRow.swift in Sources */,
+				43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */,
 				43BABE5C2D3AB6AD0079B4E8 /* Clothing.swift in Sources */,
 				43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */,
 				43BABE5D2D3AB6AD0079B4E8 /* ClothingService.swift in Sources */,
 				43BABE5E2D3AB6AD0079B4E8 /* Picture.swift in Sources */,
 				43BABE902D3ACF2B0079B4E8 /* HomeView.swift in Sources */,
-				43BABE612D3AB70C0079B4E8 /* NetworkingProtocol.swift in Sources */,
-				43BABE982D3AD5270079B4E8 /* CategoryItem.swift in Sources */,
+				43BABE612D3AB70C0079B4E8 /* HTTPClient.swift in Sources */,
+				43BABE982D3AD5270079B4E8 /* CategoryItemView.swift in Sources */,
 				43BABE5F2D3AB6AD0079B4E8 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -326,6 +329,7 @@
 				43BABE672D3AB7A10079B4E8 /* NetworkingMock.swift in Sources */,
 				43BABE6C2D3AB7EA0079B4E8 /* ClothingServiceTests.swift in Sources */,
 				43BABE6D2D3AB7EA0079B4E8 /* NetworkClientTests.swift in Sources */,
+				437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

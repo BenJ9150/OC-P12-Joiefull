@@ -12,7 +12,7 @@ final class NetworkClientTests: XCTestCase {
 
     func testValidData() async throws {
         // Given
-        let networkClient = NetworkClient(networking: NetworkingMock(.success))
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .success))
 
         // When
         let fetchedData = try await networkClient.data(from: "www.joifull-test.com")
@@ -23,7 +23,7 @@ final class NetworkClientTests: XCTestCase {
 
     func testBadUrlResponse() async throws {
         // Given
-        let networkClient = NetworkClient(networking: NetworkingMock(.badUrlResponse))
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .badUrlResponse))
 
         // When
         do {
@@ -42,7 +42,7 @@ final class NetworkClientTests: XCTestCase {
 
     func testBadRequest() async throws {
         // Given
-        let networkClient = NetworkClient(networking: NetworkingMock(.failed))
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .failed))
 
         // When
         do {

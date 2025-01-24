@@ -12,13 +12,14 @@ final class ClothingServiceTests: XCTestCase {
 
     func testSuccessToFetchData() async throws {
         // Given
-        let network = NetworkClient(networking: NetworkingMock(.success))
-        let clothingService = ClothingService(networkClient: network)
+        let clothingService = ClothingService(using: MockHTTPClient(with: .success))
 
         // When
         let clothes = try await clothingService.fetchClothes()
 
         // Then
         XCTAssertTrue(clothes.isEmpty == false)
+        XCTAssertEqual(clothes[0].priceToString, "69,99€")
+        XCTAssertEqual(clothes[0].originalPriceString, "69,99€")
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 @testable import Joiefull
 
-class NetworkingMock {
+class MockHTTPClient {
 
     enum NetworkResult {
         case success
@@ -35,14 +35,14 @@ class NetworkingMock {
 
     // MARK: Init
 
-    init(_ networkResult: NetworkResult) {
+    init(with networkResult: NetworkResult) {
         initProperties(networkResult)
     }
 }
 
 // MARK: Networking protocol
 
-extension NetworkingMock: Networking {
+extension MockHTTPClient: HTTPClient {
 
     func data(from url: URL) async throws -> (Data, URLResponse) {
         try (dataResult.get(), response)
@@ -51,7 +51,7 @@ extension NetworkingMock: Networking {
 
 // MARK: Private methods
 
-private extension NetworkingMock {
+private extension MockHTTPClient {
 
     func initProperties(_ networkResult: NetworkResult) {
         switch networkResult {
@@ -71,7 +71,7 @@ private extension NetworkingMock {
 
     func getData() -> Data {
         // Get bundle for json localization
-        let bundle = Bundle(for: NetworkingMock.self)
+        let bundle = Bundle(for: MockHTTPClient.self)
 
         // Create url
         guard let url = bundle.url(forResource: jsonFile, withExtension: "json") else {

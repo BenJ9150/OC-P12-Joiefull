@@ -1,5 +1,5 @@
 //
-//  CategoryRow.swift
+//  CategoryRowView.swift
 //  Joiefull
 //
 //  Created by Benjamin LEFRANCOIS on 17/01/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryRow: View {
+struct CategoryRowView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
 
     let category: String
@@ -25,7 +25,7 @@ struct CategoryRow: View {
 
 // MARK: Items
 
-private extension CategoryRow {
+private extension CategoryRowView {
 
     var itemsList: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -34,7 +34,7 @@ private extension CategoryRow {
                     NavigationLink {
                         DetailView(clothing: clothing)
                     } label: {
-                        CategoryItem(clothing: clothing)
+                        CategoryItemView(clothing: clothing)
                     }
                     .foregroundStyle(.primary)
                 }

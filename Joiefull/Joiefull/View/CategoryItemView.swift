@@ -1,5 +1,5 @@
 //
-//  CategoryItem.swift
+//  CategoryItemView.swift
 //  Joiefull
 //
 //  Created by Benjamin LEFRANCOIS on 17/01/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryItem: View {
+struct CategoryItemView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
 
     let clothing: Clothing
@@ -27,7 +27,7 @@ struct CategoryItem: View {
 
 // MARK: Picture
 
-private extension CategoryItem {
+private extension CategoryItemView {
 
     var picture: some View {
         ZStack {
@@ -56,7 +56,7 @@ private extension CategoryItem {
 
 // MARK: Description
 
-private extension CategoryItem {
+private extension CategoryItemView {
 
     var description: some View {
         VStack(spacing: sizeClass == .regular ? 4 : 2) {
@@ -106,5 +106,5 @@ private extension CategoryItem {
         originalPrice: 69.99
     )
 
-    CategoryItem(clothing: clothing)
+    CategoryItemView(clothing: clothing)
 }
