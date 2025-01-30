@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */; };
 		437A7AEA2D4401A800EC3536 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */; };
+		437A7AED2D440C5700EC3536 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AEB2D440C5700EC3536 /* Localizable.strings */; };
 		43BABE542D3AB6740079B4E8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43BABE4A2D3AB6740079B4E8 /* Preview Assets.xcassets */; };
 		43BABE552D3AB6740079B4E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */; };
 		43BABE562D3AB6740079B4E8 /* JoiefullApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE4D2D3AB6740079B4E8 /* JoiefullApp.swift */; };
@@ -42,6 +43,7 @@
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		437A7AEE2D440CB700EC3536 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43BABE312D3AB6570079B4E8 /* JoiefullTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JoiefullTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43BABE4A2D3AB6740079B4E8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				43BABE522D3AB6740079B4E8 /* Joiefull.entitlements */,
 				43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */,
 				43BABE4D2D3AB6740079B4E8 /* JoiefullApp.swift */,
+				437A7AEB2D440C5700EC3536 /* Localizable.strings */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -246,11 +249,11 @@
 				};
 			};
 			buildConfigurationList = 433357882D3A6C860027478C /* Build configuration list for PBXProject "Joiefull" */;
-			developmentRegion = en;
+			developmentRegion = fr;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				fr,
 			);
 			mainGroup = 433357842D3A6C860027478C;
 			minimizedProjectReferenceProxies = 1;
@@ -271,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				437A7AEA2D4401A800EC3536 /* Launch Screen.storyboard in Resources */,
+				437A7AED2D440C5700EC3536 /* Localizable.strings in Resources */,
 				43BABE542D3AB6740079B4E8 /* Preview Assets.xcassets in Resources */,
 				43BABE552D3AB6740079B4E8 /* Assets.xcassets in Resources */,
 			);
@@ -347,12 +351,24 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		437A7AEB2D440C5700EC3536 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				437A7AEE2D440CB700EC3536 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		4333579A2D3A6C870027478C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -414,6 +430,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -496,10 +513,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.benjaminlefrancois.Joiefull;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Debug;
@@ -538,10 +556,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.benjaminlefrancois.Joiefull;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.1;
 			};
 			name = Release;

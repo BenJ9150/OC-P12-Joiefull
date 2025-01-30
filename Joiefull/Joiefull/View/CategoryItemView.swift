@@ -74,7 +74,6 @@ private extension CategoryItemView {
                 image
                     .resizable()
                     .scaledToFill()
-                    .accessibilityLabel(clothing.picture.description)
             default:
                 Image(systemName: "photo")
                     .foregroundStyle(.gray)
@@ -149,7 +148,7 @@ private extension CategoryItemView {
                 .font(.caption2)
                 .foregroundStyle(.orange)
                 .padding(.bottom, 1)
-            Text("4.3")
+            Text(clothing.ratingToSring)
                 .font(.footnote.weight(.regular))
         }
     }

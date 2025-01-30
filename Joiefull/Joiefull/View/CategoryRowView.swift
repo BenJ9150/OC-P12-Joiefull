@@ -15,8 +15,10 @@ struct CategoryRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: sizeClass == .regular ? 16 : 12) {
-            Text(category.capitalized)
+            Text(NSLocalizedString(category, comment: "").capitalized)
                 .font(.title3.weight(.semibold))
+                .accessibilityAddTraits(.isHeader)
+
             itemsList
         }
         .padding(.top, 18)
@@ -37,9 +39,20 @@ private extension CategoryRowView {
                         CategoryItemView(clothing: clothing)
                     }
                     .foregroundStyle(.primary)
+                    /// VoiceOver accessibility
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(label(for: clothing))
+                    .accessibilityAddTraits(.isButton)
                 }
             }
         }
+    }
+
+    func label(for clothing: Clothing) -> String {
+        return "\(clothing.name), "
+        + "noté \(clothing.ratingToSring) sur 5, "
+        + "\(clothing.priceToString) "
+        + "\(clothing.price == clothing.originalPrice ? "." : "au lieu de \(clothing.originalPriceString).")"
     }
 }
 
