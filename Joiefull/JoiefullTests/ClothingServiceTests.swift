@@ -19,7 +19,8 @@ final class ClothingServiceTests: XCTestCase {
 
         // Then
         XCTAssertTrue(clothes.isEmpty == false)
-        XCTAssertEqual(clothes[0].priceToString, "69,99€")
-        XCTAssertEqual(clothes[0].originalPriceString, "69,99€")
+        XCTAssertEqual(clothes[0].price.toEuros(), "69,99€")
+        XCTAssertEqual(clothes[0].originalPrice.toEuros(), "69,99€")
+        XCTAssertEqual(clothes[0].rating.toString(), "4,3")
     }
 }

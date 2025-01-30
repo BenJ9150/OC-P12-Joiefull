@@ -148,18 +148,19 @@ private extension CategoryItemView {
                 .font(.caption2)
                 .foregroundStyle(.orange)
                 .padding(.bottom, 1)
-            Text(clothing.ratingToSring)
+            /// Display rating with US style to have dot as decimal separator
+            Text(clothing.rating.toString(locale: Locale(identifier: "en_US")))
                 .font(.footnote.weight(.regular))
         }
     }
 
     var price: some View {
-        Text(clothing.priceToString)
+        Text(clothing.price.toEuros())
             .font(.footnote.weight(.regular))
     }
 
     var originalPrice: some View {
-        Text(clothing.originalPriceString)
+        Text(clothing.originalPrice.toEuros())
             .font(.footnote.weight(.regular))
             .strikethrough()
     }

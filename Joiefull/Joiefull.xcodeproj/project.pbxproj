@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */; };
 		437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */; };
 		437A7AEA2D4401A800EC3536 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */; };
 		437A7AED2D440C5700EC3536 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AEB2D440C5700EC3536 /* Localizable.strings */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		437A7AEE2D440CB700EC3536 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -103,6 +105,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4344C8DE2D4C018F0019F5D8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		43BABE492D3AB6740079B4E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +141,7 @@
 				43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */,
 				43BABE4D2D3AB6740079B4E8 /* JoiefullApp.swift */,
 				437A7AEB2D440C5700EC3536 /* Localizable.strings */,
+				4344C8DE2D4C018F0019F5D8 /* Extensions */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -319,6 +330,7 @@
 				43BABE562D3AB6740079B4E8 /* JoiefullApp.swift in Sources */,
 				43BABE922D3ACF410079B4E8 /* HomeViewModel.swift in Sources */,
 				43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */,
+				4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */,
 				43BABE5C2D3AB6AD0079B4E8 /* Clothing.swift in Sources */,
 				43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */,
 				43BABE5D2D3AB6AD0079B4E8 /* ClothingService.swift in Sources */,

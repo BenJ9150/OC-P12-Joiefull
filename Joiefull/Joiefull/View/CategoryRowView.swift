@@ -50,9 +50,9 @@ private extension CategoryRowView {
 
     func label(for clothing: Clothing) -> String {
         return "\(clothing.name), "
-        + "noté \(clothing.ratingToSring) sur 5, "
-        + "\(clothing.priceToString) "
-        + "\(clothing.price == clothing.originalPrice ? "." : "au lieu de \(clothing.originalPriceString).")"
+        + "noté \(clothing.rating.toString()) sur 5. "
+        + "\(clothing.price.toEuros())"
+        + "\(clothing.price == clothing.originalPrice ? "." : ", au lieu de \(clothing.originalPrice.toEuros()) !")"
     }
 }
 

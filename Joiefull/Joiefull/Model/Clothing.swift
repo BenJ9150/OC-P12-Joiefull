@@ -26,37 +26,4 @@ struct Clothing: Decodable, Identifiable {
         case price
         case originalPrice = "original_price"
     }
-
-    var priceToString: String {
-        return formattedPrice(for: price)
-    }
-
-    var originalPriceString: String {
-        return formattedPrice(for: originalPrice)
-    }
-
-    var ratingToSring: String {
-        return formattedNumber(for: rating)
-    }
-}
-
-extension Clothing {
-
-    private func formattedPrice(for number: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-
-        return (formatter.string(from: NSNumber(value: number)) ?? "\(Int(number))") + "€"
-    }
-
-    private func formattedNumber(for number: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 1
-
-        return (formatter.string(from: NSNumber(value: number)) ?? "\(Int(number))")
-    }
 }
