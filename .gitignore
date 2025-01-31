@@ -23,6 +23,11 @@ xcuserdata/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+### Xcode user-specific files ###
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
 ### Swift ###
 
 ## Obj-C/Swift specific
