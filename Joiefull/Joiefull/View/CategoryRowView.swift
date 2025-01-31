@@ -8,13 +8,23 @@
 import SwiftUI
 
 struct CategoryRowView: View {
-    @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSC
+    @Environment(\.verticalSizeClass) var verticalSC
 
     let category: String
     let items: [Clothing]
 
+    private var isPad: Bool {
+        /// Use Size Class to define if device is an iPad
+        /// to keep iPhone UI when app is displayed on iPad split view
+        /// (horizontalSizeClass == .compact for iPad in split view)
+        return horizontalSC == .regular && verticalSC == .regular
+    }
+
+    // MARK: Body
+
     var body: some View {
-        VStack(alignment: .leading, spacing: sizeClass == .regular ? 16 : 12) {
+        VStack(alignment: .leading, spacing: isPad ? 16 : 12) {
             Text(NSLocalizedString(category, comment: "").capitalized)
                 .font(.title3.weight(.semibold))
                 .accessibilityAddTraits(.isHeader)
@@ -31,12 +41,12 @@ private extension CategoryRowView {
 
     var itemsList: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .top, spacing: sizeClass == .regular ? 15 : 8) {
+            HStack(alignment: .top, spacing: isPad ? 15 : 8) {
                 ForEach(items) { clothing in
                     NavigationLink {
                         DetailView(clothing: clothing)
                     } label: {
-                        CategoryItemView(clothing: clothing)
+                        CategoryItemView(for: clothing, isPad)
                     }
                     .foregroundStyle(.primary)
                     /// VoiceOver accessibility
