@@ -12,7 +12,6 @@ struct JoiefullApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .accessibilityLabel("Heureux de vous revoir sur Joiefull, chargement des images")
         }
     }
 }

@@ -9,6 +9,11 @@ import SwiftUI
 
 struct CategoryItemView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @Environment(\.verticalSizeClass) var verticalSC
+
+    private var isPhoneInLandscape: Bool {
+        return verticalSC == .compact
+    }
 
     private let clothing: Clothing
     private let isPad: Bool
@@ -40,9 +45,8 @@ struct CategoryItemView: View {
         case .large: 12
         case .xLarge: 36
         case .xxLarge: 62
-        case .xxxLarge, .accessibility1: 88
-        case .accessibility2, .accessibility3: 88
-        case .accessibility4, .accessibility5: 88
+        case .xxxLarge: 80
+        case .accessibility1, .accessibility2, .accessibility3, .accessibility4, .accessibility5: 88
         @unknown default: 0
         }
         return originalPictureWidth + extraWidth
@@ -56,19 +60,27 @@ struct CategoryItemView: View {
     // MARK: Body
 
     var body: some View {
-        VStack(spacing: isPad ? 12 : 8) {
-            /// Picture with AsyncImagePhase to show ProgressView
-            asyncPicture
+        if isPhoneInLandscape {
+            iphoneInlandscapeItem
+        } else {
+            defaultIem
+        }
+    }
+}
 
-            /// Clothing description
+// MARK: default item
+
+private extension CategoryItemView {
+
+    /// Default item with different description UI depending on dynamic type size
+    var defaultIem: some View {
+        VStack(spacing: isPad ? 12 : 8) {
+            asyncPicture
+                .frame(height: pictureHeight)
             Group {
                 switch dynamicTypeSize {
                 case .accessibility1, .accessibility2, .accessibility3:
-                    if showOriginalPrice {
-                        descriptionAX1
-                    } else {
-                        defaultDescription
-                    }
+                    descriptionAX1
                 case .accessibility4, .accessibility5:
                     descriptionAX4
                 default:
@@ -78,6 +90,45 @@ struct CategoryItemView: View {
             .padding(.horizontal, 8)
         }
         .frame(width: pictureWidth)
+    }
+}
+
+// MARK: iPhone in landscape item
+
+private extension CategoryItemView {
+
+    /// From accesibility2 dynamic type size, show the description on the right of the picture
+    /// Below accesibility2, using default UI (description below the picture)
+    var iphoneInlandscapeItem: some View {
+        ZStack {
+            switch dynamicTypeSize {
+            case .accessibility2, .accessibility3:
+                /// Keep ogirinal picture size to save place for category name
+                horizontalItem(width: originalPictureWidth, height: originalPictureHeight)
+            case .accessibility4, .accessibility5:
+                /// Picture with increased size to be consistent with the large size of the description
+                horizontalItem(width: pictureWidth, height: pictureHeight)
+            default:
+                /// Default UI with description below the picture
+                VStack(spacing: 8) {
+                    asyncPicture
+                        .frame(height: originalPictureHeight)
+                    defaultDescription
+                        .padding(.horizontal, 8)
+                }
+                .frame(width: pictureWidth)
+            }
+        }
+    }
+
+    func horizontalItem(width: CGFloat, height: CGFloat) -> some View {
+        HStack(spacing: 24) {
+            asyncPicture
+                .frame(width: width)
+                .frame(height: height)
+            descriptionAX4
+                .frame(width: pictureWidth)
+        }
     }
 }
 
@@ -100,7 +151,7 @@ private extension CategoryItemView {
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: pictureHeight)
+        .frame(maxHeight: .infinity)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
@@ -117,7 +168,7 @@ private extension CategoryItemView {
     var defaultDescription: some View {
         VStack(spacing: 4) {
             HStack(spacing: 4) {
-                clothingName()
+                clothingName
                 if showOriginalPrice { stars }
             }
             HStack {
@@ -134,11 +185,15 @@ private extension CategoryItemView {
 
     var descriptionAX1: some View {
         VStack(spacing: 4) {
-            clothingName(withLineLimit: 2)
+            clothingName
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
+                if showOriginalPrice {
+                    VStack(alignment: .leading, spacing: 4) {
+                        price
+                        originalPrice
+                    }
+                } else {
                     price
-                    originalPrice
                 }
                 Spacer()
                 stars
@@ -148,7 +203,7 @@ private extension CategoryItemView {
 
     var descriptionAX4: some View {
         VStack(alignment: .leading, spacing: 4) {
-            clothingName(withLineLimit: 3)
+            clothingName
             price
             if showOriginalPrice {
                 originalPrice
@@ -162,8 +217,15 @@ private extension CategoryItemView {
 
 private extension CategoryItemView {
 
-    func clothingName(withLineLimit lineLimit: Int = 1) -> some View {
-        Text(clothing.name)
+    var clothingName: some View {
+        let lineLimit: Int = switch dynamicTypeSize {
+        case .accessibility1:
+            showOriginalPrice ? 1 : 2
+        case .accessibility2, .accessibility3, .accessibility4, .accessibility5:
+            showOriginalPrice ? 2 : 3
+        default: 1
+        }
+        return Text(clothing.name)
             .font(.footnote.weight(.semibold))
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)
@@ -204,6 +266,7 @@ struct CategoryItemView_Previews: PreviewProvider {
         CategoryItemPreviewWrapper(clothing: clothing)
             .previewDevice("iPhone 13 mini")
 //            .previewDevice("iPhone 16 Pro Max")
+//            .previewDevice("iPad mini (6th generation)")
 //            .previewDevice("iPad Pro 13-inch (M4)")
     }
 
@@ -213,6 +276,9 @@ struct CategoryItemView_Previews: PreviewProvider {
 //        let url = urlPar1 + urlPar2
         let url = "test"
 
+//        let name = "New: sac à main orange (posé sur une poignée de porte)"
+        let name = "Sac à main orange"
+
         let jsonString = """
             {
                 "id": 0,
@@ -220,11 +286,11 @@ struct CategoryItemView_Previews: PreviewProvider {
                   "url": "\(url)",
                   "description": "Sac à main orange posé sur une poignée de porte"
                 },
-                "name": "New: sac à main orange",
+                "name": "\(name)",
                 "category": "ACCESSORIES",
                 "likes": 56,
                 "price": 2269.99,
-                "original_price": 2269.99
+                "original_price": 3269.99
             }
             """
 
