@@ -75,8 +75,7 @@ private extension CategoryItemView {
     /// Default item with different description UI depending on dynamic type size
     var defaultIem: some View {
         VStack(spacing: isPad ? 12 : 8) {
-            asyncPicture
-                .frame(height: pictureHeight)
+            PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
             Group {
                 switch dynamicTypeSize {
                 case .accessibility1, .accessibility2, .accessibility3:
@@ -111,8 +110,7 @@ private extension CategoryItemView {
             default:
                 /// Default UI with description below the picture
                 VStack(spacing: 8) {
-                    asyncPicture
-                        .frame(height: originalPictureHeight)
+                    PictureView(clothing: clothing, width: pictureWidth, height: originalPictureHeight)
                     defaultDescription
                         .padding(.horizontal, 8)
                 }
@@ -123,39 +121,10 @@ private extension CategoryItemView {
 
     func horizontalItem(width: CGFloat, height: CGFloat) -> some View {
         HStack(spacing: 24) {
-            asyncPicture
-                .frame(width: width)
-                .frame(height: height)
+            PictureView(clothing: clothing, width: width, height: height)
             descriptionAX4
                 .frame(width: pictureWidth)
         }
-    }
-}
-
-// MARK: Async picture
-
-private extension CategoryItemView {
-
-    var asyncPicture: some View {
-        AsyncImage(url: URL(string: clothing.picture.url)) { phase in
-            switch phase {
-            case .empty:
-                ProgressView()
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFill()
-            default:
-                Image(systemName: "photo")
-                    .foregroundStyle(.gray)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .frame(maxHeight: .infinity)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .background(
-            RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
-        )
     }
 }
 
@@ -261,52 +230,17 @@ private extension CategoryItemView {
 struct CategoryItemView_Previews: PreviewProvider {
 
     static var previews: some View {
-        let clothing = loadClothing()
-
-        CategoryItemPreviewWrapper(clothing: clothing)
+        CategoryItemPreviewWrapper()
             .previewDevice("iPhone 13 mini")
 //            .previewDevice("iPhone 16 Pro Max")
 //            .previewDevice("iPad mini (6th generation)")
 //            .previewDevice("iPad Pro 13-inch (M4)")
     }
 
-    private static func loadClothing() -> Clothing {
-//        let urlPar1 = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/"
-//        let urlPar2 = "Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/img/accessories/1.jpg"
-//        let url = urlPar1 + urlPar2
-        let url = "test"
-
-//        let name = "New: sac à main orange (posé sur une poignée de porte)"
-        let name = "Sac à main orange"
-
-        let jsonString = """
-            {
-                "id": 0,
-                "picture": {
-                  "url": "\(url)",
-                  "description": "Sac à main orange posé sur une poignée de porte"
-                },
-                "name": "\(name)",
-                "category": "ACCESSORIES",
-                "likes": 56,
-                "price": 2269.99,
-                "original_price": 3269.99
-            }
-            """
-
-        let clothing: Clothing
-        do {
-            clothing = try JSONDecoder().decode(Clothing.self, from: jsonString.data(using: .utf8)!)
-        } catch {
-            fatalError("Failed to decode Clothing: \(error)")
-        }
-        return clothing
-    }
-
     private struct CategoryItemPreviewWrapper: View {
         @Environment(\.horizontalSizeClass) var horizontalSC
         @Environment(\.verticalSizeClass) var verticalSC
-        let clothing: Clothing
+        let clothing = ClothesPreview().getClothing()
 
         var body: some View {
             CategoryItemView(for: clothing, horizontalSC == .regular && verticalSC == .regular)
