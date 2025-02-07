@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct CategoryItemView: View {
+
+    // MARK: Environment
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.verticalSizeClass) var verticalSC
 
-    private var isPhoneInLandscape: Bool {
-        return verticalSC == .compact
-    }
+    // MARK: Properties
 
     private let clothing: Clothing
     private let isPad: Bool
@@ -21,40 +22,30 @@ struct CategoryItemView: View {
     private let originalPictureHeight: CGFloat
     private let showOriginalPrice: Bool
 
+    private var isPhoneInLandscape: Bool {
+        return verticalSC == .compact
+    }
+
+    private var pictureWidth: CGFloat {
+        /// Increase  width when dynamic type size increases to give more spaces for clothing description
+        return originalPictureWidth.adaptTo(dynamicTypeSize)
+    }
+
+    private var pictureHeight: CGFloat {
+        /// Increase picture height when picture width increases to keep original aspect ratio
+        return pictureWidth * originalPictureHeight / originalPictureWidth
+    }
+
     // MARK: Init
 
     init(for clothing: Clothing, _ isPad: Bool) {
         self.clothing = clothing
         self.isPad = isPad
-
-        /// Set original picture size depending on device size
-        self.originalPictureWidth = isPad ? 222 : 198
-        self.originalPictureHeight = isPad ? 254 : 198
+        self.originalPictureWidth = isPad ? 234 : 198
+        self.originalPictureHeight = isPad ? 256 : 198
 
         /// Do not show original price if equal to price
         self.showOriginalPrice = clothing.originalPrice != clothing.price
-    }
-
-    // MARK: Picture dimensions
-
-    /// Increase picture width when dynamic type size increases
-    /// to have more spaces for clothing description
-    private var pictureWidth: CGFloat {
-        let extraWidth: CGFloat = switch dynamicTypeSize {
-        case .xSmall, .small, .medium: 0
-        case .large: 12
-        case .xLarge: 36
-        case .xxLarge: 62
-        case .xxxLarge: 80
-        case .accessibility1, .accessibility2, .accessibility3, .accessibility4, .accessibility5: 88
-        @unknown default: 0
-        }
-        return originalPictureWidth + extraWidth
-    }
-
-    /// Increase picture height when picture width increases to keep original aspect ratio
-    private var pictureHeight: CGFloat {
-        return pictureWidth * originalPictureHeight / originalPictureWidth
     }
 
     // MARK: Body
@@ -96,10 +87,10 @@ private extension CategoryItemView {
 
 private extension CategoryItemView {
 
-    /// From accesibility2 dynamic type size, show the description on the right of the picture
-    /// Below accesibility2, using default UI (description below the picture)
+    /// Item for iPhone in landscape
     var iphoneInlandscapeItem: some View {
         ZStack {
+            /// From accesibility2 dynamic type size, show the description on the right of the picture
             switch dynamicTypeSize {
             case .accessibility2, .accessibility3:
                 /// Keep ogirinal picture size to save place for category name
@@ -240,7 +231,7 @@ struct CategoryItemView_Previews: PreviewProvider {
     private struct CategoryItemPreviewWrapper: View {
         @Environment(\.horizontalSizeClass) var horizontalSC
         @Environment(\.verticalSizeClass) var verticalSC
-        let clothing = ClothesPreview().getClothing()
+        let clothing = ClothesPreview().getClothing(2)
 
         var body: some View {
             CategoryItemView(for: clothing, horizontalSC == .regular && verticalSC == .regular)

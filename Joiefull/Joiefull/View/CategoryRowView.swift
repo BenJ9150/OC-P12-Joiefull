@@ -8,18 +8,10 @@
 import SwiftUI
 
 struct CategoryRowView: View {
-    @Environment(\.horizontalSizeClass) var horizontalSC
-    @Environment(\.verticalSizeClass) var verticalSC
 
     let category: String
     let items: [Clothing]
-
-    private var isPad: Bool {
-        /// Use Size Class to define if device is an iPad
-        /// to keep iPhone UI when app is displayed on iPad split view
-        /// (horizontalSizeClass == .compact for iPad in split view)
-        return horizontalSC == .regular && verticalSC == .regular
-    }
+    let isPad: Bool
 
     // MARK: Body
 
@@ -41,7 +33,7 @@ private extension CategoryRowView {
 
     var itemsList: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .top, spacing: isPad ? 15 : 8) {
+            HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
                     NavigationLink {
                         DetailView(clothing: clothing)
@@ -70,5 +62,6 @@ private extension CategoryRowView {
 
 #Preview {
     let clothes = ClothesPreview().getClothes()
-    CategoryRowView(category: clothes[0].category, items: clothes)
+    let isPad = UIDevice.current.userInterfaceIdiom == .pad
+    CategoryRowView(category: clothes[0].category, items: clothes, isPad: isPad)
 }

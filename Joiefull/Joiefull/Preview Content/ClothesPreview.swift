@@ -9,11 +9,12 @@ import SwiftUI
 
 class ClothesPreview {
 
-    func getClothing() -> Clothing {
-        guard let clothing = getClothes().first else {
-            fatalError("Failed to load first clothin of clothesPreview.json")
+    func getClothing(_ index: Int = 0) -> Clothing {
+        let clothing = getClothes()
+        guard index < clothing.count else {
+            fatalError("Failed to load clothing at index \(index) from clothesPreview.json")
         }
-        return clothing
+        return clothing[index]
     }
 
     func getClothes() -> [Clothing] {

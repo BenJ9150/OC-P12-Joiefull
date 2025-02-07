@@ -10,11 +10,33 @@ import SwiftUI
 struct HomeView: View {
 
     @ObservedObject var viewModel: HomeViewModel
+    private let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
+    // MARK: Body
 
     var body: some View {
-        NavigationSplitView {
+        /// Using geometry reader to update sidebar width after iPad rotations
+        GeometryReader { geometry in
+            NavigationSplitView(columnVisibility: .constant(.all)) {
+                splitViewSidebar
+                    .navigationSplitViewColumnWidth(geometry.size.width * 766/1280)
+                    .toolbar(.hidden, for: .navigationBar)
+            } detail: {
+                splitViewDetail
+            }
+            .navigationSplitViewStyle(.balanced)
+        }
+    }
+}
+
+// MARK: Split view columns
+
+private extension HomeView {
+
+    var splitViewSidebar: some View {
+        Group {
             if viewModel.firstLoading {
-                firstLoading
+                firstLoadingProgressView
                     .onAppear {
                         /// At the begining, firstLoading is already set to true, so state is not udpaded.
                         /// Using announcement notification instead of accessibilityLabel
@@ -29,23 +51,40 @@ struct HomeView: View {
             } else {
                 fetchError
             }
-        } detail: {
-            Text("Select item")
         }
-        .navigationSplitViewStyle(.balanced)
+    }
+
+    var splitViewDetail: some View {
+        Group {
+            if viewModel.firstLoading || !viewModel.fetchClothesError.isEmpty {
+                Color
+                    .launchScreenBackground
+                    .ignoresSafeArea()
+
+            } else {
+                EmptyView()
+            }
+        }
     }
 }
 
-// MARK: Clothes list
-
 private extension HomeView {
+
+    // MARK: Clothes list
 
     var clothesList: some View {
         List(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
             if let clothes = viewModel.clothesByCategory[category] {
-                CategoryRowView(category: category, items: clothes)
+                CategoryRowView(category: category, items: clothes, isPad: isPad)
                     .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
+                    .listRowInsets(
+                        EdgeInsets(
+                            top: 0,
+                            leading: isPad ? 32 : 16,
+                            bottom: 0,
+                            trailing: 0
+                        )
+                    )
             }
         }
         .listStyle(PlainListStyle())
@@ -53,13 +92,10 @@ private extension HomeView {
             await viewModel.fetchClothes()
         }
     }
-}
-
-private extension HomeView {
 
     // MARK: Loading
 
-    var firstLoading: some View {
+    var firstLoadingProgressView: some View {
         ProgressView()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.launchScreenBackground)
@@ -110,10 +146,10 @@ struct HomeView_Previews: PreviewProvider {
     enum PreviewMode {
         case loading
         case error
-        case normal
+        case clothes
     }
 
-    static let previewMode: PreviewMode = .normal
+    static let previewMode: PreviewMode = .clothes
     static let viewModel = HomeViewModel()
 
     static var previews: some View {
@@ -128,7 +164,7 @@ struct HomeView_Previews: PreviewProvider {
                     break
                 case .error:
                     viewModel.handleFetchClothesResult(nil)
-                case .normal:
+                case .clothes:
                     viewModel.handleFetchClothesResult(ClothesPreview().getClothes())
                 }
             }
