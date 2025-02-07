@@ -154,10 +154,10 @@ struct HomeView_Previews: PreviewProvider {
 
     static var previews: some View {
         HomeView(viewModel: viewModel)
-//            .previewDevice("iPhone 13 mini")
+            .previewDevice("iPhone 13 mini")
 //            .previewDevice("iPhone 16 Pro Max")
 //            .previewDevice("iPad mini (6th generation)")
-            .previewDevice("iPad Pro 13-inch (M4)")
+//            .previewDevice("iPad Pro 13-inch (M4)")
             .onAppear {
                 switch previewMode {
                 case .loading:

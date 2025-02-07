@@ -44,8 +44,14 @@ extension PictureView {
                     .foregroundStyle(.gray)
             }
         }
-        .frame(width: width)
-        .frame(height: height)
+        .frame(
+            minWidth: 0,
+            idealWidth: width,
+            maxWidth: width,
+            minHeight: 0,
+            idealHeight: height,
+            maxHeight: height
+        )
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
@@ -62,6 +68,7 @@ extension PictureView {
                 .font(.footnote.weight(.semibold))
         }
         .padding(.all, 6)
+        .padding(.horizontal, 2)
         .background(
             Capsule().fill(.white)
         )
@@ -72,5 +79,7 @@ extension PictureView {
 
 #Preview {
     let clothing = ClothesPreview().getClothing()
-    PictureView(clothing: clothing, width: 198, height: 198)
+    ScrollView {
+        PictureView(clothing: clothing, width: 198, height: 198)
+    }
 }

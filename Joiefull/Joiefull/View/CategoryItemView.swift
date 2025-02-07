@@ -20,7 +20,6 @@ struct CategoryItemView: View {
     private let isPad: Bool
     private let originalPictureWidth: CGFloat
     private let originalPictureHeight: CGFloat
-    private let showOriginalPrice: Bool
 
     private var isPhoneInLandscape: Bool {
         return verticalSC == .compact
@@ -43,9 +42,6 @@ struct CategoryItemView: View {
         self.isPad = isPad
         self.originalPictureWidth = isPad ? 234 : 198
         self.originalPictureHeight = isPad ? 256 : 198
-
-        /// Do not show original price if equal to price
-        self.showOriginalPrice = clothing.originalPrice != clothing.price
     }
 
     // MARK: Body
@@ -69,10 +65,10 @@ private extension CategoryItemView {
         VStack(spacing: isPad ? 12 : 8) {
             PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
             if dynamicTypeSize.isAccessibilitySize {
-                verticalDescription
+                PictureDescriptionView(for: clothing, inVerticalMode: true, isPad)
                     .padding(.horizontal, 8)
             } else {
-                defaultDescription
+                PictureDescriptionView(for: clothing, isPad)
                     .padding(.horizontal, 8)
             }
         }
@@ -91,7 +87,7 @@ private extension CategoryItemView {
             if dynamicTypeSize.isAccessibilitySize {
                 HStack(spacing: 24) {
                     PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
-                    verticalDescription
+                    PictureDescriptionView(for: clothing, inVerticalMode: true, isPad)
                         .frame(width: dynamicTypeSize.isHighAccessibilitySize ? pictureWidth : originalPictureWidth)
                 }
             } else {
@@ -101,100 +97,18 @@ private extension CategoryItemView {
     }
 }
 
-// MARK: Descriptions
-
-private extension CategoryItemView {
-
-    /// If original price equal to price, show stars on the second line
-    /// to have more space for clothing name
-    var defaultDescription: some View {
-        VStack(spacing: 4) {
-            HStack(spacing: 4) {
-                clothingName
-                if showOriginalPrice { stars }
-            }
-            HStack {
-                price
-                Spacer()
-                if showOriginalPrice {
-                    originalPrice
-                } else {
-                    stars
-                }
-            }
-        }
-    }
-
-    var verticalDescription: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            clothingName
-            price
-            if showOriginalPrice {
-                originalPrice
-            }
-            stars
-        }
-    }
-}
-
-// MARK: Description details
-
-private extension CategoryItemView {
-
-    var clothingName: some View {
-        /// Adjust line limit according to accessibility size
-        let limit = dynamicTypeSize.isHighAccessibilitySize ? 3 : dynamicTypeSize.isAccessibilitySize ? 2 : 1
-        return Text(clothing.name)
-            .font(.footnote.weight(.semibold))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .multilineTextAlignment(.leading)
-            .lineLimit(limit)
-    }
-
-    var stars: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "star.fill")
-                .font(.caption2)
-                .foregroundStyle(.orange)
-                .padding(.bottom, 1)
-
-            /// Display rating with US style to have dot as decimal separator
-            Text(clothing.rating.toString(locale: Locale(identifier: "en_US")))
-                .font(.footnote.weight(.regular))
-        }
-    }
-
-    var price: some View {
-        Text(clothing.price.toEuros())
-            .font(.footnote.weight(.regular))
-    }
-
-    var originalPrice: some View {
-        Text(clothing.originalPrice.toEuros())
-            .font(.footnote.weight(.regular))
-            .strikethrough()
-    }
-}
-
 // MARK: - Preview
 
 struct CategoryItemView_Previews: PreviewProvider {
 
+    static let clothing = ClothesPreview().getClothing(2)
+    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
     static var previews: some View {
-        CategoryItemPreviewWrapper()
+        CategoryItemView(for: clothing, isPad)
             .previewDevice("iPhone 13 mini")
 //            .previewDevice("iPhone 16 Pro Max")
 //            .previewDevice("iPad mini (6th generation)")
 //            .previewDevice("iPad Pro 13-inch (M4)")
-    }
-
-    private struct CategoryItemPreviewWrapper: View {
-        @Environment(\.horizontalSizeClass) var horizontalSC
-        @Environment(\.verticalSizeClass) var verticalSC
-        let clothing = ClothesPreview().getClothing()
-
-        var body: some View {
-            CategoryItemView(for: clothing, horizontalSC == .regular && verticalSC == .regular)
-        }
     }
 }

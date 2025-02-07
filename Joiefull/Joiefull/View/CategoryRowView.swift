@@ -36,7 +36,7 @@ private extension CategoryRowView {
             HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
                     NavigationLink {
-                        DetailView(clothing: clothing)
+                        DetailView(clothing: clothing, isPad: isPad)
                     } label: {
                         CategoryItemView(for: clothing, isPad)
                     }
