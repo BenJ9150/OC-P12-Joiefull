@@ -18,10 +18,10 @@ class ClothingService {
     }
 
     func fetchClothes() async throws -> [Clothing] {
-        // Fetch data
+        /// Fetch data
         let data = try await NetworkClient(using: httpClient).data(from: clothesUrlStart + clothesUrlEnd)
 
-        // Try return decoded data
+        /// Try return decoded data
         return try JSONDecoder().decode([Clothing].self, from: data)
     }
 }

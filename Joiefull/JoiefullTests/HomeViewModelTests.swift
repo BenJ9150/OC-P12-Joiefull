@@ -13,12 +13,13 @@ final class HomeViewModelTests: XCTestCase {
 
     private var cancellables = Set<AnyCancellable>()
 
-    func testSuccessToFetchData() {
+    func testSuccessToFetchData() async {
         // Given
         let httpClient = MockHTTPClient(with: .success)
 
         // When fetch data
         let viewModel = HomeViewModel(using: httpClient)
+        await viewModel.fetchClothes()
 
         // Then there are data with no error
         let errorExpectation = XCTestExpectation(description: "fetchClothesError updated")
@@ -32,7 +33,6 @@ final class HomeViewModelTests: XCTestCase {
             .store(in: &cancellables)
 
         viewModel.$clothesByCategory
-            .dropFirst() // because the first value represents the initial state of the property
             .sink { clothes in
                 print(clothes)
                 XCTAssertTrue(clothes.isEmpty == false)
@@ -41,22 +41,22 @@ final class HomeViewModelTests: XCTestCase {
             .store(in: &cancellables)
 
         // Expectation timeout
-        wait(for: [errorExpectation, clothesExpectation], timeout: 1)
+        await fulfillment(of: [errorExpectation, clothesExpectation], timeout: 1)
     }
 
-    func testFailedToFetchData() {
+    func testFailedToFetchData() async {
         // Given
         let httpClient = MockHTTPClient(with: .failed)
 
         // When fetch data
         let viewModel = HomeViewModel(using: httpClient)
+        await viewModel.fetchClothes()
 
         // Then there is an error and no data
         let errorExpectation = XCTestExpectation(description: "fetchClothesError updated")
         let clothesExpectation = XCTestExpectation(description: "clothesByCategory updated")
 
         viewModel.$fetchClothesError
-            .dropFirst() // because the first value represents the initial state of the property
             .sink { fetchError in
                 XCTAssertTrue(fetchError.isEmpty == false)
                 errorExpectation.fulfill()
@@ -71,6 +71,6 @@ final class HomeViewModelTests: XCTestCase {
             .store(in: &cancellables)
 
         // Expectation timeout
-        wait(for: [errorExpectation, clothesExpectation], timeout: 1)
+        await fulfillment(of: [errorExpectation, clothesExpectation], timeout: 1)
     }
 }

@@ -10,15 +10,13 @@ import SwiftUI
 class HomeViewModel: ObservableObject {
 
     @Published var clothesByCategory: [String: [Clothing]] = [:]
-    @Published var fetchingClothes = true
+    @Published var firstLoading = true
     @Published var fetchClothesError = ""
 
     private let httpClient: HTTPClient
 
     init(using httpClient: HTTPClient = URLSession.shared) {
         self.httpClient = httpClient
-        if isPreview() { return }
-        fetchClothes()
     }
 }
 
@@ -26,41 +24,24 @@ class HomeViewModel: ObservableObject {
 
 extension HomeViewModel {
 
-    func fetchClothes() {
-        fetchingClothes = true
-        fetchClothesError = ""
-
-        Task(priority: .background) {
-            do {
-                let fetchedclothes = try await ClothingService(using: httpClient).fetchClothes()
-                await MainActor.run {
-                    clothesByCategory = Dictionary(grouping: fetchedclothes, by: { $0.category })
-                    fetchingClothes = false
-                }
-            } catch {
-                await MainActor.run {
-                    fetchClothesError = "Une erreur s'est produite. Veuillez réessayer ultérieurement."
-                    fetchingClothes = false
-                }
-            }
-        }
+    func fetchClothes() async {
+        await clothesAreLoading()
+        let fetchedClothes = try? await ClothingService(using: httpClient).fetchClothes()
+        await handleFetchClothesResult(fetchedClothes)
     }
-}
 
-// MARK: - Preview
+    @MainActor func clothesAreLoading() {
+        fetchClothesError = ""
+    }
 
-extension HomeViewModel {
-
-    private func isPreview() -> Bool {
-#if DEBUG
-        /// Do not access to ClothesPreview in release
-        /// This file is in the Preview Content folder
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            clothesByCategory = Dictionary(grouping: ClothesPreview().getClothes(), by: { $0.category })
-            fetchingClothes = false
-            return true
+    @MainActor func handleFetchClothesResult(_ clothes: [Clothing]?) {
+        withAnimation(.bouncy) {
+            if let clothesResult = clothes {
+                clothesByCategory = Dictionary(grouping: clothesResult, by: { $0.category })
+            } else {
+                fetchClothesError = "Oups... Une erreur s'est produite."
+            }
+            firstLoading = false
         }
-#endif
-        return false
     }
 }

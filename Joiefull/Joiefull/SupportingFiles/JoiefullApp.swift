@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct JoiefullApp: App {
+
+    @StateObject private var viewModel = HomeViewModel()
+
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            HomeView(viewModel: viewModel)
+                .task {
+                    await viewModel.fetchClothes()
+                }
         }
     }
 }

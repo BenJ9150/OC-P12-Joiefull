@@ -147,8 +147,8 @@
 		43BABE4E2D3AB6740079B4E8 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */,
 				43BABE522D3AB6740079B4E8 /* Joiefull.entitlements */,
+				437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */,
 				43BABE4C2D3AB6740079B4E8 /* Assets.xcassets */,
 				43BABE4D2D3AB6740079B4E8 /* JoiefullApp.swift */,
 				437A7AEB2D440C5700EC3536 /* Localizable.strings */,

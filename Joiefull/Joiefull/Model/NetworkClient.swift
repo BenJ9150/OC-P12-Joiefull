@@ -21,14 +21,19 @@ class NetworkClient {
 extension NetworkClient {
 
     func data(from urlString: String) async throws -> Data {
-        // Check if URL is valid
+        /// Check if URL is valid
         guard let url = URL(string: urlString) else {
             throw URLError(.badURL)
         }
-        // Fetch data
-        let (data, response) = try await httpClient.data(from: url)
+        /// Build request
+        var request = URLRequest(url: url)
+        /// Ignore cache to be sure that correct prices are displayed
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
-        // Check response
+        /// Fetch data
+        let (data, response) = try await httpClient.data(for: request)
+
+        /// Check response
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
             throw URLError(.badServerResponse)

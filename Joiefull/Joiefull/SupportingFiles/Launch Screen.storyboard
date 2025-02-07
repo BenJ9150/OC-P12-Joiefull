@@ -18,6 +18,7 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="logo_joiefull" translatesAutoresizingMaskIntoConstraints="NO" id="8q2-zL-s7W">
                                 <rect key="frame" x="97" y="381" width="199" height="90"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="359" id="mbb-QZ-Fah"/>
                                 </constraints>
@@ -34,7 +35,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" name="LaunchScreenBackground"/>
+                        <color key="backgroundColor" name="launchScreenBackground"/>
                         <constraints>
                             <constraint firstItem="8q2-zL-s7W" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="97" id="AMv-ga-l57"/>
                             <constraint firstItem="8q2-zL-s7W" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="bv3-7b-G5C"/>
@@ -54,7 +55,7 @@
     </scenes>
     <resources>
         <image name="logo_joiefull" width="359" height="90"/>
-        <namedColor name="LaunchScreenBackground">
+        <namedColor name="launchScreenBackground">
             <color red="0.97647058823529409" green="0.62352941176470589" blue="0.2627450980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
