@@ -17,7 +17,7 @@ extension CGFloat {
         case .xLarge: 36
         case .xxLarge: 62
         case .xxxLarge: 80
-        case .accessibility1, .accessibility2, .accessibility3, .accessibility4, .accessibility5: 88
+        case .accessibility1, .accessibility2, .accessibility3, .accessibility4, .accessibility5: 80
         @unknown default: 0
         }
         return self + extraWidth

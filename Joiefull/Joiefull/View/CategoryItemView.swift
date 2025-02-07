@@ -63,21 +63,18 @@ struct CategoryItemView: View {
 
 private extension CategoryItemView {
 
-    /// Default item with different description UI depending on dynamic type size
+    /// Default item with default UI description
+    /// If dynamicTypeSize is an AccessibilitySize, description is vertical to give more space for each text
     var defaultIem: some View {
         VStack(spacing: isPad ? 12 : 8) {
             PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
-            Group {
-                switch dynamicTypeSize {
-                case .accessibility1, .accessibility2, .accessibility3:
-                    descriptionAX1
-                case .accessibility4, .accessibility5:
-                    descriptionAX4
-                default:
-                    defaultDescription
-                }
+            if dynamicTypeSize.isAccessibilitySize {
+                verticalDescription
+                    .padding(.horizontal, 8)
+            } else {
+                defaultDescription
+                    .padding(.horizontal, 8)
             }
-            .padding(.horizontal, 8)
         }
         .frame(width: pictureWidth)
     }
@@ -88,33 +85,18 @@ private extension CategoryItemView {
 private extension CategoryItemView {
 
     /// Item for iPhone in landscape
+    /// If dynamicTypeSize is an AccessibilitySize, the description is vertical and on the right of the picture
     var iphoneInlandscapeItem: some View {
         ZStack {
-            /// From accesibility2 dynamic type size, show the description on the right of the picture
-            switch dynamicTypeSize {
-            case .accessibility2, .accessibility3:
-                /// Keep ogirinal picture size to save place for category name
-                horizontalItem(width: originalPictureWidth, height: originalPictureHeight)
-            case .accessibility4, .accessibility5:
-                /// Picture with increased size to be consistent with the large size of the description
-                horizontalItem(width: pictureWidth, height: pictureHeight)
-            default:
-                /// Default UI with description below the picture
-                VStack(spacing: 8) {
-                    PictureView(clothing: clothing, width: pictureWidth, height: originalPictureHeight)
-                    defaultDescription
-                        .padding(.horizontal, 8)
+            if dynamicTypeSize.isAccessibilitySize {
+                HStack(spacing: 24) {
+                    PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
+                    verticalDescription
+                        .frame(width: dynamicTypeSize.isHighAccessibilitySize ? pictureWidth : originalPictureWidth)
                 }
-                .frame(width: pictureWidth)
+            } else {
+                defaultIem
             }
-        }
-    }
-
-    func horizontalItem(width: CGFloat, height: CGFloat) -> some View {
-        HStack(spacing: 24) {
-            PictureView(clothing: clothing, width: width, height: height)
-            descriptionAX4
-                .frame(width: pictureWidth)
         }
     }
 }
@@ -143,25 +125,7 @@ private extension CategoryItemView {
         }
     }
 
-    var descriptionAX1: some View {
-        VStack(spacing: 4) {
-            clothingName
-            HStack {
-                if showOriginalPrice {
-                    VStack(alignment: .leading, spacing: 4) {
-                        price
-                        originalPrice
-                    }
-                } else {
-                    price
-                }
-                Spacer()
-                stars
-            }
-        }
-    }
-
-    var descriptionAX4: some View {
+    var verticalDescription: some View {
         VStack(alignment: .leading, spacing: 4) {
             clothingName
             price
@@ -178,18 +142,13 @@ private extension CategoryItemView {
 private extension CategoryItemView {
 
     var clothingName: some View {
-        let lineLimit: Int = switch dynamicTypeSize {
-        case .accessibility1:
-            showOriginalPrice ? 1 : 2
-        case .accessibility2, .accessibility3, .accessibility4, .accessibility5:
-            showOriginalPrice ? 2 : 3
-        default: 1
-        }
+        /// Adjust line limit according to accessibility size
+        let limit = dynamicTypeSize.isHighAccessibilitySize ? 3 : dynamicTypeSize.isAccessibilitySize ? 2 : 1
         return Text(clothing.name)
             .font(.footnote.weight(.semibold))
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)
-            .lineLimit(lineLimit)
+            .lineLimit(limit)
     }
 
     var stars: some View {
@@ -198,6 +157,7 @@ private extension CategoryItemView {
                 .font(.caption2)
                 .foregroundStyle(.orange)
                 .padding(.bottom, 1)
+
             /// Display rating with US style to have dot as decimal separator
             Text(clothing.rating.toString(locale: Locale(identifier: "en_US")))
                 .font(.footnote.weight(.regular))
@@ -231,7 +191,7 @@ struct CategoryItemView_Previews: PreviewProvider {
     private struct CategoryItemPreviewWrapper: View {
         @Environment(\.horizontalSizeClass) var horizontalSC
         @Environment(\.verticalSizeClass) var verticalSC
-        let clothing = ClothesPreview().getClothing(2)
+        let clothing = ClothesPreview().getClothing()
 
         var body: some View {
             CategoryItemView(for: clothing, horizontalSC == .regular && verticalSC == .regular)

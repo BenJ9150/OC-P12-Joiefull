@@ -10,6 +10,7 @@
 		4322E9CC2D4D265900B5BEDD /* clothingImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */; };
 		4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */; };
 		437722AF2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437722AE2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift */; };
+		437722B12D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */; };
 		437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */; };
 		437A7AEA2D4401A800EC3536 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */; };
 		437A7AED2D440C5700EC3536 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AEB2D440C5700EC3536 /* Localizable.strings */; };
@@ -50,6 +51,7 @@
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		437722AE2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+DynamicTypeSize.swift"; sourceTree = "<group>"; };
+		437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DynamicTypeSize+HighAccessSize.swift"; sourceTree = "<group>"; };
 		437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		437A7AEE2D440CB700EC3536 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */,
 				437722AE2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift */,
+				437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				43B2BA512D4D2033002DF50A /* ClothesPreview.swift in Sources */,
 				43BABE5C2D3AB6AD0079B4E8 /* Clothing.swift in Sources */,
 				43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */,
+				437722B12D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift in Sources */,
 				43BABE5D2D3AB6AD0079B4E8 /* ClothingService.swift in Sources */,
 				43BABE5E2D3AB6AD0079B4E8 /* Picture.swift in Sources */,
 				43BABE902D3ACF2B0079B4E8 /* HomeView.swift in Sources */,
