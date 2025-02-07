@@ -35,13 +35,13 @@ extension HomeViewModel {
     }
 
     @MainActor func handleFetchClothesResult(_ clothes: [Clothing]?) {
-        withAnimation(.bouncy) {
-            if let clothesResult = clothes {
-                clothesByCategory = Dictionary(grouping: clothesResult, by: { $0.category })
-            } else {
+        if let clothesResult = clothes {
+            clothesByCategory = Dictionary(grouping: clothesResult, by: { $0.category })
+        } else {
+            withAnimation(.bouncy) {
                 fetchClothesError = "Oups... Une erreur s'est produite."
             }
-            firstLoading = false
         }
+        firstLoading = false
     }
 }
