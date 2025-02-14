@@ -17,24 +17,15 @@ struct PictureDescriptionView: View {
 
     private let clothing: Clothing
     private let isPad: Bool
-    private let inVerticalMode: Bool
-    private let largeSize: Bool
     private let showOriginalPrice: Bool
-
-    private var descriptionFont: Font {
-        if largeSize {
-            return isPad ? .title2 : .body
-        }
-        return isPad ? .body : .caption
-    }
+    private let descriptionFont: Font
 
     // MARK: init
 
-    init(for clothing: Clothing, inVerticalMode: Bool = false, largeSize: Bool = false, _ isPad: Bool) {
+    init(for clothing: Clothing, isDetailView: Bool = false, _ isPad: Bool) {
         self.clothing = clothing
         self.isPad = isPad
-        self.inVerticalMode = inVerticalMode
-        self.largeSize = largeSize
+        self.descriptionFont = isPad ? (isDetailView ? .title2 : .body) : (isDetailView ? .body : .caption)
 
         /// Do not show original price if equal to price
         self.showOriginalPrice = clothing.originalPrice != clothing.price
@@ -43,10 +34,13 @@ struct PictureDescriptionView: View {
     // MARK: Body
 
     var body: some View {
-        if inVerticalMode {
-            verticalDescription
-        } else {
-            defaultDescription
+        ZStack {
+            /// If dynamicTypeSize is an AccessibilitySize, description is vertical to give more space for each text
+            if dynamicTypeSize.isAccessibilitySize {
+                verticalDescription
+            } else {
+                defaultDescription
+            }
         }
     }
 }
@@ -78,11 +72,21 @@ private extension PictureDescriptionView {
     var verticalDescription: some View {
         VStack(alignment: .leading, spacing: 4) {
             clothingName
-            price
+            if dynamicTypeSize == .accessibility5 {
+                /// Not enough place to show price and stars on the same line
+                stars
+                price
+            } else {
+                HStack(spacing: 0) {
+                    price
+                        .fixedSize(horizontal: true, vertical: false)
+                    Spacer()
+                    stars
+                }
+            }
             if showOriginalPrice {
                 originalPrice
             }
-            stars
         }
     }
 }
@@ -103,15 +107,16 @@ private extension PictureDescriptionView {
     }
 
     var stars: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 1) {
             Image(systemName: "star.fill")
                 .font(descriptionFont)
                 .foregroundStyle(.orange)
-                .padding(.bottom, 1)
+                .padding(.bottom, 2)
 
             /// Display rating with US style to have dot as decimal separator
             Text(clothing.rating.toString(locale: Locale(identifier: "en_US")))
                 .font(descriptionFont)
+                .fixedSize(horizontal: true, vertical: false)
         }
     }
 
@@ -128,8 +133,40 @@ private extension PictureDescriptionView {
     }
 }
 
-#Preview {
-    let clothing = ClothesPreview().getClothing()
-    let isPad = UIDevice.current.userInterfaceIdiom == .pad
-    PictureDescriptionView(for: clothing, isPad)
+// MARK: - Preview for item view
+
+struct PictureDescriptionViewForItemView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        PreviewWrapper()
+            .previewDevice(.iPhoneMini)
+    }
+
+    struct PreviewWrapper: View {
+        @Environment(\.dynamicTypeSize) var dynamicTypeSize
+        private let clothing = ClothesPreview().getClothing(1)
+        private let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
+        var pictureWidth: CGFloat {
+            let originalWidth: CGFloat = isPad ? 234 : 198
+            return originalWidth.adaptTo(dynamicTypeSize)
+        }
+
+        var body: some View {
+            PictureDescriptionView(for: clothing, isPad)
+                .frame(width: pictureWidth)
+        }
+    }
+}
+
+// MARK: - Preview for detail view
+
+struct PictureDescriptionViewForDetailView_Previews: PreviewProvider {
+    static let clothing = ClothesPreview().getClothing(1)
+    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
+    static var previews: some View {
+        PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+            .previewDevice(.iPhoneMini)
+    }
 }

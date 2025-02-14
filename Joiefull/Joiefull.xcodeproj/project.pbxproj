@@ -15,6 +15,7 @@
 		437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */; };
 		437A7AEA2D4401A800EC3536 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */; };
 		437A7AED2D440C5700EC3536 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AEB2D440C5700EC3536 /* Localizable.strings */; };
+		43ABD5CF2D5F6DD800733873 /* MyPreviewDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABD5CE2D5F6DD800733873 /* MyPreviewDevice.swift */; };
 		43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2BA4C2D4D1EEC002DF50A /* PictureView.swift */; };
 		43B2BA4F2D4D1FA3002DF50A /* clothesPreview.json in Resources */ = {isa = PBXBuildFile; fileRef = 43B2BA4E2D4D1FA3002DF50A /* clothesPreview.json */; };
 		43B2BA512D4D2033002DF50A /* ClothesPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2BA502D4D2033002DF50A /* ClothesPreview.swift */; };
@@ -57,6 +58,7 @@
 		437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		437A7AEE2D440CB700EC3536 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43ABD5CE2D5F6DD800733873 /* MyPreviewDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPreviewDevice.swift; sourceTree = "<group>"; };
 		43B2BA4C2D4D1EEC002DF50A /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		43B2BA4E2D4D1FA3002DF50A /* clothesPreview.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clothesPreview.json; sourceTree = "<group>"; };
 		43B2BA502D4D2033002DF50A /* ClothesPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesPreview.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */,
 				43B2BA4E2D4D1FA3002DF50A /* clothesPreview.json */,
 				43B2BA502D4D2033002DF50A /* ClothesPreview.swift */,
+				43ABD5CE2D5F6DD800733873 /* MyPreviewDevice.swift */,
 				43BABE4A2D3AB6740079B4E8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -374,6 +377,7 @@
 				43BABE902D3ACF2B0079B4E8 /* HomeView.swift in Sources */,
 				43BABE612D3AB70C0079B4E8 /* HTTPClient.swift in Sources */,
 				43BABE982D3AD5270079B4E8 /* CategoryItemView.swift in Sources */,
+				43ABD5CF2D5F6DD800733873 /* MyPreviewDevice.swift in Sources */,
 				43BABE5F2D3AB6AD0079B4E8 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

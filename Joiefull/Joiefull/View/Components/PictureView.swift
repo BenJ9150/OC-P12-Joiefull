@@ -81,15 +81,17 @@ extension PictureView {
     let testInfinity = true
     let clothing = ClothesPreview().getClothing()
 
-    if testInfinity {
-        VStack {
-            PictureView(clothing: clothing, width: .infinity, height: .infinity)
+    ZStack {
+        if testInfinity {
+            VStack {
+                PictureView(clothing: clothing, width: .infinity, height: .infinity)
+            }
+            .padding()
+        } else {
+            ScrollView {
+                PictureView(clothing: clothing, width: 198, height: 198)
+            }
+            .padding()
         }
-        .padding()
-    } else {
-        ScrollView {
-            PictureView(clothing: clothing, width: 198, height: 198)
-        }
-        .padding()
     }
 }

@@ -47,51 +47,22 @@ struct CategoryItemView: View {
     // MARK: Body
 
     var body: some View {
-        if isPhoneInLandscape {
-            iphoneInlandscapeItem
-        } else {
-            defaultIem
-        }
-    }
-}
-
-// MARK: default item
-
-private extension CategoryItemView {
-
-    /// Default item with default UI description
-    /// If dynamicTypeSize is an AccessibilitySize, description is vertical to give more space for each text
-    var defaultIem: some View {
-        VStack(spacing: isPad ? 12 : 8) {
-            PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
-            if dynamicTypeSize.isAccessibilitySize {
-                PictureDescriptionView(for: clothing, inVerticalMode: true, isPad)
-                    .padding(.horizontal, 8)
-            } else {
-                PictureDescriptionView(for: clothing, isPad)
-                    .padding(.horizontal, 8)
-            }
-        }
-        .frame(width: pictureWidth)
-    }
-}
-
-// MARK: iPhone in landscape item
-
-private extension CategoryItemView {
-
-    /// Item for iPhone in landscape
-    /// If dynamicTypeSize is an AccessibilitySize, the description is vertical and on the right of the picture
-    var iphoneInlandscapeItem: some View {
         ZStack {
-            if dynamicTypeSize.isAccessibilitySize {
+            /// If is an iPhone in landcape and dynamicTypeSize is an AccessibilitySize:
+            /// Show the description on the right of the picture
+            if isPhoneInLandscape && dynamicTypeSize.isAccessibilitySize {
                 HStack(spacing: 24) {
                     PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
-                    PictureDescriptionView(for: clothing, inVerticalMode: true, isPad)
+                    PictureDescriptionView(for: clothing, isPad)
                         .frame(width: dynamicTypeSize.isHighAccessibilitySize ? pictureWidth : originalPictureWidth)
                 }
             } else {
-                defaultIem
+                VStack(spacing: isPad ? 12 : 8) {
+                    PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
+                    PictureDescriptionView(for: clothing, isPad)
+                        .padding(.horizontal, 8)
+                }
+                .frame(width: pictureWidth)
             }
         }
     }
@@ -101,14 +72,11 @@ private extension CategoryItemView {
 
 struct CategoryItemView_Previews: PreviewProvider {
 
-    static let clothing = ClothesPreview().getClothing(2)
+    static let clothing = ClothesPreview().getClothing(1)
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     static var previews: some View {
         CategoryItemView(for: clothing, isPad)
-            .previewDevice("iPhone 13 mini")
-//            .previewDevice("iPhone 16 Pro Max")
-//            .previewDevice("iPad mini (6th generation)")
-//            .previewDevice("iPad Pro 13-inch (M4)")
+            .previewDevice(.iPhoneMini)
     }
 }

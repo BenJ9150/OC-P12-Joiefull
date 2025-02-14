@@ -26,7 +26,7 @@ struct DetailView: View {
             Group {
                 PictureView(clothing: clothing, width: .infinity, height: .infinity)
                     .padding(.bottom, 24)
-                PictureDescriptionView(for: clothing, largeSize: true, isPad)
+                PictureDescriptionView(for: clothing, isDetailView: true, isPad)
                     .padding(.bottom, 12)
                 details
                     .padding(.bottom, 24)
@@ -115,8 +115,13 @@ private extension DetailView {
 
 // MARK: - Preview
 
-#Preview {
-    let clothing = ClothesPreview().getClothing(6)
-    let isPad = UIDevice.current.userInterfaceIdiom == .pad
-    DetailView(for: clothing, isPad: isPad, avatar: Image(.avatar))
+struct DetailView_Previews: PreviewProvider {
+
+    static let clothing = ClothesPreview().getClothing(2)
+    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
+    static var previews: some View {
+        DetailView(for: clothing, isPad: isPad, avatar: Image(.avatar))
+            .previewDevice(.iPhoneMini)
+    }
 }
