@@ -52,13 +52,13 @@ struct CategoryItemView: View {
             /// Show the description on the right of the picture
             if isPhoneInLandscape && dynamicTypeSize.isAccessibilitySize {
                 HStack(spacing: 24) {
-                    PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
+                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight, isPad: isPad)
                     PictureDescriptionView(for: clothing, isPad)
-                        .frame(width: dynamicTypeSize.isHighAccessibilitySize ? pictureWidth : originalPictureWidth)
+                        .frame(width: dynamicTypeSize.isHigh ? pictureWidth : originalPictureWidth)
                 }
             } else {
                 VStack(spacing: isPad ? 12 : 8) {
-                    PictureView(clothing: clothing, width: pictureWidth, height: pictureHeight)
+                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight, isPad: isPad)
                     PictureDescriptionView(for: clothing, isPad)
                         .padding(.horizontal, 8)
                 }
@@ -72,7 +72,7 @@ struct CategoryItemView: View {
 
 struct CategoryItemView_Previews: PreviewProvider {
 
-    static let clothing = ClothesPreview().getClothing(1)
+    static let clothing = ClothesPreview().getClothing(12)
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     static var previews: some View {

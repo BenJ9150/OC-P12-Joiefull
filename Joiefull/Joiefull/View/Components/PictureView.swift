@@ -9,9 +9,31 @@ import SwiftUI
 
 struct PictureView: View {
 
-    let clothing: Clothing
-    let width: CGFloat
-    let height: CGFloat
+    // MARK: Properties
+
+    private let clothing: Clothing
+    private let width: CGFloat
+    private let height: CGFloat
+    private let isPad: Bool
+    private let isDetailView: Bool
+    private let likesBannerFont: Font
+
+    // MARK: Init
+
+    init(
+        for clothing: Clothing,
+        width: CGFloat = .infinity,
+        height: CGFloat = .infinity,
+        isPad: Bool,
+        isDetailView: Bool = false
+    ) {
+        self.clothing = clothing
+        self.width = width
+        self.height = height
+        self.isPad = isPad
+        self.isDetailView = isDetailView
+        self.likesBannerFont = isDetailView ? (isPad ? .title2 : .body) : .footnote
+    }
 
     // MARK: Body
 
@@ -23,6 +45,7 @@ struct PictureView: View {
                     .padding(.all, 12)
             }
         }
+        .accessibilityHidden(true)
     }
 }
 
@@ -77,21 +100,31 @@ extension PictureView {
 
 // MARK: - Preview
 
-#Preview {
-    let testInfinity = true
-    let clothing = ClothesPreview().getClothing()
+struct PictureView_Previews: PreviewProvider {
 
-    ZStack {
-        if testInfinity {
-            VStack {
-                PictureView(clothing: clothing, width: .infinity, height: .infinity)
-            }
-            .padding()
-        } else {
+    enum PreviewMode {
+        case item
+        case detailView
+    }
+
+    static let previewMode: PreviewMode = .detailView
+
+    static let clothing = ClothesPreview().getClothing()
+    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
+    static var previews: some View {
+        switch previewMode {
+        case .item:
             ScrollView {
-                PictureView(clothing: clothing, width: 198, height: 198)
+                PictureView(for: clothing, width: 198, height: 198, isPad: isPad)
             }
-            .padding()
+        case .detailView:
+            VStack {
+                PictureView(for: clothing, isPad: isPad)
+                Color.clear
+                    .frame(height: 100)
+            }
+            .padding(.horizontal, isPad ? 32 : 16)
         }
     }
 }

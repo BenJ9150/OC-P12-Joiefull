@@ -34,7 +34,7 @@ struct HomeView: View {
 private extension HomeView {
 
     var splitViewSidebar: some View {
-        Group {
+        ZStack {
             if viewModel.firstLoading {
                 firstLoadingProgressView
                     .onAppear {
@@ -55,7 +55,7 @@ private extension HomeView {
     }
 
     var splitViewDetail: some View {
-        Group {
+        ZStack {
             if viewModel.firstLoading || !viewModel.fetchClothesError.isEmpty {
                 Color
                     .launchScreenBackground
@@ -154,7 +154,7 @@ struct HomeView_Previews: PreviewProvider {
 
     static var previews: some View {
         HomeView(viewModel: viewModel)
-            .previewDevice(.iPhoneMini)
+            .previewDevice(.iPhoneMax)
             .onAppear {
                 switch previewMode {
                 case .loading:

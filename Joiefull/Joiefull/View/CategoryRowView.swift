@@ -51,7 +51,7 @@ private extension CategoryRowView {
     }
 
     func label(for clothing: Clothing) -> String {
-        return "\(clothing.picture.description), "
+        return "\(clothing.name), "
         + "aimé par \(clothing.likes) personnes, "
         + "noté \(clothing.rating.toString()) sur 5. "
         + "\(clothing.price.toEuros())"

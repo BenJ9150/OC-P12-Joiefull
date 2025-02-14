@@ -17,11 +17,11 @@
       "url": "https://xxxxx/main/img/bottoms/1.jpg",
       "description": "Modèle femme qui porte un jean et un haut jaune"
     },
-    "name": "Modèle femme qui porte un jean et un haut jaune",
+    "name": "Jean pour femme",
     "category": "BOTTOMS",
     "likes": 55,
-    "price": 2249.99,
-    "original_price": 2559.99
+    "price": 49.99,
+    "original_price": 59.99
   },
   {
     "id": 2,
@@ -142,5 +142,17 @@
     "likes": 54,
     "price": 49.99,
     "original_price": 69.99
+  },
+  {
+    "id": 12,
+    "picture": {
+      "url": "https://xxxxx/main/img/bottoms/1.jpg",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula, sapien et hendrerit fringilla, justo nisi vulputate lorem, ut malesuada turpis odio nec eros. Nulla facilisi. Suspendisse potenti. Integer nec elit id purus convallis commodo. Quisque tincidunt, nisi vel tincidunt eleifend, orci velit pharetra ligula, ac fermentum nisi ipsum at felis. Sed quis justo at odio ultricies elementum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula, sapien et hendrerit fringilla, justo nisi vulputate lorem, ut malesuada turpis odio nec eros. Nulla facilisi. Suspendisse potenti. Integer nec elit id purus convallis commodo. Quisque tincidunt, nisi vel tincidunt eleifend, orci velit pharetra ligula, ac fermentum nisi ipsum at felis. Sed quis justo at odio ultricies elementum."
+    },
+    "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula, sapien et hendrerit fringilla, justo nisi vulputate lorem, ut malesuada turpis odio nec eros. Nulla facilisi. Suspendisse potenti. Integer nec elit id purus convallis commodo. Quisque tincidunt, nisi vel tincidunt eleifend, orci velit pharetra ligula, ac fermentum nisi ipsum at felis. Sed quis justo at odio ultricies elementum.",
+    "category": "BOTTOMS",
+    "likes": 55,
+    "price": 2249.99,
+    "original_price": 2559.99
   }
 ]

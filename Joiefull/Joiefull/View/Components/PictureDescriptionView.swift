@@ -18,6 +18,7 @@ struct PictureDescriptionView: View {
     private let clothing: Clothing
     private let isPad: Bool
     private let showOriginalPrice: Bool
+    private let isDetailView: Bool
     private let descriptionFont: Font
 
     // MARK: init
@@ -25,7 +26,8 @@ struct PictureDescriptionView: View {
     init(for clothing: Clothing, isDetailView: Bool = false, _ isPad: Bool) {
         self.clothing = clothing
         self.isPad = isPad
-        self.descriptionFont = isPad ? (isDetailView ? .title2 : .body) : (isDetailView ? .body : .caption)
+        self.isDetailView = isDetailView
+        self.descriptionFont = isPad ? (isDetailView ? .title2 : .body) : (isDetailView ? .body : .footnote)
 
         /// Do not show original price if equal to price
         self.showOriginalPrice = clothing.originalPrice != clothing.price
@@ -72,7 +74,7 @@ private extension PictureDescriptionView {
     var verticalDescription: some View {
         VStack(alignment: .leading, spacing: 4) {
             clothingName
-            if dynamicTypeSize == .accessibility5 {
+            if dynamicTypeSize.isVeryHigh {
                 /// Not enough place to show price and stars on the same line
                 stars
                 price
@@ -97,12 +99,13 @@ private extension PictureDescriptionView {
 
     var clothingName: some View {
         /// Adjust line limit according to accessibility size
-        let limit = dynamicTypeSize.isHighAccessibilitySize ? 3 : dynamicTypeSize.isAccessibilitySize ? 2 : 1
+        let limit = isDetailView ? 5 : dynamicTypeSize.isHigh ? 3 : dynamicTypeSize.isAccessibilitySize ? 2 : 1
         return Text(clothing.name)
             .font(descriptionFont)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity, alignment: .leading)
             .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
             .lineLimit(limit)
     }
 
@@ -144,7 +147,7 @@ struct PictureDescriptionViewForItemView_Previews: PreviewProvider {
 
     struct PreviewWrapper: View {
         @Environment(\.dynamicTypeSize) var dynamicTypeSize
-        private let clothing = ClothesPreview().getClothing(1)
+        private let clothing = ClothesPreview().getClothing(12)
         private let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
         var pictureWidth: CGFloat {
@@ -162,11 +165,12 @@ struct PictureDescriptionViewForItemView_Previews: PreviewProvider {
 // MARK: - Preview for detail view
 
 struct PictureDescriptionViewForDetailView_Previews: PreviewProvider {
-    static let clothing = ClothesPreview().getClothing(1)
+    static let clothing = ClothesPreview().getClothing(12)
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     static var previews: some View {
         PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+            .padding(.horizontal, isPad ? 32 : 16)
             .previewDevice(.iPhoneMini)
     }
 }
