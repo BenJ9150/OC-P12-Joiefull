@@ -36,7 +36,7 @@ private extension CategoryRowView {
             HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
                     NavigationLink {
-                        DetailView(clothing: clothing, isPad: isPad)
+                        DetailView(for: clothing, isPad: isPad)
                     } label: {
                         CategoryItemView(for: clothing, isPad)
                     }
@@ -51,7 +51,8 @@ private extension CategoryRowView {
     }
 
     func label(for clothing: Clothing) -> String {
-        return "\(clothing.name), "
+        return "\(clothing.picture.description), "
+        + "aimé par \(clothing.likes) personnes, "
         + "noté \(clothing.rating.toString()) sur 5. "
         + "\(clothing.price.toEuros())"
         + "\(clothing.price == clothing.originalPrice ? "." : ", au lieu de \(clothing.originalPrice.toEuros()) !")"

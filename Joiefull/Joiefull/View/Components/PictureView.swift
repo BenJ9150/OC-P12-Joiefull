@@ -46,10 +46,10 @@ extension PictureView {
         }
         .frame(
             minWidth: 0,
-            idealWidth: width,
+            idealWidth: width == .infinity ? nil : width,
             maxWidth: width,
             minHeight: 0,
-            idealHeight: height,
+            idealHeight: height == .infinity ? nil : height,
             maxHeight: height
         )
         .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -70,7 +70,7 @@ extension PictureView {
         .padding(.all, 6)
         .padding(.horizontal, 2)
         .background(
-            Capsule().fill(.white)
+            Capsule().fill(.background)
         )
     }
 }
@@ -78,8 +78,18 @@ extension PictureView {
 // MARK: - Preview
 
 #Preview {
+    let testInfinity = true
     let clothing = ClothesPreview().getClothing()
-    ScrollView {
-        PictureView(clothing: clothing, width: 198, height: 198)
+
+    if testInfinity {
+        VStack {
+            PictureView(clothing: clothing, width: .infinity, height: .infinity)
+        }
+        .padding()
+    } else {
+        ScrollView {
+            PictureView(clothing: clothing, width: 198, height: 198)
+        }
+        .padding()
     }
 }

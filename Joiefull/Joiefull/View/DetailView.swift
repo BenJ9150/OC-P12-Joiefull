@@ -9,23 +9,32 @@ import SwiftUI
 
 struct DetailView: View {
 
-    let clothing: Clothing
-    let isPad: Bool
+    private let avatar: Image
+    private let clothing: Clothing
+    private let isPad: Bool
+
+    @State private var ratingValue: Int = 0
+
+    init(for clothing: Clothing, isPad: Bool, avatar: Image = Image(systemName: "person.crop.circle")) {
+        self.avatar = avatar
+        self.clothing = clothing
+        self.isPad = isPad
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            PictureView(clothing: clothing, width: .infinity, height: .infinity)
-                .padding(.bottom, 24)
-
-            PictureDescriptionView(for: clothing, largeSize: true, isPad)
-                .padding(.bottom, 12)
-
-            details
-                .padding(.bottom, 24)
+            Group {
+                PictureView(clothing: clothing, width: .infinity, height: .infinity)
+                    .padding(.bottom, 24)
+                PictureDescriptionView(for: clothing, largeSize: true, isPad)
+                    .padding(.bottom, 12)
+                details
+                    .padding(.bottom, 24)
+            }
+            .accessibilityHidden(true)
 
             rating
                 .padding(.bottom, isPad ? 24 : 16)
-
             review
         }
         .padding(.horizontal, isPad ? 32 : 16)
@@ -50,18 +59,33 @@ private extension DetailView {
 
     var rating: some View {
         HStack(spacing: 16) {
-            Image(systemName: "person.crop.square.fill")
+            avatar
                 .resizable()
-                .scaledToFit()
-                .frame(width: isPad ? 43 : 39)
-                .mask(Circle())
+                .scaledToFill()
+                .clipShape(Circle())
+                .frame(width: isPad ? 43 : 39, height: isPad ? 43 : 39)
+                .accessibilityHidden(true)
 
-            ForEach(0..<5, id: \.self) { _ in
-                Image(systemName: "star")
+            ForEach(1..<6, id: \.self) { value in
+                let isOn = value <= ratingValue
+                Image(systemName: isOn ? "star.fill" : "star")
                     .font(isPad ? .title2 : .title3)
-                    .opacity(0.5)
+                    .opacity(isOn ? 1 : 0.5)
+                    .onTapGesture {
+                        updateRating(with: value)
+                    }
+                    .accessibilityAddTraits(.isButton)
             }
             Spacer()
+        }
+    }
+
+    func updateRating(with value: Int) {
+        if ratingValue != value {
+            ratingValue = value
+        } else {
+            /// Clic on the same rating value, delete the rating if it's the first star
+            ratingValue = value == 1 ? 0 : value
         }
     }
 }
@@ -94,5 +118,5 @@ private extension DetailView {
 #Preview {
     let clothing = ClothesPreview().getClothing(6)
     let isPad = UIDevice.current.userInterfaceIdiom == .pad
-    DetailView(clothing: clothing, isPad: isPad)
+    DetailView(for: clothing, isPad: isPad, avatar: Image(.avatar))
 }
