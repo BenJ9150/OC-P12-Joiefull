@@ -16,7 +16,6 @@ struct PictureView: View {
     private let height: CGFloat
     private let isPad: Bool
     private let isDetailView: Bool
-    private let likesBannerFont: Font
 
     // MARK: Init
 
@@ -32,7 +31,6 @@ struct PictureView: View {
         self.height = height
         self.isPad = isPad
         self.isDetailView = isDetailView
-        self.likesBannerFont = isDetailView ? (isPad ? .title2 : .body) : .footnote
     }
 
     // MARK: Body
@@ -86,10 +84,10 @@ extension PictureView {
     var likesBanner: some View {
         HStack(spacing: 2) {
             Image(systemName: "heart")
-                .font(.footnote.weight(.semibold))
             Text("\(clothing.likes)")
-                .font(.footnote.weight(.semibold))
         }
+        .font(isDetailView ? .adaptiveBody : .footnote)
+        .fontWeight(.semibold)
         .padding(.all, 6)
         .padding(.horizontal, 2)
         .background(
@@ -107,7 +105,7 @@ struct PictureView_Previews: PreviewProvider {
         case detailView
     }
 
-    static let previewMode: PreviewMode = .detailView
+    static let previewMode: PreviewMode = .item
 
     static let clothing = ClothesPreview().getClothing()
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad

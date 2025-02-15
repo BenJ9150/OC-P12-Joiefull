@@ -27,7 +27,7 @@ struct PictureDescriptionView: View {
         self.clothing = clothing
         self.isPad = isPad
         self.isDetailView = isDetailView
-        self.descriptionFont = isPad ? (isDetailView ? .title2 : .body) : (isDetailView ? .body : .footnote)
+        self.descriptionFont = isDetailView ? .adaptiveBody : .adaptiveFootnote
 
         /// Do not show original price if equal to price
         self.showOriginalPrice = clothing.originalPrice != clothing.price

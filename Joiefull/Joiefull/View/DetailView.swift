@@ -102,7 +102,7 @@ private extension DetailView {
 
     var pictureDescription: some View {
         Text(clothing.picture.description)
-            .font(isPad ? .body : .footnote)
+            .font(.adaptiveFootnote)
             .frame(maxWidth: .infinity, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.leading)
@@ -134,14 +134,14 @@ private extension DetailView {
                     Image(systemName: isOn ? "star.fill" : "star")
                         .font(.title2)
                         .opacity(isOn ? 1 : 0.5)
-                        .accessibilityHidden(true)
+                        .accessibilityRemoveTraits(.isImage)
                 }
                 .frame(minWidth: starSize, minHeight: starSize)
                 .onTapGesture {
                     updateRating(with: value)
                 }
                 .accessibilityAddTraits(.isButton)
-                .accessibilityLabel("Mettre une note de \(value) sur 5")
+                .accessibilityLabel(label(for: value))
             }
             Spacer()
         }
@@ -155,6 +155,13 @@ private extension DetailView {
             ratingValue = value == 1 ? 0 : value
         }
     }
+
+    func label(for newRatingValue: Int) -> String {
+        if newRatingValue == ratingValue {
+            return "Vous avez mis une note de \(newRatingValue) sur 5"
+        }
+        return "Mettre une note de \(newRatingValue) sur 5"
+    }
 }
 
 // MARK: Review
@@ -167,7 +174,7 @@ private extension DetailView {
             text: .constant(""),
             prompt:
                 Text("Partagez ici vos impressions sur cette pièce")
-                .font(isPad ? .body : .footnote), axis: .vertical
+                .font(.adaptiveFootnote), axis: .vertical
         )
         .lineLimit(2, reservesSpace: true)
         .padding(.horizontal, 12)

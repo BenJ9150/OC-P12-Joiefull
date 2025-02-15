@@ -18,7 +18,7 @@ struct CategoryRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: isPad ? 16 : 12) {
             Text(NSLocalizedString(category, comment: "").capitalized)
-                .font(.title3.weight(.semibold))
+                .font(.title2.weight(.semibold))
                 .accessibilityAddTraits(.isHeader)
 
             itemsList
