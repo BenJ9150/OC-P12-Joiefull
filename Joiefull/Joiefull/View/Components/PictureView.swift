@@ -36,11 +36,16 @@ struct PictureView: View {
     // MARK: Body
 
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
+        ZStack(alignment: .trailing) {
             asyncPicture
-            if clothing.likes > 0 {
-                likesBanner
-                    .padding(.all, 12)
+            VStack(alignment: .trailing) {
+                if isDetailView {
+                    shareButton
+                }
+                Spacer()
+                if clothing.likes > 0 {
+                    likesBanner
+                }
             }
         }
         .accessibilityHidden(true)
@@ -93,6 +98,24 @@ extension PictureView {
         .background(
             Capsule().fill(.background)
         )
+        .padding(.all, 12)
+    }
+
+    // MARK: Share button
+
+    var shareButton: some View {
+        Button {
+            // TODO: apple shared
+        } label: {
+            Image(systemName: "square.and.arrow.up")
+                .padding(.all, 6)
+                .padding(.bottom, 3)
+                .background(
+                    Circle().fill(.background.opacity(0.5))
+                )
+        }
+        .foregroundStyle(.primary)
+        .padding(.all, 12)
     }
 }
 
@@ -105,7 +128,7 @@ struct PictureView_Previews: PreviewProvider {
         case detailView
     }
 
-    static let previewMode: PreviewMode = .item
+    static let previewMode: PreviewMode = .detailView
 
     static let clothing = ClothesPreview().getClothing()
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad
@@ -118,7 +141,7 @@ struct PictureView_Previews: PreviewProvider {
             }
         case .detailView:
             VStack {
-                PictureView(for: clothing, isPad: isPad)
+                PictureView(for: clothing, isPad: isPad, isDetailView: true)
                 Color.clear
                     .frame(height: 100)
             }

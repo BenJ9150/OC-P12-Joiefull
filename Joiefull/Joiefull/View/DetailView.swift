@@ -37,31 +37,30 @@ struct DetailView: View {
     // MARK: Body
 
     var body: some View {
-        if isPhoneInLandscape {
-            HStack(spacing: 24) {
-                PictureView(for: clothing, width: 234, isPad: isPad)
-                ScrollView {
-                    details
-                }
-                .scrollIndicators(.hidden)
-            }
-
-        } else {
-            ZStack {
-                if dynamicTypeSize.isAccessibilitySize {
+        ZStack {
+            if isPhoneInLandscape {
+                HStack(spacing: 24) {
+                    PictureView(for: clothing, width: 234, isPad: isPad, isDetailView: true)
                     ScrollView {
-                        PictureView(for: clothing, height: 256, isPad: isPad)
                         details
                     }
                     .scrollIndicators(.hidden)
-                } else {
-                    VStack(spacing: 24) {
-                        PictureView(for: clothing, isPad: isPad)
-                        details
-                    }
                 }
+
+            } else if dynamicTypeSize.isAccessibilitySize {
+                ScrollView {
+                    PictureView(for: clothing, height: 256, isPad: isPad, isDetailView: true)
+                    details
+                }
+                .padding(.horizontal, isPad ? 32 : 16)
+                .scrollIndicators(.hidden)
+            } else {
+                VStack(spacing: 24) {
+                    PictureView(for: clothing, isPad: isPad, isDetailView: true)
+                    details
+                }
+                .padding(.horizontal, isPad ? 32 : 16)
             }
-            .padding(.horizontal, isPad ? 32 : 16)
         }
     }
 }
@@ -193,12 +192,12 @@ struct DetailViewWithSlipView_Previews: PreviewProvider {
 
     static var previews: some View {
         PreviewWrapper()
-            .previewDevice(.iPhoneMax)
+            .previewDevice(.iPadPro)
     }
 
     struct PreviewWrapper: View {
 
-        private let clothing = ClothesPreview().getClothing(12)
+        private let clothing = ClothesPreview().getClothing(.withBigDescription)
         private let isPad = UIDevice.current.userInterfaceIdiom == .pad
         @State private var navigateToDetail = false
 
@@ -228,7 +227,7 @@ struct DetailViewWithSlipView_Previews: PreviewProvider {
 
 struct DetailView_Previews: PreviewProvider {
 
-    static let clothing = ClothesPreview().getClothing(12)
+    static let clothing = ClothesPreview().getClothing(.withBigDescription)
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     static var previews: some View {

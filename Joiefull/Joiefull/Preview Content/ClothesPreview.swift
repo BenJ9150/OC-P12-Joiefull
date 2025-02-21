@@ -9,6 +9,20 @@ import SwiftUI
 
 class ClothesPreview {
 
+    enum ClothingType: Int {
+        case withSmallDescription = 5
+        case withBigDescription = 12
+    }
+
+    func getClothing(_ clothingType: ClothingType) -> Clothing {
+        let index = clothingType.rawValue
+        let clothing = getClothes()
+        guard index < clothing.count else {
+            fatalError("Failed to load clothing at index \(index) from clothesPreview.json")
+        }
+        return clothing[index]
+    }
+
     func getClothing(_ index: Int = 0) -> Clothing {
         let clothing = getClothes()
         guard index < clothing.count else {
