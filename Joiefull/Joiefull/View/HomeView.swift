@@ -9,8 +9,14 @@ import SwiftUI
 
 struct HomeView: View {
 
+    @Environment(\.horizontalSizeClass) var horizontalSC
+
     @ObservedObject var viewModel: HomeViewModel
     private let isPad = UIDevice.current.userInterfaceIdiom == .pad
+
+    private var isSplitView: Bool {
+        return horizontalSC == .regular
+    }
 
     // MARK: Body
 
@@ -18,13 +24,24 @@ struct HomeView: View {
         /// Using geometry reader to update sidebar width after iPad rotations
         GeometryReader { geometry in
             NavigationSplitView(columnVisibility: .constant(.all)) {
-                splitViewSidebar
-                    .navigationSplitViewColumnWidth(geometry.size.width * 766/1280)
-                    .toolbar(.hidden, for: .navigationBar)
+                if isSplitView {
+                    splitViewSidebar
+                        .navigationSplitViewColumnWidth(geometry.size.width * 766/1280) // TODO: problème sur iPad mini
+                        .toolbar(.hidden, for: .navigationBar)
+                        .listStyle(.sidebar)
+                } else {
+                    splitViewSidebar
+                        .listStyle(.plain)
+                }
             } detail: {
                 splitViewDetail
+                    .navigationSplitViewColumnWidth(10)
             }
             .navigationSplitViewStyle(.balanced)
+            .onAppear {
+                print("geo width: \(geometry.size.width)")
+                print("UIScreen width: \(UIScreen.main.bounds.width)")
+            }
         }
     }
 }
@@ -62,7 +79,8 @@ private extension HomeView {
                     .ignoresSafeArea()
 
             } else {
-                EmptyView()
+                Color(UIColor.systemGroupedBackground)
+                    .ignoresSafeArea()
             }
         }
     }
@@ -80,14 +98,13 @@ private extension HomeView {
                     .listRowInsets(
                         EdgeInsets(
                             top: 0,
-                            leading: isPad ? 32 : 16,
-                            bottom: 0,
+                            leading: 16,
+                            bottom: 12,
                             trailing: 0
                         )
                     )
             }
         }
-        .listStyle(PlainListStyle())
         .refreshable {
             await viewModel.fetchClothes()
         }
@@ -149,7 +166,7 @@ struct HomeView_Previews: PreviewProvider {
         case clothes
     }
 
-    static let device: MyPreviewDevice = .iPhoneMax
+    static let device: MyPreviewDevice = .iPadPro
     static let previewMode: PreviewMode = .clothes
     static let viewModel = HomeViewModel()
 

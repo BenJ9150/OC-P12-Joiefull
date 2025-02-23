@@ -71,6 +71,7 @@ struct DetailView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .background(Color(isSplitView ? UIColor.systemGroupedBackground : UIColor.systemBackground))
     }
 }
 
@@ -81,15 +82,10 @@ private extension DetailView {
     var detailsInScrollView: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PictureView(for: clothing, height: 256, isPad: isPad, isDetailView: true)
-                PictureDescriptionView(for: clothing, isDetailView: true, isPad)
-                    .accessibilityHidden(true)
-                    .padding(.bottom, 12)
-
+                PictureView(for: clothing, height: 420, isPad: isPad, isDetailView: true)
                 pictureDescription
-                    .padding(.bottom, 24)
+                clothingDetails
                 ratingBanner
-                    .padding(.bottom, isPad ? 24 : 16)
                 review
             }
         }
@@ -100,20 +96,15 @@ private extension DetailView {
     var detailsInVStack: some View {
         VStack(spacing: 0) {
             PictureView(for: clothing, isPad: isPad, isDetailView: true)
-            PictureDescriptionView(for: clothing, isDetailView: true, isPad)
-                .accessibilityHidden(true)
-                .padding(.bottom, 12)
-
+            pictureDescription
             /// Use ScrollView to be sure to read all description
             ScrollView {
-                pictureDescription
+                clothingDetails
             }
             .frame(maxHeight: 200)
             .fixedSize(horizontal: false, vertical: true)
-            .padding(.bottom, 24)
 
             ratingBanner
-                .padding(.bottom, isPad ? 24 : 16)
             review
         }
         .padding(.horizontal, isPad ? 32 : 16)
@@ -123,14 +114,9 @@ private extension DetailView {
         HStack(spacing: 24) {
             PictureView(for: clothing, width: 234, isPad: isPad, isDetailView: true)
             ScrollView {
-                PictureDescriptionView(for: clothing, isDetailView: true, isPad)
-                    .accessibilityHidden(true)
-                    .padding(.bottom, 12)
-
                 pictureDescription
-                    .padding(.bottom, 24)
+                clothingDetails
                 ratingBanner
-                    .padding(.bottom, isPad ? 24 : 16)
                 review
             }
             .scrollIndicators(.hidden)
@@ -143,6 +129,13 @@ private extension DetailView {
 private extension DetailView {
 
     var pictureDescription: some View {
+        PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+            .accessibilityHidden(true)
+            .padding(.top, 24)
+            .padding(.bottom, 12)
+    }
+
+    var clothingDetails: some View {
         Text(clothing.picture.description)
             .font(.adaptiveFootnote)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -187,6 +180,8 @@ private extension DetailView {
             }
             Spacer()
         }
+        .padding(.top, 24)
+        .padding(.bottom, isPad ? 24 : 16)
     }
 
     func updateRating(with value: Int) {
@@ -231,44 +226,10 @@ private extension DetailView {
 
 // MARK: - Preview
 
-struct DetailViewWithSlipView_Previews: PreviewProvider {
-
-    static let device: MyPreviewDevice = .iPhoneMax
-    static let clothing = ClothesPreview().getClothing(.withBigDescription)
-
-    static var previews: some View {
-        PreviewWrapper()
-            .previewDevice(device.preview)
-    }
-
-    struct PreviewWrapper: View {
-        @State private var navigateToDetail = false
-
-        var body: some View {
-            NavigationSplitView(columnVisibility: .constant(.all)) {
-                Text("PREVIEW")
-                    .toolbar(.hidden, for: .navigationBar)
-                    .navigationDestination(isPresented: $navigateToDetail) {
-                        DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
-                    }
-                    .onTapGesture {
-                        navigateToDetail.toggle()
-                    }
-            } detail: {
-                EmptyView()
-            }
-            .navigationSplitViewStyle(.balanced)
-            .onAppear {
-                navigateToDetail = true
-            }
-        }
-    }
-}
-
 struct DetailView_Previews: PreviewProvider {
 
     static let device: MyPreviewDevice = .iPhoneMini
-    static let clothing = ClothesPreview().getClothing(.withBigDescription)
+    static let clothing = ClothesPreview().getClothing(.withSmallDescription)
 
     static var previews: some View {
         DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))

@@ -23,7 +23,6 @@ struct CategoryRowView: View {
 
             itemsList
         }
-        .padding(.top, 18)
     }
 }
 
