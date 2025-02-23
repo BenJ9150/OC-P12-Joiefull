@@ -9,6 +9,11 @@ import SwiftUI
 
 struct PictureView: View {
 
+    // MARK: Environment
+
+    @Environment(\.horizontalSizeClass) var horizontalSC
+    @Environment(\.dismiss) var dismiss
+
     // MARK: Properties
 
     private let clothing: Clothing
@@ -16,6 +21,10 @@ struct PictureView: View {
     private let height: CGFloat
     private let isPad: Bool
     private let isDetailView: Bool
+
+    private var isSplitView: Bool {
+        return horizontalSC == .regular
+    }
 
     // MARK: Init
 
@@ -36,19 +45,13 @@ struct PictureView: View {
     // MARK: Body
 
     var body: some View {
-        ZStack(alignment: .trailing) {
-            asyncPicture
-            VStack(alignment: .trailing) {
-                if isDetailView {
-                    shareButton
-                }
-                Spacer()
-                if clothing.likes > 0 {
-                    likesBanner
-                }
+        asyncPicture
+            .overlay(alignment: .bottomTrailing, when: clothing.likes > 0) {
+                likesBanner
             }
-        }
-        .accessibilityHidden(true)
+            .overlay(alignment: .top, when: isDetailView) {
+                detailViewButtons
+            }
     }
 }
 
@@ -82,6 +85,7 @@ extension PictureView {
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
         )
+        .accessibilityHidden(true)
     }
 
     // MARK: Likes banner
@@ -100,14 +104,42 @@ extension PictureView {
         )
         .padding(.all, 12)
     }
+}
 
-    // MARK: Share button
+// MARK: Detail view buttons
+
+extension PictureView {
+
+    var detailViewButtons: some View {
+        HStack(alignment: .top) {
+            if !isSplitView {
+                backButton
+            }
+            Spacer()
+            shareButton
+        }
+    }
 
     var shareButton: some View {
         Button {
             // TODO: apple shared
         } label: {
             Image(systemName: "square.and.arrow.up")
+                .padding(.all, 6)
+                .padding(.bottom, 3)
+                .background(
+                    Circle().fill(.background.opacity(0.5))
+                )
+        }
+        .foregroundStyle(.primary)
+        .padding(.all, 12)
+    }
+
+    var backButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "arrow.backward")
                 .padding(.all, 6)
                 .padding(.bottom, 3)
                 .background(
@@ -129,7 +161,6 @@ struct PictureView_Previews: PreviewProvider {
     }
 
     static let previewMode: PreviewMode = .detailView
-
     static let clothing = ClothesPreview().getClothing()
     static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 

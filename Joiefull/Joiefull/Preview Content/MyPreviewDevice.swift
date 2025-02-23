@@ -8,6 +8,7 @@
 import SwiftUI
 
 enum MyPreviewDevice: String {
+
     case iPhoneMini = "iPhone 13 mini"
     case iPhoneMax = "iPhone 16 Pro Max"
     case iPadMini = "iPad mini (6th generation)"
@@ -16,11 +17,8 @@ enum MyPreviewDevice: String {
     var preview: PreviewDevice {
         PreviewDevice(rawValue: rawValue)
     }
-}
 
-extension View {
-
-    func previewDevice(_ device: MyPreviewDevice) -> some View {
-        self.previewDevice(device.preview)
+    var isPad: Bool {
+        rawValue.hasPrefix("iPad")
     }
 }

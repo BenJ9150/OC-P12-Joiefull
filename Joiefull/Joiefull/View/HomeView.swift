@@ -149,12 +149,13 @@ struct HomeView_Previews: PreviewProvider {
         case clothes
     }
 
+    static let device: MyPreviewDevice = .iPhoneMax
     static let previewMode: PreviewMode = .clothes
     static let viewModel = HomeViewModel()
 
     static var previews: some View {
         HomeView(viewModel: viewModel)
-            .previewDevice(.iPhoneMax)
+            .previewDevice(device.preview)
             .onAppear {
                 switch previewMode {
                 case .loading:

@@ -72,11 +72,11 @@ struct CategoryItemView: View {
 
 struct CategoryItemView_Previews: PreviewProvider {
 
+    static let device: MyPreviewDevice = .iPhoneMini
     static let clothing = ClothesPreview().getClothing(12)
-    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     static var previews: some View {
-        CategoryItemView(for: clothing, isPad)
-            .previewDevice(.iPhoneMini)
+        CategoryItemView(for: clothing, device.isPad)
+            .previewDevice(device.preview)
     }
 }

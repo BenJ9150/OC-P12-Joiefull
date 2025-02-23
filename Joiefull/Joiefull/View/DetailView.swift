@@ -12,7 +12,9 @@ struct DetailView: View {
     // MARK: Environment
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @Environment(\.horizontalSizeClass) var horizontalSC
     @Environment(\.verticalSizeClass) var verticalSC
+    @Environment(\.dismiss) var dismiss
 
     // MARK: Properties
 
@@ -22,6 +24,28 @@ struct DetailView: View {
 
     private var isPhoneInLandscape: Bool {
         return verticalSC == .compact
+    }
+
+    private var isSplitView: Bool {
+        return horizontalSC == .regular
+    }
+
+    private var showDetailsInScrollView: Bool {
+        /// If dynamic type size is accessibility size,
+        /// show details in scrollview to be sure that all elements can be see
+        if dynamicTypeSize.isAccessibilitySize {
+            return true
+        }
+        /// If detailView is presented in split view on iPhone in landscape,
+        /// show details in scrollview to be sure that all elements can be see
+        return isSplitView && isPhoneInLandscape
+    }
+
+    private var showDetailsInHStack: Bool {
+        /// If details is presented in navigation stack
+        /// and is an iPhone in landscape,
+        /// show details to the right of the picture
+        !isSplitView && isPhoneInLandscape
     }
 
     @State private var ratingValue: Int = 0
@@ -38,30 +62,15 @@ struct DetailView: View {
 
     var body: some View {
         ZStack {
-            if isPhoneInLandscape {
-                HStack(spacing: 24) {
-                    PictureView(for: clothing, width: 234, isPad: isPad, isDetailView: true)
-                    ScrollView {
-                        details
-                    }
-                    .scrollIndicators(.hidden)
-                }
-
-            } else if dynamicTypeSize.isAccessibilitySize {
-                ScrollView {
-                    PictureView(for: clothing, height: 256, isPad: isPad, isDetailView: true)
-                    details
-                }
-                .padding(.horizontal, isPad ? 32 : 16)
-                .scrollIndicators(.hidden)
+            if showDetailsInHStack {
+                detailsInHStack
+            } else if showDetailsInScrollView {
+                detailsInScrollView
             } else {
-                VStack(spacing: 24) {
-                    PictureView(for: clothing, isPad: isPad, isDetailView: true)
-                    details
-                }
-                .padding(.horizontal, isPad ? 32 : 16)
+                detailsInVStack
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -69,28 +78,62 @@ struct DetailView: View {
 
 private extension DetailView {
 
-    var details: some View {
+    var detailsInScrollView: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                PictureView(for: clothing, height: 256, isPad: isPad, isDetailView: true)
+                PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+                    .accessibilityHidden(true)
+                    .padding(.bottom, 12)
+
+                pictureDescription
+                    .padding(.bottom, 24)
+                ratingBanner
+                    .padding(.bottom, isPad ? 24 : 16)
+                review
+            }
+        }
+        .padding(.horizontal, isPad ? 32 : 16)
+        .scrollIndicators(.hidden)
+    }
+
+    var detailsInVStack: some View {
         VStack(spacing: 0) {
+            PictureView(for: clothing, isPad: isPad, isDetailView: true)
             PictureDescriptionView(for: clothing, isDetailView: true, isPad)
                 .accessibilityHidden(true)
                 .padding(.bottom, 12)
 
-            if dynamicTypeSize.isAccessibilitySize || isPhoneInLandscape {
-                /// Already a ScrollView in parent view
+            /// Use ScrollView to be sure to read all description
+            ScrollView {
                 pictureDescription
-                    .padding(.bottom, 24)
-            } else {
-                /// Use ScrollView to be sure to read all description
-                ScrollView {
-                    pictureDescription
-                }
-                .frame(maxHeight: 200)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.bottom, 24)
             }
+            .frame(maxHeight: 200)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.bottom, 24)
+
             ratingBanner
                 .padding(.bottom, isPad ? 24 : 16)
             review
+        }
+        .padding(.horizontal, isPad ? 32 : 16)
+    }
+
+    var detailsInHStack: some View {
+        HStack(spacing: 24) {
+            PictureView(for: clothing, width: 234, isPad: isPad, isDetailView: true)
+            ScrollView {
+                PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+                    .accessibilityHidden(true)
+                    .padding(.bottom, 12)
+
+                pictureDescription
+                    .padding(.bottom, 24)
+                ratingBanner
+                    .padding(.bottom, isPad ? 24 : 16)
+                review
+            }
+            .scrollIndicators(.hidden)
         }
     }
 }
@@ -190,34 +233,31 @@ private extension DetailView {
 
 struct DetailViewWithSlipView_Previews: PreviewProvider {
 
+    static let device: MyPreviewDevice = .iPhoneMax
+    static let clothing = ClothesPreview().getClothing(.withBigDescription)
+
     static var previews: some View {
         PreviewWrapper()
-            .previewDevice(.iPadPro)
+            .previewDevice(device.preview)
     }
 
     struct PreviewWrapper: View {
-
-        private let clothing = ClothesPreview().getClothing(.withBigDescription)
-        private let isPad = UIDevice.current.userInterfaceIdiom == .pad
         @State private var navigateToDetail = false
 
         var body: some View {
-            GeometryReader { geometry in
-                NavigationSplitView(columnVisibility: .constant(.all)) {
-                    Text("PREVIEW")
-                        .navigationSplitViewColumnWidth(geometry.size.width * 766/1280)
-                        .toolbar(.hidden, for: .navigationBar)
-                        .navigationDestination(isPresented: $navigateToDetail) {
-                            DetailView(for: clothing, isPad: isPad, avatar: Image(.avatar))
-                        }
-                        .onTapGesture {
-                            navigateToDetail.toggle()
-                        }
-                } detail: {
-                    EmptyView()
-                }
-                .navigationSplitViewStyle(.balanced)
+            NavigationSplitView(columnVisibility: .constant(.all)) {
+                Text("PREVIEW")
+                    .toolbar(.hidden, for: .navigationBar)
+                    .navigationDestination(isPresented: $navigateToDetail) {
+                        DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
+                    }
+                    .onTapGesture {
+                        navigateToDetail.toggle()
+                    }
+            } detail: {
+                EmptyView()
             }
+            .navigationSplitViewStyle(.balanced)
             .onAppear {
                 navigateToDetail = true
             }
@@ -227,11 +267,11 @@ struct DetailViewWithSlipView_Previews: PreviewProvider {
 
 struct DetailView_Previews: PreviewProvider {
 
+    static let device: MyPreviewDevice = .iPhoneMini
     static let clothing = ClothesPreview().getClothing(.withBigDescription)
-    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     static var previews: some View {
-        DetailView(for: clothing, isPad: isPad, avatar: Image(.avatar))
-            .previewDevice(.iPhoneMini)
+        DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
+            .previewDevice(device.preview)
     }
 }
