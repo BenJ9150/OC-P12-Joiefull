@@ -58,10 +58,19 @@ private extension PictureView {
             switch phase {
             case .empty:
                 ProgressView()
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFill()
+            case .success(let fetchedImage):
+                if isDetailView {
+                    fetchedImage
+                        .resizable()
+                        .scaledToFill()
+                        .onTapGesture {
+                            withAnimation(.bouncy(duration: 0.3)) { isExpanded.toggle() }
+                        }
+                } else {
+                    fetchedImage
+                        .resizable()
+                        .scaledToFill()
+                }
             default:
                 Image(systemName: "photo")
                     .foregroundStyle(.gray)
@@ -79,13 +88,6 @@ private extension PictureView {
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
         )
-        .onTapGesture {
-            if isDetailView {
-                withAnimation(.bouncy(duration: 0.3)) {
-                    isExpanded.toggle()
-                }
-            }
-        }
         .accessibilityHidden(true)
     }
 }

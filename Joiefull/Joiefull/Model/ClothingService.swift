@@ -30,18 +30,18 @@ extension ClothingService {
         return try JSONDecoder().decode([Clothing].self, from: data)
     }
 
-    func postReview( _ review: String, withRating: Int, for clothingId: Int) async throws {
+    func postReview(_ review: String, withRating rating: Int, clothingId: Int) async throws {
         /// Build http body
         let body: [String: Any] = [
             "clothing_id": clothingId,
             "review": review,
-            "rating": withRating
+            "rating": rating
         ]
         /// Post data
         try await networkClient.post(toUrl: "\(apiUrl)/review", body: body)
     }
 
-    func postLike(for clothingId: Int) async throws {
+    func postLike(clothingId: Int) async throws {
         /// Post data
         try await networkClient.post(toUrl: "\(apiUrl)/review", body: ["clothing_id": clothingId])
     }

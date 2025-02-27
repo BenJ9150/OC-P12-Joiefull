@@ -6,12 +6,9 @@
 //
 
 import XCTest
-import Combine
 @testable import Joiefull
 
-final class HomeViewModelTests: XCTestCase {
-
-    private var cancellables = Set<AnyCancellable>()
+@MainActor final class HomeViewModelTests: XCTestCase {
 
     func testSuccessToFetchData() async {
         // Given
@@ -19,29 +16,14 @@ final class HomeViewModelTests: XCTestCase {
 
         // When fetch data
         let viewModel = HomeViewModel(using: httpClient)
+        XCTAssertTrue(viewModel.firstLoading)
+        XCTAssertTrue(viewModel.fetchClothesError.isEmpty)
         await viewModel.fetchClothes()
 
         // Then there are data with no error
-        let errorExpectation = XCTestExpectation(description: "fetchClothesError updated")
-        let clothesExpectation = XCTestExpectation(description: "clothesByCategory updated")
-
-        viewModel.$fetchClothesError
-            .sink { fetchError in
-                XCTAssertTrue(fetchError.isEmpty, "fetchClothesError should be empty")
-                errorExpectation.fulfill()
-            }
-            .store(in: &cancellables)
-
-        viewModel.$clothesByCategory
-            .sink { clothes in
-                print(clothes)
-                XCTAssertTrue(clothes.isEmpty == false)
-                clothesExpectation.fulfill()
-            }
-            .store(in: &cancellables)
-
-        // Expectation timeout
-        await fulfillment(of: [errorExpectation, clothesExpectation], timeout: 1)
+        XCTAssertFalse(viewModel.firstLoading)
+        XCTAssertTrue(viewModel.fetchClothesError.isEmpty)
+        XCTAssertFalse(viewModel.clothesByCategory.isEmpty)
     }
 
     func testFailedToFetchData() async {
@@ -50,27 +32,13 @@ final class HomeViewModelTests: XCTestCase {
 
         // When fetch data
         let viewModel = HomeViewModel(using: httpClient)
+        XCTAssertTrue(viewModel.firstLoading)
+        XCTAssertTrue(viewModel.fetchClothesError.isEmpty)
         await viewModel.fetchClothes()
 
         // Then there is an error and no data
-        let errorExpectation = XCTestExpectation(description: "fetchClothesError updated")
-        let clothesExpectation = XCTestExpectation(description: "clothesByCategory updated")
-
-        viewModel.$fetchClothesError
-            .sink { fetchError in
-                XCTAssertTrue(fetchError.isEmpty == false)
-                errorExpectation.fulfill()
-            }
-            .store(in: &cancellables)
-
-        viewModel.$clothesByCategory
-            .sink { clothes in
-                XCTAssertTrue(clothes.isEmpty)
-                clothesExpectation.fulfill()
-            }
-            .store(in: &cancellables)
-
-        // Expectation timeout
-        await fulfillment(of: [errorExpectation, clothesExpectation], timeout: 1)
+        XCTAssertFalse(viewModel.firstLoading)
+        XCTAssertFalse(viewModel.fetchClothesError.isEmpty)
+        XCTAssertTrue(viewModel.clothesByCategory.isEmpty)
     }
 }

@@ -162,8 +162,8 @@ struct HomeView_Previews: PreviewProvider {
         case clothes
     }
 
-    static let device: MyPreviewDevice = .iPadPro
-    static let previewMode: PreviewMode = .clothes
+    static let device: MyPreviewDevice = .iPhoneMax
+    static let previewMode: PreviewMode = .error
     static let viewModel = HomeViewModel()
 
     static var previews: some View {
@@ -174,9 +174,14 @@ struct HomeView_Previews: PreviewProvider {
                 case .loading:
                     break
                 case .error:
-                    viewModel.handleFetchClothesResult(nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        viewModel.showError()
+                        viewModel.firstLoading = false
+                        
+                    }
                 case .clothes:
-                    viewModel.handleFetchClothesResult(ClothesPreview().getClothes())
+                    viewModel.handleFetchResult(ClothesPreview().getClothes())
+                    viewModel.firstLoading = false
                 }
             }
     }

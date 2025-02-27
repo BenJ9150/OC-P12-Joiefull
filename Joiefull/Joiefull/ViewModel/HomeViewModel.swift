@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-class HomeViewModel: ObservableObject {
+@MainActor class HomeViewModel: ObservableObject {
 
     @Published var clothesByCategory: [String: [Clothing]] = [:]
     @Published var firstLoading = true
     @Published var fetchClothesError = ""
 
-    private let httpClient: HTTPClient
+    private let clothingService: ClothingService
 
     init(using httpClient: HTTPClient = URLSession.shared) {
-        self.httpClient = httpClient
+        self.clothingService = ClothingService(using: httpClient)
     }
 }
 
@@ -25,23 +25,23 @@ class HomeViewModel: ObservableObject {
 extension HomeViewModel {
 
     func fetchClothes() async {
-        await clothesAreLoading()
-        let fetchedClothes = try? await ClothingService(using: httpClient).fetchClothes()
-        await handleFetchClothesResult(fetchedClothes)
-    }
-
-    @MainActor func clothesAreLoading() {
         fetchClothesError = ""
-    }
-
-    @MainActor func handleFetchClothesResult(_ clothes: [Clothing]?) {
-        if let clothesResult = clothes {
-            clothesByCategory = Dictionary(grouping: clothesResult, by: { $0.category })
-        } else {
-            withAnimation(.bouncy) {
-                fetchClothesError = "Oups... Une erreur s'est produite."
-            }
+        do {
+            let clothes = try await clothingService.fetchClothes()
+            handleFetchResult(clothes)
+        } catch {
+            showError()
         }
         firstLoading = false
+    }
+
+    func handleFetchResult(_ clothes: [Clothing]) {
+        clothesByCategory = Dictionary(grouping: clothes, by: { $0.category })
+    }
+
+    func showError() {
+        withAnimation(.bouncy) {
+            fetchClothesError = "Oups... Une erreur s'est produite."
+        }
     }
 }
