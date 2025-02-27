@@ -22,33 +22,12 @@ struct DetailView: View {
     private let clothing: Clothing
     private let isPad: Bool
 
-    private var isPhoneInLandscape: Bool {
-        return verticalSC == .compact
-    }
-
-    private var isSplitView: Bool {
-        return horizontalSC == .regular
-    }
-
-    private var showDetailsInScrollView: Bool {
-        /// If dynamic type size is accessibility size,
-        /// show details in scrollview to be sure that all elements can be see
-        if dynamicTypeSize.isAccessibilitySize {
-            return true
-        }
-        /// If detailView is presented in split view on iPhone in landscape,
-        /// show details in scrollview to be sure that all elements can be see
-        return isSplitView && isPhoneInLandscape
-    }
-
-    private var showDetailsInHStack: Bool {
-        /// If details is presented in navigation stack
-        /// and is an iPhone in landscape,
-        /// show details to the right of the picture
-        !isSplitView && isPhoneInLandscape
-    }
-
     @State private var ratingValue: Int = 0
+    @State private var review: String = ""
+
+    private var isNavigationStack: Bool {
+        horizontalSC == .compact
+    }
 
     // MARK: Init
 
@@ -62,16 +41,18 @@ struct DetailView: View {
 
     var body: some View {
         ZStack {
-            if showDetailsInHStack {
-                detailsInHStack
-            } else if showDetailsInScrollView {
-                detailsInScrollView
+            /// If view is presented like a navigation stack (horizontalSizeClass == compact)
+            /// and is an iPhone in landscape (verticalSizeClass == compact), show details to the right of the picture.
+            if isNavigationStack && verticalSC == .compact {
+                horizontalDetails
             } else {
-                detailsInVStack
+                verticalDetails
             }
         }
-        .navigationBarBackButtonHidden()
-        .background(Color(isSplitView ? UIColor.systemGroupedBackground : UIColor.systemBackground))
+        .navigationBarBackButtonHidden(!isNavigationStack)
+        .background(
+            Color(horizontalSC == .regular ? UIColor.systemGroupedBackground : UIColor.systemBackground)
+        )
     }
 }
 
@@ -79,45 +60,29 @@ struct DetailView: View {
 
 private extension DetailView {
 
-    var detailsInScrollView: some View {
+    var verticalDetails: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PictureView(for: clothing, height: 420, isPad: isPad, isDetailView: true)
+                PictureView(for: clothing, height: 430, isPad: isPad, isDetailView: true)
                 pictureDescription
                 clothingDetails
                 ratingBanner
-                review
+                textEditorForReview
             }
         }
         .padding(.horizontal, isPad ? 32 : 16)
         .scrollIndicators(.hidden)
     }
 
-    var detailsInVStack: some View {
-        VStack(spacing: 0) {
-            PictureView(for: clothing, isPad: isPad, isDetailView: true)
-            pictureDescription
-            /// Use ScrollView to be sure to read all description
-            ScrollView {
-                clothingDetails
-            }
-            .frame(maxHeight: 200)
-            .fixedSize(horizontal: false, vertical: true)
-
-            ratingBanner
-            review
-        }
-        .padding(.horizontal, isPad ? 32 : 16)
-    }
-
-    var detailsInHStack: some View {
+    var horizontalDetails: some View {
         HStack(spacing: 24) {
             PictureView(for: clothing, width: 234, isPad: isPad, isDetailView: true)
+                .padding(.top, 24)
             ScrollView {
                 pictureDescription
                 clothingDetails
                 ratingBanner
-                review
+                textEditorForReview
             }
             .scrollIndicators(.hidden)
         }
@@ -205,22 +170,27 @@ private extension DetailView {
 
 private extension DetailView {
 
-    var review: some View {
-        TextField(
-            "Partagez ici vos impressions sur cette pièce",
-            text: .constant(""),
-            prompt:
+    var textEditorForReview: some View {
+        ZStack(alignment: .topLeading) {
+            if review.isEmpty {
                 Text("Partagez ici vos impressions sur cette pièce")
-                .font(.adaptiveFootnote), axis: .vertical
-        )
-        .lineLimit(2, reservesSpace: true)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .overlay {
+                    .font(.adaptiveFootnote)
+                    .opacity(0.5)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 18)
+            }
+            TextEditor(text: $review)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 6)
+                .scrollContentBackground(.hidden)
+                .background(.clear)
+        }
+        .frame(height: 120)
+        .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(lineWidth: 1)
                 .opacity(0.2)
-        }
+        )
     }
 }
 
@@ -234,5 +204,35 @@ struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
         DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
             .previewDevice(device.preview)
+    }
+}
+
+#Preview("Details in Split View", traits: .modifier(SplitView())) {
+    let device: MyPreviewDevice = .iPhoneMax
+    let clothing = ClothesPreview().getClothing(.withSmallDescription)
+    DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
+}
+
+private struct SplitView: PreviewModifier {
+
+    @State private var navigateToDetail = false
+
+    func body(content: Content, context: ()) -> some View {
+        NavigationSplitView(columnVisibility: .constant(.all)) {
+            Text("PREVIEW")
+                .toolbar(.hidden, for: .navigationBar)
+                .navigationDestination(isPresented: $navigateToDetail) {
+                    content
+                }
+                .onTapGesture {
+                    navigateToDetail.toggle()
+                }
+        } detail: {
+            EmptyView()
+        }
+        .navigationSplitViewStyle(.balanced)
+        .onAppear {
+            navigateToDetail = true
+        }
     }
 }

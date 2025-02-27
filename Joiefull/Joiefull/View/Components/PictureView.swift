@@ -12,7 +12,6 @@ struct PictureView: View {
     // MARK: Environment
 
     @Environment(\.horizontalSizeClass) var horizontalSC
-    @Environment(\.dismiss) var dismiss
 
     // MARK: Properties
 
@@ -49,13 +48,13 @@ struct PictureView: View {
             .overlay(alignment: .bottomTrailing, when: clothing.likes > 0) {
                 likesBanner
             }
-            .overlay(alignment: .top, when: isDetailView) {
-                detailViewButtons
+            .overlay(alignment: .topTrailing, when: isDetailView) {
+                shareButton
             }
     }
 }
 
-extension PictureView {
+private extension PictureView {
 
     // MARK: Async image
 
@@ -87,8 +86,11 @@ extension PictureView {
         )
         .accessibilityHidden(true)
     }
+}
 
-    // MARK: Likes banner
+// MARK: Likes banner
+
+private extension PictureView {
 
     var likesBanner: some View {
         HStack(spacing: 2) {
@@ -106,19 +108,9 @@ extension PictureView {
     }
 }
 
-// MARK: Detail view buttons
+// MARK: Share button
 
-extension PictureView {
-
-    var detailViewButtons: some View {
-        HStack(alignment: .top) {
-            if !isSplitView {
-                backButton
-            }
-            Spacer()
-            shareButton
-        }
-    }
+private extension PictureView {
 
     var shareButton: some View {
         Button {
@@ -128,26 +120,12 @@ extension PictureView {
                 .padding(.all, 6)
                 .padding(.bottom, 3)
                 .background(
-                    Circle().fill(.background.opacity(0.5))
+                    Circle().fill(.background)
                 )
         }
         .foregroundStyle(.primary)
-        .padding(.all, 12)
-    }
-
-    var backButton: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(systemName: "arrow.backward")
-                .padding(.all, 6)
-                .padding(.bottom, 3)
-                .background(
-                    Circle().fill(.background.opacity(0.5))
-                )
-        }
-        .foregroundStyle(.primary)
-        .padding(.all, 12)
+        .padding(.top, 9)
+        .padding(.trailing, 12)
     }
 }
 

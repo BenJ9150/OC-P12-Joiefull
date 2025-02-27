@@ -38,10 +38,6 @@ struct HomeView: View {
                     .navigationSplitViewColumnWidth(10)
             }
             .navigationSplitViewStyle(.balanced)
-            .onAppear {
-                print("geo width: \(geometry.size.width)")
-                print("UIScreen width: \(UIScreen.main.bounds.width)")
-            }
         }
     }
 }
