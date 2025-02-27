@@ -15,15 +15,12 @@ struct PictureView: View {
 
     // MARK: Properties
 
+    @State private var isExpanded: Bool = false
+
     private let clothing: Clothing
     private let width: CGFloat
     private let height: CGFloat
-    private let isPad: Bool
     private let isDetailView: Bool
-
-    private var isSplitView: Bool {
-        return horizontalSC == .regular
-    }
 
     // MARK: Init
 
@@ -31,13 +28,11 @@ struct PictureView: View {
         for clothing: Clothing,
         width: CGFloat = .infinity,
         height: CGFloat = .infinity,
-        isPad: Bool,
         isDetailView: Bool = false
     ) {
         self.clothing = clothing
         self.width = width
         self.height = height
-        self.isPad = isPad
         self.isDetailView = isDetailView
     }
 
@@ -77,13 +72,20 @@ private extension PictureView {
             idealWidth: width == .infinity ? nil : width,
             maxWidth: width,
             minHeight: 0,
-            idealHeight: height == .infinity ? nil : height,
-            maxHeight: height
+            idealHeight: isExpanded || height == .infinity ? nil : height,
+            maxHeight: isExpanded ? .infinity : height
         )
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
         )
+        .onTapGesture {
+            if isDetailView {
+                withAnimation(.bouncy(duration: 0.3)) {
+                    isExpanded.toggle()
+                }
+            }
+        }
         .accessibilityHidden(true)
     }
 }
@@ -131,30 +133,12 @@ private extension PictureView {
 
 // MARK: - Preview
 
-struct PictureView_Previews: PreviewProvider {
+#Preview {
+    let clothing = ClothesPreview().getClothing()
 
-    enum PreviewMode {
-        case item
-        case detailView
+    VStack {
+        PictureView(for: clothing, height: 300, isDetailView: true)
+        PictureView(for: clothing, width: 198, height: 198)
     }
-
-    static let previewMode: PreviewMode = .detailView
-    static let clothing = ClothesPreview().getClothing()
-    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
-
-    static var previews: some View {
-        switch previewMode {
-        case .item:
-            ScrollView {
-                PictureView(for: clothing, width: 198, height: 198, isPad: isPad)
-            }
-        case .detailView:
-            VStack {
-                PictureView(for: clothing, isPad: isPad, isDetailView: true)
-                Color.clear
-                    .frame(height: 100)
-            }
-            .padding(.horizontal, isPad ? 32 : 16)
-        }
-    }
+    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 32 : 16)
 }

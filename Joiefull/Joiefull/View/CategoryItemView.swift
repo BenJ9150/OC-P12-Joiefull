@@ -52,13 +52,13 @@ struct CategoryItemView: View {
             /// Show the description on the right of the picture
             if isPhoneInLandscape && dynamicTypeSize.isAccessibilitySize {
                 HStack(spacing: 24) {
-                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight, isPad: isPad)
+                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
                     PictureDescriptionView(for: clothing, isPad)
                         .frame(width: dynamicTypeSize.isHigh ? pictureWidth : originalPictureWidth)
                 }
             } else {
                 VStack(spacing: isPad ? 12 : 8) {
-                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight, isPad: isPad)
+                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
                     PictureDescriptionView(for: clothing, isPad)
                         .padding(.horizontal, 8)
                 }

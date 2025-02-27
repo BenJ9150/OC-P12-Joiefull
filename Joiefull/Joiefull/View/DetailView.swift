@@ -51,7 +51,7 @@ struct DetailView: View {
         }
         .navigationBarBackButtonHidden(!isNavigationStack)
         .background(
-            Color(horizontalSC == .regular ? UIColor.systemGroupedBackground : UIColor.systemBackground)
+            Color(isNavigationStack ? UIColor.systemBackground : UIColor.systemGroupedBackground)
         )
     }
 }
@@ -63,7 +63,7 @@ private extension DetailView {
     var verticalDetails: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PictureView(for: clothing, height: 430, isPad: isPad, isDetailView: true)
+                PictureView(for: clothing, height: 406, isDetailView: true)
                 pictureDescription
                 clothingDetails
                 ratingBanner
@@ -76,7 +76,7 @@ private extension DetailView {
 
     var horizontalDetails: some View {
         HStack(spacing: 24) {
-            PictureView(for: clothing, width: 234, isPad: isPad, isDetailView: true)
+            PictureView(for: clothing, width: 234, isDetailView: true)
                 .padding(.top, 24)
             ScrollView {
                 pictureDescription
