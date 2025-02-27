@@ -10,71 +10,87 @@ import XCTest
 
 final class NetworkClientTests: XCTestCase {
 
-    func testValidData() async throws {
+    // MARK: Error
+
+    func testBadServerResponse() async {
         // Given
-        let networkClient = NetworkClient(using: MockHTTPClient(with: .success))
-
-        // When
-        let fetchedData = try await networkClient.data(from: "www.joifull-test.com")
-
-        // Then
-        XCTAssertTrue(fetchedData.isEmpty == false)
-    }
-
-    func testBadUrlResponse() async throws {
-        // Given
-        let networkClient = NetworkClient(using: MockHTTPClient(with: .badUrlResponse))
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .badServerResponse))
 
         // When
         do {
-            _ = try await networkClient.data(from: "www.joifull-test.com")
+            _ = try await networkClient.getData(from: "www.joifull-test.com")
             XCTFail("Expected URLError(.badServerResponse), but no error was thrown.")
 
         } catch let urlError as URLError {
-
             // Then
             XCTAssertEqual(urlError.code, .badServerResponse)
-
         } catch {
             XCTFail("Expected URLError, but got \(error).")
         }
     }
 
-    func testBadRequest() async throws {
+    func testBadStatusCode() async {
+        // Given
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .badStatusCode))
+
+        // When
+        do {
+            _ = try await networkClient.getData(from: "www.joifull-test.com")
+            XCTFail("Expected HTTPError(.badServerResponse), but no error was thrown.")
+
+        } catch let nsError as NSError {
+            // Then
+            XCTAssertEqual(nsError.domain, "HTTPError")
+            XCTAssertEqual(nsError.code, 400)
+        } catch {
+            XCTFail("Expected NSError, but got \(error).")
+        }
+    }
+
+    func testFetchDataFailure() async {
         // Given
         let networkClient = NetworkClient(using: MockHTTPClient(with: .failed))
 
         // When
         do {
-            _ = try await networkClient.data(from: "www.joifull-test.com")
+            _ = try await networkClient.getData(from: "www.joifull-test.com")
             XCTFail("Expected URLError(.cannotLoadFromNetwork), but no error was thrown.")
 
         } catch let urlError as URLError {
-
             // Then
             XCTAssertEqual(urlError.code, .cannotLoadFromNetwork)
-
         } catch {
             XCTFail("Expected URLError, but got \(error).")
         }
     }
 
-    func testBadUrl() async {
+    // MARK: Get valid Data
+
+    func testSuccessToFetchData() async throws {
         // Given
-        let invalidURL = "ht!tp://invalid-url"
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .success))
+
+        // When
+        let fetchedData = try await networkClient.getData(from: "www.joifull-test.com")
+
+        // Then
+        XCTAssertTrue(fetchedData.isEmpty == false)
+    }
+
+    // MARK: Post data
+
+    func testSuccessToPostData() async {
+        // Given
+        let url = "www.joifull-test.com"
+        let body: [String: Any] = ["id": 1234, "name": "John"]
+        let networkClient = NetworkClient(using: MockHTTPClient(with: .success))
 
         // When
         do {
-            _ = try await NetworkClient().data(from: invalidURL)
-            XCTFail("Expected URLError(.badURL), but no error was thrown.")
-
-        } catch let urlError as URLError {
-
-            // Then
-            XCTAssertEqual(urlError.code, .badURL)
-
+            try await networkClient.post(toUrl: url, body: body)
+            // Then the post method is executed without error.
         } catch {
-            XCTFail("Expected URLError, but got \(error).")
+            XCTFail("Expected success when post data, but got \(error).")
         }
     }
 }

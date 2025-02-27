@@ -9,19 +9,40 @@ import Foundation
 
 class ClothingService {
 
-    private let httpClient: HTTPClient
-    private let clothesUrlStart = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/"
-    private let clothesUrlEnd = "Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/api/clothes.json"
+    private let networkClient: NetworkClient
+    private let apiUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/"
+                        + "Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/api"
 
     init(using httpClient: HTTPClient = URLSession.shared) {
-        self.httpClient = httpClient
+        self.networkClient = NetworkClient(using: httpClient)
     }
+}
+
+// MARK: Public
+
+extension ClothingService {
 
     func fetchClothes() async throws -> [Clothing] {
         /// Fetch data
-        let data = try await NetworkClient(using: httpClient).data(from: clothesUrlStart + clothesUrlEnd)
+        let data = try await networkClient.getData(from: "\(apiUrl)/clothes.json")
 
         /// Try return decoded data
         return try JSONDecoder().decode([Clothing].self, from: data)
+    }
+
+    func postReview( _ review: String, withRating: Int, for clothingId: Int) async throws {
+        /// Build http body
+        let body: [String: Any] = [
+            "clothing_id": clothingId,
+            "review": review,
+            "rating": withRating
+        ]
+        /// Post data
+        try await networkClient.post(toUrl: "\(apiUrl)/review", body: body)
+    }
+
+    func postLike(for clothingId: Int) async throws {
+        /// Post data
+        try await networkClient.post(toUrl: "\(apiUrl)/review", body: ["clothing_id": clothingId])
     }
 }

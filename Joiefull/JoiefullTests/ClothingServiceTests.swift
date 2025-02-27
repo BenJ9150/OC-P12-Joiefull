@@ -10,6 +10,8 @@ import XCTest
 
 final class ClothingServiceTests: XCTestCase {
 
+    // MARK: fetch data
+
     func testSuccessToFetchData() async throws {
         // Given
         let clothingService = ClothingService(using: MockHTTPClient(with: .success))
@@ -22,5 +24,33 @@ final class ClothingServiceTests: XCTestCase {
         XCTAssertEqual(clothes[0].price.toEuros(), "69,99€")
         XCTAssertEqual(clothes[0].originalPrice.toEuros(), "69,99€")
         XCTAssertEqual(clothes[0].rating.toString(), "4,3")
+    }
+
+    // MARK: Post data
+
+    func testReviewSuccess() async {
+        // Given
+        let clothingService = ClothingService(using: MockHTTPClient(with: .success))
+
+        // When
+        do {
+            try await clothingService.postReview("My review", withRating: 5, for: 1234)
+            // Then the post method is executed without error.
+        } catch {
+            XCTFail("Expected success when post data, but got \(error).")
+        }
+    }
+
+    func testLikeSuccess() async {
+        // Given
+        let clothingService = ClothingService(using: MockHTTPClient(with: .success))
+
+        // When
+        do {
+            try await clothingService.postLike(for: 1234)
+            // Then the post method is executed without error.
+        } catch {
+            XCTFail("Expected success when post data, but got \(error).")
+        }
     }
 }

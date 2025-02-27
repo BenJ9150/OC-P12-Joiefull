@@ -10,6 +10,8 @@
 		4322E9CC2D4D265900B5BEDD /* clothingImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */; };
 		4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */; };
 		4352DC952D6B2653002A2B77 /* View+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC942D6B2653002A2B77 /* View+Overlay.swift */; };
+		436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D162D70A8700065AE5C /* RequestBuilder.swift */; };
+		436A7D192D70AE610065AE5C /* RequestBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */; };
 		437722AF2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437722AE2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift */; };
 		437722B12D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */; };
 		437722B32D566C5800E0A88E /* PictureDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437722B22D566C5800E0A88E /* PictureDescriptionView.swift */; };
@@ -55,6 +57,8 @@
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		4352DC942D6B2653002A2B77 /* View+Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Overlay.swift"; sourceTree = "<group>"; };
+		436A7D162D70A8700065AE5C /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
+		436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilderTests.swift; sourceTree = "<group>"; };
 		437722AE2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+DynamicTypeSize.swift"; sourceTree = "<group>"; };
 		437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DynamicTypeSize+HighAccessSize.swift"; sourceTree = "<group>"; };
 		437722B22D566C5800E0A88E /* PictureDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureDescriptionView.swift; sourceTree = "<group>"; };
@@ -152,6 +156,7 @@
 				43BABE582D3AB6AD0079B4E8 /* Clothing.swift */,
 				43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */,
 				43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */,
+				436A7D162D70A8700065AE5C /* RequestBuilder.swift */,
 				43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */,
 				43BABE592D3AB6AD0079B4E8 /* ClothingService.swift */,
 			);
@@ -219,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				43BABE692D3AB7D60079B4E8 /* MockData */,
+				436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */,
 				43BABE6B2D3AB7EA0079B4E8 /* NetworkClientTests.swift */,
 				43BABE6A2D3AB7EA0079B4E8 /* ClothingServiceTests.swift */,
 				437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */,
@@ -373,6 +379,7 @@
 				43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */,
 				437722B32D566C5800E0A88E /* PictureDescriptionView.swift in Sources */,
 				43A29EE02D608C5F001F9FF3 /* Font+Adaptive.swift in Sources */,
+				436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */,
 				437722AF2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift in Sources */,
 				4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */,
 				43B2BA512D4D2033002DF50A /* ClothesPreview.swift in Sources */,
@@ -396,6 +403,7 @@
 			files = (
 				43BABE672D3AB7A10079B4E8 /* NetworkingMock.swift in Sources */,
 				43BABE6C2D3AB7EA0079B4E8 /* ClothingServiceTests.swift in Sources */,
+				436A7D192D70AE610065AE5C /* RequestBuilderTests.swift in Sources */,
 				43BABE6D2D3AB7EA0079B4E8 /* NetworkClientTests.swift in Sources */,
 				437A7AE62D438CBA00EC3536 /* HomeViewModelTests.swift in Sources */,
 			);
