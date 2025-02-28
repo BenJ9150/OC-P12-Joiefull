@@ -10,35 +10,35 @@ import XCTest
 
 @MainActor final class HomeViewModelTests: XCTestCase {
 
-    func testSuccessToFetchData() async {
+    func testFetchClothesSuccess() async {
         // Given
-        let httpClient = MockHTTPClient(with: .success)
+        let viewModel = HomeViewModel(using: MockHTTPClient(with: .success))
+        XCTAssertEqual(viewModel.firstLoading, true)
+        XCTAssertTrue(viewModel.fetchClothesError == "")
+        XCTAssertTrue(viewModel.clothesByCategory.count == 0)
 
         // When fetch data
-        let viewModel = HomeViewModel(using: httpClient)
-        XCTAssertTrue(viewModel.firstLoading)
-        XCTAssertTrue(viewModel.fetchClothesError.isEmpty)
         await viewModel.fetchClothes()
 
         // Then there are data with no error
-        XCTAssertFalse(viewModel.firstLoading)
-        XCTAssertTrue(viewModel.fetchClothesError.isEmpty)
-        XCTAssertFalse(viewModel.clothesByCategory.isEmpty)
+        XCTAssertEqual(viewModel.firstLoading, false)
+        XCTAssertTrue(viewModel.fetchClothesError == "")
+        XCTAssertTrue(viewModel.clothesByCategory.count > 0)
     }
 
     func testFailedToFetchData() async {
-        // Given
-        let httpClient = MockHTTPClient(with: .failed)
+        // When fetch data
+        let viewModel = HomeViewModel(using: MockHTTPClient(with: .failed))
+        XCTAssertEqual(viewModel.firstLoading, true)
+        XCTAssertTrue(viewModel.fetchClothesError == "")
+        XCTAssertTrue(viewModel.clothesByCategory.isEmpty)
 
         // When fetch data
-        let viewModel = HomeViewModel(using: httpClient)
-        XCTAssertTrue(viewModel.firstLoading)
-        XCTAssertTrue(viewModel.fetchClothesError.isEmpty)
         await viewModel.fetchClothes()
 
         // Then there is an error and no data
-        XCTAssertFalse(viewModel.firstLoading)
-        XCTAssertFalse(viewModel.fetchClothesError.isEmpty)
+        XCTAssertEqual(viewModel.firstLoading, false)
+        XCTAssertTrue(viewModel.fetchClothesError != "")
         XCTAssertTrue(viewModel.clothesByCategory.isEmpty)
     }
 }

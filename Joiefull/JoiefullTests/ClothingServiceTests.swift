@@ -10,9 +10,9 @@ import XCTest
 
 final class ClothingServiceTests: XCTestCase {
 
-    // MARK: fetch data
+    // MARK: fetch clothes
 
-    func testSuccessToFetchData() async throws {
+    func testFetchClothesSuccess() async throws {
         // Given
         let clothingService = ClothingService(using: MockHTTPClient(with: .success))
 
@@ -20,7 +20,7 @@ final class ClothingServiceTests: XCTestCase {
         let clothes = try await clothingService.fetchClothes()
 
         // Then
-        XCTAssertTrue(clothes.isEmpty == false)
+        XCTAssertTrue(clothes.count > 0)
         XCTAssertEqual(clothes[0].price.toEuros(), "69,99€")
         XCTAssertEqual(clothes[0].originalPrice.toEuros(), "69,99€")
         XCTAssertEqual(clothes[0].rating.toString(), "4,3")

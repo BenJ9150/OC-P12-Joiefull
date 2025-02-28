@@ -85,6 +85,8 @@ private extension PictureView {
             maxHeight: isExpanded ? .infinity : height
         )
         .clipShape(RoundedRectangle(cornerRadius: 20))
+        /// Use contentShape to avoid tap detection on hidden parts of the image (when image isn't expanded)
+        .contentShape(RoundedRectangle(cornerRadius: 20))
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
         )

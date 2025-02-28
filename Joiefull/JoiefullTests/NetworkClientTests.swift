@@ -74,7 +74,7 @@ final class NetworkClientTests: XCTestCase {
         let fetchedData = try await networkClient.getData(from: "www.joifull-test.com")
 
         // Then
-        XCTAssertTrue(fetchedData.isEmpty == false)
+        XCTAssertTrue(fetchedData.count > 0)
     }
 
     // MARK: Post data

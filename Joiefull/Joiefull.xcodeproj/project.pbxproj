@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43052BA82D71E24000573414 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43052BA72D71E24000573414 /* ButtonStyle.swift */; };
+		43052BAA2D71F45B00573414 /* ReviewAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43052BA92D71F45B00573414 /* ReviewAlertModifier.swift */; };
+		43052BAC2D71F75800573414 /* View+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43052BAB2D71F75800573414 /* View+Keyboard.swift */; };
+		43052BAE2D71F78200573414 /* View+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43052BAD2D71F78200573414 /* View+Alert.swift */; };
 		4322E9CC2D4D265900B5BEDD /* clothingImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */; };
 		4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */; };
 		4352DC952D6B2653002A2B77 /* View+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC942D6B2653002A2B77 /* View+Overlay.swift */; };
@@ -55,6 +59,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43052BA72D71E24000573414 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		43052BA92D71F45B00573414 /* ReviewAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewAlertModifier.swift; sourceTree = "<group>"; };
+		43052BAB2D71F75800573414 /* View+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Keyboard.swift"; sourceTree = "<group>"; };
+		43052BAD2D71F78200573414 /* View+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Alert.swift"; sourceTree = "<group>"; };
 		4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = clothingImage.jpg; sourceTree = "<group>"; };
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
@@ -141,6 +149,8 @@
 				437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */,
 				43A29EDF2D608C5F001F9FF3 /* Font+Adaptive.swift */,
 				4352DC942D6B2653002A2B77 /* View+Overlay.swift */,
+				43052BAB2D71F75800573414 /* View+Keyboard.swift */,
+				43052BAD2D71F78200573414 /* View+Alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -148,8 +158,10 @@
 		437722B42D566F4C00E0A88E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				43052BA72D71E24000573414 /* ButtonStyle.swift */,
 				43B2BA4C2D4D1EEC002DF50A /* PictureView.swift */,
 				437722B22D566C5800E0A88E /* PictureDescriptionView.swift */,
+				43052BA92D71F45B00573414 /* ReviewAlertModifier.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -383,20 +395,24 @@
 				43BABE922D3ACF410079B4E8 /* HomeViewModel.swift in Sources */,
 				43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */,
 				43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */,
+				43052BAC2D71F75800573414 /* View+Keyboard.swift in Sources */,
 				437722B32D566C5800E0A88E /* PictureDescriptionView.swift in Sources */,
 				43A29EE02D608C5F001F9FF3 /* Font+Adaptive.swift in Sources */,
+				43052BA82D71E24000573414 /* ButtonStyle.swift in Sources */,
 				436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */,
 				437722AF2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift in Sources */,
 				4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */,
 				436A7D1B2D70C8650065AE5C /* DetailViewModel.swift in Sources */,
 				43B2BA512D4D2033002DF50A /* ClothesPreview.swift in Sources */,
 				4352DC952D6B2653002A2B77 /* View+Overlay.swift in Sources */,
+				43052BAA2D71F45B00573414 /* ReviewAlertModifier.swift in Sources */,
 				43BABE5C2D3AB6AD0079B4E8 /* Clothing.swift in Sources */,
 				43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */,
 				437722B12D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift in Sources */,
 				43BABE5D2D3AB6AD0079B4E8 /* ClothingService.swift in Sources */,
 				43BABE5E2D3AB6AD0079B4E8 /* Picture.swift in Sources */,
 				43BABE902D3ACF2B0079B4E8 /* HomeView.swift in Sources */,
+				43052BAE2D71F78200573414 /* View+Alert.swift in Sources */,
 				43BABE612D3AB70C0079B4E8 /* HTTPClient.swift in Sources */,
 				43BABE982D3AD5270079B4E8 /* CategoryItemView.swift in Sources */,
 				43ABD5CF2D5F6DD800733873 /* MyPreviewDevice.swift in Sources */,

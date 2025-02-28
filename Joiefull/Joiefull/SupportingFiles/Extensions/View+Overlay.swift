@@ -9,6 +9,7 @@ import SwiftUI
 
 extension View {
 
+    /// Use this method to add a condtion for show content of overlay
     func overlay<Overlay: View>(
         alignment: Alignment = .center,
         when condition: Bool, @ViewBuilder content: () -> Overlay

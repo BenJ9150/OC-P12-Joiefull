@@ -38,7 +38,14 @@ extension ClothingService {
             "rating": rating
         ]
         /// Post data
+#if DEBUG
+        /// Simulate success with delay
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+        /// Or Error (not implemented in API)
+        // try await networkClient.post(toUrl: "\(apiUrl)/review", body: body)
+#else
         try await networkClient.post(toUrl: "\(apiUrl)/review", body: body)
+#endif
     }
 
     func postLike(clothingId: Int) async throws {

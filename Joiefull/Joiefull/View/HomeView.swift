@@ -131,24 +131,14 @@ private extension HomeView {
                 .padding()
                 .accessibilityHidden(true)
 
-            Button {
-                Task {
-                    await viewModel.fetchClothes()
-                }
-            } label: {
-                Text("Réessayer")
-                    .font(.headline.weight(.bold))
-                    .foregroundStyle(Color.loadingErrorButtonText)
-                    .padding()
-                    .padding(.horizontal)
-                    .background(Color.loadingErrorButton, in: .capsule)
+            Button("Réessayer") {
+                Task { await viewModel.fetchClothes() }
             }
+            .buttonStyle(JoifullButton())
             .accessibilityLabel(
                 viewModel.fetchClothesError.replacingOccurrences(of: "...", with: ".") + " Réessayer"
             )
         }
-        .frame(maxHeight: .infinity)
-        .background(Color.launchScreenBackground)
     }
 }
 
@@ -177,7 +167,6 @@ struct HomeView_Previews: PreviewProvider {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         viewModel.showError()
                         viewModel.firstLoading = false
-                        
                     }
                 case .clothes:
                     viewModel.handleFetchResult(ClothesPreview().getClothes())

@@ -10,10 +10,13 @@ import SwiftUI
 @MainActor class DetailViewModel: ObservableObject {
 
     /// Review
+    @Published var showReviewAlert: Bool = false
     @Published var postingReview = false
-    @Published var postReviewError = ""
-    @State var review: String = ""
-    @State var rating: Int = 0
+    @Published var postReviewSuccess = false
+    @Published var showReviewError = false
+    @Published var postReviewError: String = ""
+    @Published var review: String = ""
+    @Published var rating: Int = 0
 
     /// Like
     @Published var postingLike = false
@@ -35,10 +38,11 @@ extension DetailViewModel {
         postReviewError = ""
         do {
             try await clothingService.postReview(review, withRating: rating, clothingId: clothingId)
+            postReviewSuccess = true
         } catch {
-            withAnimation(.bouncy) {
-                postReviewError = "Oups... Une erreur s'est produite, veuillez réessayer."
-            }
+            print("💥 Post review failed: \(error)")
+            postReviewError = "Oups... Une erreur s'est produite, veuillez réessayer ultérieurement 🙁"
+            showReviewError.toggle()
         }
         postingReview = false
     }
@@ -55,6 +59,7 @@ extension DetailViewModel {
             try await clothingService.postLike(clothingId: clothingId)
         } catch {
             withAnimation(.bouncy) {
+                print("💥 Post like failed: \(error)")
                 postLikeError = "Oups... Une erreur s'est produite, veuillez réessayer."
             }
         }

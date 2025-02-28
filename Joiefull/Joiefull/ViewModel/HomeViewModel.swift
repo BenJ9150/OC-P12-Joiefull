@@ -29,7 +29,9 @@ extension HomeViewModel {
         do {
             let clothes = try await clothingService.fetchClothes()
             handleFetchResult(clothes)
+            print("✅ Fetch clothes with success")
         } catch {
+            print("💥 Fetch cltothes failed: \(error)")
             showError()
         }
         firstLoading = false

@@ -14,16 +14,15 @@ struct DetailView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.horizontalSizeClass) var horizontalSC
     @Environment(\.verticalSizeClass) var verticalSC
-    @Environment(\.dismiss) var dismiss
 
     // MARK: Properties
+
+    @StateObject private var viewModel = DetailViewModel()
+    @FocusState private var reviewIsFocused: Bool
 
     private let avatar: Image
     private let clothing: Clothing
     private let isPad: Bool
-
-    @State private var ratingValue: Int = 0
-    @State private var review: String = ""
 
     private var isNavigationStack: Bool {
         horizontalSC == .compact
@@ -50,9 +49,41 @@ struct DetailView: View {
             }
         }
         .navigationBarBackButtonHidden(!isNavigationStack)
+        .onTapGesture { hideKeyboard() }
         .background(
             Color(isNavigationStack ? UIColor.systemBackground : UIColor.systemGroupedBackground)
         )
+        /// Alert to confirm sending review
+        .reviewAlert(show: $viewModel.showReviewAlert, addCommentBtn: viewModel.review.isEmpty, onSubmit: {
+            Task { await viewModel.postReview(clothingId: clothing.id) }
+        }, onAddComment: {
+            reviewIsFocused = true
+        })
+        /// Alert if error when sending review
+        .alert(viewModel.postReviewError, isPresented: $viewModel.showReviewError, actions: {})
+    }
+}
+
+extension View {
+
+    func alertForReview(
+        isPresented: Binding<Bool>,
+        title: String,
+        viewModel: DetailViewModel,
+        clothingId: Int,
+        reviewIsFocused: Binding<Bool>
+    ) -> some View {
+        self.alert(title, isPresented: isPresented) {
+            Button("Partager", role: .none) {
+                Task { await viewModel.postReview(clothingId: clothingId) }
+            }
+            if viewModel.review.isEmpty {
+                Button("Ajouter un commentaire", role: .none) {
+                    reviewIsFocused.wrappedValue = true
+                }
+            }
+            Button("Annuler", role: .cancel) { }
+        }
     }
 }
 
@@ -64,10 +95,8 @@ private extension DetailView {
         ScrollView {
             VStack(spacing: 0) {
                 PictureView(for: clothing, height: 406, isDetailView: true)
-                pictureDescription
                 clothingDetails
-                ratingBanner
-                textEditorForReview
+                ratingAndReviewSection
             }
         }
         .padding(.horizontal, isPad ? 32 : 16)
@@ -79,33 +108,64 @@ private extension DetailView {
             PictureView(for: clothing, width: 234, isDetailView: true)
                 .padding(.top, 24)
             ScrollView {
-                pictureDescription
                 clothingDetails
-                ratingBanner
-                textEditorForReview
+                ratingAndReviewSection
             }
             .scrollIndicators(.hidden)
         }
     }
 }
 
-// MARK: Details
+// MARK: Clothing details
 
 private extension DetailView {
 
-    var pictureDescription: some View {
-        PictureDescriptionView(for: clothing, isDetailView: true, isPad)
-            .accessibilityHidden(true)
-            .padding(.top, 24)
-            .padding(.bottom, 12)
-    }
-
     var clothingDetails: some View {
-        Text(clothing.picture.description)
-            .font(.adaptiveFootnote)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .multilineTextAlignment(.leading)
+        VStack(spacing: 12) {
+            PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+                .accessibilityHidden(true)
+
+            Text(clothing.picture.description)
+                .font(.adaptiveFootnote)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.leading)
+        }
+        .padding(.top, 24)
+    }
+}
+
+// MARK: Rating and Review section
+
+private extension DetailView {
+
+    var ratingAndReviewSection: some View {
+        VStack(spacing: isPad ? 24 : 16) {
+            if viewModel.postingReview {
+                ProgressView()
+                    .frame(height: 180)
+            } else {
+                ratingBanner
+                /// Show read only review if alreay sended
+                if viewModel.postReviewSuccess {
+                    Text("Mon commentaire : \n\(viewModel.review.isEmpty ? "..." : viewModel.review)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .multilineTextAlignment(.leading)
+                        .font(.adaptiveFootnote)
+                        .opacity(0.5)
+                } else {
+                    /// Show submit review button only if there is a rating
+                    if viewModel.rating > 0 {
+                        Button("Partager mon avis") {
+                            viewModel.showReviewAlert.toggle()
+                        }
+                        .buttonStyle(JoifullButton())
+                    }
+                    textEditorForReview
+                }
+            }
+        }
+        .padding(.top, 24)
     }
 }
 
@@ -129,37 +189,39 @@ private extension DetailView {
                     .accessibilityHidden(true)
             }
             ForEach(1..<6, id: \.self) { value in
-                let isOn = value <= ratingValue
+                let isOn = value <= viewModel.rating
                 ZStack {
                     Image(systemName: isOn ? "star.fill" : "star")
                         .font(.title2)
                         .opacity(isOn ? 1 : 0.5)
+                        .foregroundStyle(viewModel.postReviewSuccess ? .orange : .primary)
                         .accessibilityRemoveTraits(.isImage)
                 }
                 .frame(minWidth: starSize, minHeight: starSize)
                 .onTapGesture {
-                    updateRating(with: value)
+                    /// Rating is read only if review has already sended
+                    if !viewModel.postReviewSuccess {
+                        withAnimation(.bouncy(duration: 0.3)) { updateRating(with: value) }
+                    }
                 }
                 .accessibilityAddTraits(.isButton)
                 .accessibilityLabel(label(for: value))
             }
             Spacer()
         }
-        .padding(.top, 24)
-        .padding(.bottom, isPad ? 24 : 16)
     }
 
     func updateRating(with value: Int) {
-        if ratingValue != value {
-            ratingValue = value
+        if viewModel.rating != value {
+            viewModel.rating = value
         } else {
             /// Clic on the same rating value, delete the rating if it's the first star
-            ratingValue = value == 1 ? 0 : value
+            viewModel.rating = value == 1 ? 0 : value
         }
     }
 
     func label(for newRatingValue: Int) -> String {
-        if newRatingValue == ratingValue {
+        if newRatingValue == viewModel.rating {
             return "Vous avez mis une note de \(newRatingValue) sur 5"
         }
         return "Mettre une note de \(newRatingValue) sur 5"
@@ -171,26 +233,41 @@ private extension DetailView {
 private extension DetailView {
 
     var textEditorForReview: some View {
-        ZStack(alignment: .topLeading) {
-            if review.isEmpty {
-                Text("Partagez ici vos impressions sur cette pièce")
-                    .font(.adaptiveFootnote)
-                    .opacity(0.5)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 18)
+        VStack {
+            if !viewModel.review.isEmpty && viewModel.rating == 0 && !reviewIsFocused {
+                Text("Ajoutez une note pour partager votre commentaire 🙂")
+                    .multilineTextAlignment(.center)
+                    .font(.adaptiveBody)
+                    .padding(.all, 9)
             }
-            TextEditor(text: $review)
-                .padding(.horizontal, 6)
-                .padding(.vertical, 6)
-                .scrollContentBackground(.hidden)
-                .background(.clear)
+
+            ZStack(alignment: .topLeading) {
+                if viewModel.review.isEmpty {
+                    Text("Partagez ici vos impressions sur cette pièce")
+                        .font(.adaptiveFootnote)
+                        .opacity(0.5)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 18)
+                }
+                TextEditor(text: $viewModel.review)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 6)
+                    .scrollContentBackground(.hidden)
+                    .background(.clear)
+                    .focused($reviewIsFocused)
+                    .toolbar {
+                        ToolbarItem(placement: .keyboard, content: {
+                            Button("Fermer", action: { hideKeyboard() })
+                        })
+                    }
+            }
+            .frame(height: 120)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(lineWidth: 1)
+                    .opacity(0.2)
+            )
         }
-        .frame(height: 120)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(lineWidth: 1)
-                .opacity(0.2)
-        )
     }
 }
 

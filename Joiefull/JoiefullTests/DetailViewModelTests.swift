@@ -14,63 +14,67 @@ import XCTest
 
     func testSuccessToPostReview() async {
         // Given
-        let httpClient = MockHTTPClient(with: .success)
+        let viewModel = DetailViewModel(using: MockHTTPClient(with: .success))
+        XCTAssertEqual(viewModel.postingReview, false)
+        XCTAssertEqual(viewModel.postReviewSuccess, false)
+        XCTAssertTrue(viewModel.postReviewError == "")
+        XCTAssertEqual(viewModel.showReviewError, false)
 
         // When post review
-        let viewModel = DetailViewModel(using: httpClient)
-        XCTAssertFalse(viewModel.postingReview)
-        XCTAssertTrue(viewModel.postReviewError.isEmpty)
         await viewModel.postReview(clothingId: 1234)
 
-        // Then there is no error
-        XCTAssertFalse(viewModel.postingReview)
-        XCTAssertTrue(viewModel.postReviewError.isEmpty)
+        // Then there is a success with no error
+        XCTAssertEqual(viewModel.postingReview, false)
+        XCTAssertEqual(viewModel.postReviewSuccess, true)
+        XCTAssertTrue(viewModel.postReviewError == "")
+        XCTAssertEqual(viewModel.showReviewError, false)
     }
 
     func testFailedToPostReview() async {
         // Given
-        let httpClient = MockHTTPClient(with: .failed)
+        let viewModel = DetailViewModel(using: MockHTTPClient(with: .failed))
+        XCTAssertEqual(viewModel.postingReview, false)
+        XCTAssertEqual(viewModel.postReviewSuccess, false)
+        XCTAssertTrue(viewModel.postReviewError == "")
+        XCTAssertEqual(viewModel.showReviewError, false)
 
         // When post review
-        let viewModel = DetailViewModel(using: httpClient)
-        XCTAssertFalse(viewModel.postingReview)
-        XCTAssertTrue(viewModel.postReviewError.isEmpty)
         await viewModel.postReview(clothingId: 1234)
 
-        // Then there an error
-        XCTAssertFalse(viewModel.postingReview)
-        XCTAssertFalse(viewModel.postReviewError.isEmpty)
+        // Then there is an error
+        XCTAssertEqual(viewModel.postingReview, false)
+        XCTAssertEqual(viewModel.postReviewSuccess, false)
+        XCTAssertTrue(viewModel.postReviewError != "")
+        XCTAssertEqual(viewModel.showReviewError, true)
     }
 
     // MARK: Like
 
     func testSuccessToPostLike() async {
         // Given
-        let httpClient = MockHTTPClient(with: .success)
+        let viewModel = DetailViewModel(using: MockHTTPClient(with: .success))
+        XCTAssertEqual(viewModel.postingLike, false)
+        XCTAssertTrue(viewModel.postLikeError == "")
 
         // When post review
-        let viewModel = DetailViewModel(using: httpClient)
-        XCTAssertFalse(viewModel.postingLike)
-        XCTAssertTrue(viewModel.postLikeError.isEmpty)
         await viewModel.postLike(clothingId: 1234)
 
         // Then there is no error
-        XCTAssertFalse(viewModel.postingLike)
+        XCTAssertEqual(viewModel.postingLike, false)
         XCTAssertTrue(viewModel.postLikeError.isEmpty)
     }
 
     func testFailedToPostLike() async {
         // Given
-        let httpClient = MockHTTPClient(with: .failed)
+        let viewModel = DetailViewModel(using: MockHTTPClient(with: .failed))
+        XCTAssertEqual(viewModel.postingLike, false)
+        XCTAssertTrue(viewModel.postLikeError == "")
 
         // When post review
-        let viewModel = DetailViewModel(using: httpClient)
-        XCTAssertFalse(viewModel.postingLike)
-        XCTAssertTrue(viewModel.postLikeError.isEmpty)
         await viewModel.postLike(clothingId: 1234)
 
-        // Then there an error
-        XCTAssertFalse(viewModel.postingLike)
-        XCTAssertFalse(viewModel.postLikeError.isEmpty)
+        // Then there is an error
+        XCTAssertEqual(viewModel.postingLike, false)
+        XCTAssertTrue(viewModel.postLikeError != "")
     }
 }
