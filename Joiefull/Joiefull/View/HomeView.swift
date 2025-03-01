@@ -9,9 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
 
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.horizontalSizeClass) var horizontalSC
 
     @ObservedObject var viewModel: HomeViewModel
+    @State private var selectedItem: Clothing?
 
     private var isSplitView: Bool {
         return horizontalSC == .regular
@@ -21,11 +23,11 @@ struct HomeView: View {
 
     var body: some View {
         /// Using geometry reader to update sidebar width after iPad rotations
-        GeometryReader { geometry in
+        GeometryReader { geo in
             NavigationSplitView(columnVisibility: .constant(.all)) {
                 if isSplitView {
                     splitViewSidebar
-                        .navigationSplitViewColumnWidth(geometry.size.width * 766/1280) // TODO: problème sur iPad mini
+                        .navigationSplitViewColumnWidth(sidebar(screenSize: geo.size))
                         .toolbar(.hidden, for: .navigationBar)
                         .listStyle(.sidebar)
                 } else {
@@ -34,7 +36,6 @@ struct HomeView: View {
                 }
             } detail: {
                 splitViewDetail
-                    .navigationSplitViewColumnWidth(10)
             }
             .navigationSplitViewStyle(.balanced)
         }
@@ -66,6 +67,13 @@ private extension HomeView {
         }
     }
 
+    private func sidebar(screenSize: CGSize) -> CGFloat {
+        let isLandscape = screenSize.width > screenSize.height
+        let maxWidth: CGFloat = screenSize.width - 1
+        let landscapeWidth = screenSize.width * 766/1280
+        return selectedItem == nil ? maxWidth : (isLandscape ? landscapeWidth : 0)
+    }
+
     var splitViewDetail: some View {
         ZStack {
             if viewModel.firstLoading || !viewModel.fetchClothesError.isEmpty {
@@ -88,17 +96,27 @@ private extension HomeView {
     var clothesList: some View {
         List(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
             if let clothes = viewModel.clothesByCategory[category] {
-                CategoryRowView(category: category, items: clothes)
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(
-                        EdgeInsets(
-                            top: 0,
-                            leading: 16,
-                            bottom: 12,
-                            trailing: 0
-                        )
+                CategoryRowView(
+                    selectedItem: $selectedItem,
+                    category: category,
+                    items: clothes
+                )
+                .listRowSeparator(.hidden)
+                .listRowInsets(
+                    EdgeInsets(
+                        top: 0,
+                        leading: 16,
+                        bottom: 12,
+                        trailing: 0
                     )
+                )
             }
+        }
+        .navigationDestination(item: $selectedItem) { clothing in
+            DetailView(viewModel: DetailViewModel(
+                modelContext: modelContext,
+                clothing: clothing)
+            )
         }
         .refreshable {
             await viewModel.fetchClothes()

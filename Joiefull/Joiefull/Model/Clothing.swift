@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Clothing: Decodable, Identifiable {
+struct Clothing: Decodable, Identifiable, Hashable {
     let id: Int
     let picture: Picture
     let name: String

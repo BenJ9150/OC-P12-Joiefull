@@ -19,6 +19,7 @@ struct CategoryItemView: View {
     private let clothing: Clothing
     private let originalPictureWidth: CGFloat
     private let originalPictureHeight: CGFloat
+    private let isSelected: Bool
 
     private var isPhoneInLandscape: Bool {
         return verticalSC == .compact
@@ -36,8 +37,9 @@ struct CategoryItemView: View {
 
     // MARK: Init
 
-    init(for clothing: Clothing) {
+    init(for clothing: Clothing, isSelected: Bool) {
         self.clothing = clothing
+        self.isSelected = isSelected
         self.originalPictureWidth = UIDevice.isPad ? 234 : 198
         self.originalPictureHeight = UIDevice.isPad ? 256 : 198
     }
@@ -50,14 +52,14 @@ struct CategoryItemView: View {
             /// Show the description on the right of the picture
             if isPhoneInLandscape && dynamicTypeSize.isAccessibilitySize {
                 HStack(spacing: 24) {
-                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
-                    PictureDescriptionView(for: clothing)
+                    picture
+                    description
                         .frame(width: dynamicTypeSize.isHigh ? pictureWidth : originalPictureWidth)
                 }
             } else {
                 VStack(spacing: isPad ? 12 : 8) {
-                    PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
-                    PictureDescriptionView(for: clothing)
+                    picture
+                    description
                         .padding(.horizontal, 8)
                 }
                 .frame(width: pictureWidth)
@@ -66,8 +68,44 @@ struct CategoryItemView: View {
     }
 }
 
+// MARK: Picture
+
+private extension CategoryItemView {
+
+    private var picture: some View {
+        PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
+            .overlay(when: isSelected) {
+                RoundedRectangle(cornerRadius: 20 - 3)
+                    .stroke(Color.selectedItem, lineWidth: 3)
+                    .padding(.all, 1.5)
+            }
+    }
+}
+
+// MARK: Description
+
+private extension CategoryItemView {
+
+    private var description: some View {
+        PictureDescriptionView(for: clothing)
+            .foregroundStyle(isSelected ? .selectedItem : .primary)
+    }
+}
+
 // MARK: - Preview
 
 #Preview {
-    CategoryItemView(for: ClothesPreview().getClothing(12))
+    ScrollView(.horizontal) {
+        HStack(alignment: .top, spacing: UIDevice.isPad ? 16 : 8) {
+            CategoryItemView(
+                for: ClothesPreview().getClothing(.withBigDescription),
+                isSelected: true
+            )
+            CategoryItemView(
+                for: ClothesPreview().getClothing(.withSmallDescription),
+                isSelected: false
+            )
+        }
+        .padding()
+    }
 }

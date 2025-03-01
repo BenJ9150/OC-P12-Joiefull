@@ -11,6 +11,7 @@ import SwiftData
 struct CategoryRowView: View {
 
     @Environment(\.modelContext) private var modelContext
+    @Binding var selectedItem: Clothing?
 
     let category: String
     let items: [Clothing]
@@ -36,13 +37,13 @@ private extension CategoryRowView {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
-                    NavigationLink {
-                        DetailView(viewModel: DetailViewModel(
-                            modelContext: modelContext,
-                            clothing: clothing)
-                        )
+                    Button {
+                        selectedItem = clothing
                     } label: {
-                        CategoryItemView(for: clothing)
+                        CategoryItemView(
+                            for: clothing,
+                            isSelected: selectedItem == clothing
+                        )
                     }
                     .foregroundStyle(.primary)
                     /// VoiceOver accessibility
@@ -67,5 +68,9 @@ private extension CategoryRowView {
 
 #Preview {
     let clothes = ClothesPreview().getClothes()
-    CategoryRowView(category: clothes[0].category, items: clothes)
+    CategoryRowView(
+        selectedItem: .constant(nil),
+        category: clothes[0].category,
+        items: clothes
+    )
 }
