@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 class ClothesPreview {
 
@@ -74,6 +75,22 @@ class ClothesPreview {
     func clothingImage() -> Image {
         let url = clothingImageUrl()
         return Image(uiImage: UIImage(contentsOfFile: url.path)!)
+    }
+
+    @MainActor func modelContainer() -> ModelContainer {
+        do {
+            return try ModelContainer(for: ReviewAndRating.self, configurations: .init(isStoredInMemoryOnly: true))
+        } catch {
+            fatalError("Could not initialize ModelContainer")
+        }
+    }
+
+    @MainActor func reviewAndRatingModelContext(clothingType: ClothingType) -> ModelContext {
+        let context = modelContainer().mainContext
+        let review = ReviewAndRating(clothingId: clothingType.rawValue, review: "Ma review", rating: 4)
+        context.insert(review)
+        try? context.save()
+        return context
     }
 }
 

@@ -14,14 +14,15 @@ import XCTest
 
     func testSuccessToPostReview() async {
         // Given
-        let viewModel = DetailViewModel(using: MockHTTPClient(with: .success))
+        let mockHTTPClient = MockHTTPClient(with: .success)
+        let viewModel = DetailViewModel(clothing: mockHTTPClient.getClothing(), using: mockHTTPClient)
         XCTAssertEqual(viewModel.postingReview, false)
         XCTAssertEqual(viewModel.postReviewSuccess, false)
         XCTAssertTrue(viewModel.postReviewError == "")
         XCTAssertEqual(viewModel.showReviewError, false)
 
         // When post review
-        await viewModel.postReview(clothingId: 1234)
+        await viewModel.postReview()
 
         // Then there is a success with no error
         XCTAssertEqual(viewModel.postingReview, false)
@@ -32,14 +33,15 @@ import XCTest
 
     func testFailedToPostReview() async {
         // Given
-        let viewModel = DetailViewModel(using: MockHTTPClient(with: .failed))
+        let mockHTTPClient = MockHTTPClient(with: .failed)
+        let viewModel = DetailViewModel(clothing: mockHTTPClient.getClothing(), using: mockHTTPClient)
         XCTAssertEqual(viewModel.postingReview, false)
         XCTAssertEqual(viewModel.postReviewSuccess, false)
         XCTAssertTrue(viewModel.postReviewError == "")
         XCTAssertEqual(viewModel.showReviewError, false)
 
         // When post review
-        await viewModel.postReview(clothingId: 1234)
+        await viewModel.postReview()
 
         // Then there is an error
         XCTAssertEqual(viewModel.postingReview, false)
@@ -52,12 +54,13 @@ import XCTest
 
     func testSuccessToPostLike() async {
         // Given
-        let viewModel = DetailViewModel(using: MockHTTPClient(with: .success))
+        let mockHTTPClient = MockHTTPClient(with: .success)
+        let viewModel = DetailViewModel(clothing: mockHTTPClient.getClothing(), using: mockHTTPClient)
         XCTAssertEqual(viewModel.postingLike, false)
         XCTAssertTrue(viewModel.postLikeError == "")
 
         // When post review
-        await viewModel.postLike(clothingId: 1234)
+        await viewModel.postLike()
 
         // Then there is no error
         XCTAssertEqual(viewModel.postingLike, false)
@@ -66,12 +69,13 @@ import XCTest
 
     func testFailedToPostLike() async {
         // Given
-        let viewModel = DetailViewModel(using: MockHTTPClient(with: .failed))
+        let mockHTTPClient = MockHTTPClient(with: .failed)
+        let viewModel = DetailViewModel(clothing: mockHTTPClient.getClothing(), using: mockHTTPClient)
         XCTAssertEqual(viewModel.postingLike, false)
         XCTAssertTrue(viewModel.postLikeError == "")
 
         // When post review
-        await viewModel.postLike(clothingId: 1234)
+        await viewModel.postLike()
 
         // Then there is an error
         XCTAssertEqual(viewModel.postingLike, false)

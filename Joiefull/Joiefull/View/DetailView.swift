@@ -248,7 +248,10 @@ private extension DetailView {
 // MARK: - Preview
 
 #Preview(traits: .modifier(SplitView())) {
-    @Previewable var viewModel = DetailViewModel(clothing: ClothesPreview().getClothing(.withSmallDescription))
+    @Previewable var viewModel = DetailViewModel(
+//        modelContext: ClothesPreview().reviewAndRatingModelContext(clothingType: .withSmallDescription),
+        clothing: ClothesPreview().getClothing(.withSmallDescription)
+    )
     DetailView(viewModel: viewModel, avatar: Image(.avatar))
 }
 

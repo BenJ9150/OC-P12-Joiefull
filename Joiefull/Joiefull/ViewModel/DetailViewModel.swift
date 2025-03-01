@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @MainActor class DetailViewModel: ObservableObject {
 
@@ -22,12 +23,15 @@ import SwiftUI
     @Published var postingLike = false
     @Published var postLikeError = ""
 
+    private let swiftDataService: SwiftDataService
     private let clothingService: ClothingService
     let clothing: Clothing
 
-    init(clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
+    init(modelContext: ModelContext? = nil, clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
         self.clothingService = ClothingService(using: httpClient)
+        self.swiftDataService = SwiftDataService(modelContext: modelContext)
         self.clothing = clothing
+        fetchReview()
     }
 }
 
@@ -40,7 +44,9 @@ extension DetailViewModel {
         postReviewError = ""
         do {
             try await clothingService.postReview(review, withRating: rating, clothingId: clothing.id)
+            /// Success!
             postReviewSuccess = true
+            saveReviewAndRating()
         } catch {
             print("💥 Post review failed: \(error)")
             postReviewError = "Oups... Une erreur s'est produite, veuillez réessayer ultérieurement 🙁"
@@ -66,5 +72,24 @@ extension DetailViewModel {
             }
         }
         postingLike = false
+    }
+}
+
+// MARK: SwiftData review
+
+private extension DetailViewModel {
+
+    func saveReviewAndRating() {
+        let reviewAndRating = ReviewAndRating(clothingId: clothing.id, review: review, rating: rating)
+        swiftDataService.saveReviewAndRating(reviewAndRating)
+    }
+
+    func fetchReview() {
+        guard let reviewAndRating = swiftDataService.fetchReview(clothingId: clothing.id) else {
+            return
+        }
+        review = reviewAndRating.review
+        rating = reviewAndRating.rating
+        postReviewSuccess = true
     }
 }

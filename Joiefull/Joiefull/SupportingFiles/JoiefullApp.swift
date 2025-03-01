@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct JoiefullApp: App {
@@ -19,5 +20,6 @@ struct JoiefullApp: App {
                     await viewModel.fetchClothes()
                 }
         }
+        .modelContainer(for: ReviewAndRating.self)
     }
 }

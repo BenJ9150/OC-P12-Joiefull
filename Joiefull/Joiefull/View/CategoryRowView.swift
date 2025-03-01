@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CategoryRowView: View {
+
+    @Environment(\.modelContext) private var modelContext
 
     let category: String
     let items: [Clothing]
@@ -34,7 +37,10 @@ private extension CategoryRowView {
             HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
                     NavigationLink {
-                        DetailView(viewModel: DetailViewModel(clothing: clothing))
+                        DetailView(viewModel: DetailViewModel(
+                            modelContext: modelContext,
+                            clothing: clothing)
+                        )
                     } label: {
                         CategoryItemView(for: clothing)
                     }

@@ -42,6 +42,15 @@ class MockHTTPClient {
             break
         }
     }
+
+    func getClothing() -> Clothing {
+        do {
+            let clothes = try JSONDecoder().decode([Clothing].self, from: getData())
+            return clothes[0]
+        } catch {
+            fatalError("Error when decode JSON clothes")
+        }
+    }
 }
 
 // MARK: Networking protocol
