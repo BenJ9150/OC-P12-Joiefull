@@ -32,17 +32,15 @@ class ClothesPreview {
     }
 
     func getClothes() -> [Clothing] {
-        // Get bundle for json localization
+        /// Get bundle for json localization
         let bundle = Bundle(for: ClothesPreview.self)
 
-        // Get url of clothesPreview json
+        /// Get url of clothesPreview json
         guard let clothesPreviewUrl = bundle.url(forResource: "clothesPreview", withExtension: "json") else {
             fatalError("Failed to get url of clothesPreview.json")
         }
-        // Get url of preview picture
-        guard let clothingImageUrl = bundle.url(forResource: "clothingImage", withExtension: "jpg") else {
-            fatalError("Failed to get url of clothingImageUrl.jpg")
-        }
+        /// Get url of preview picture
+        let clothingImageUrl = clothingImageUrl()
 
         do {
             let data = try Data(contentsOf: clothesPreviewUrl)
@@ -65,5 +63,26 @@ class ClothesPreview {
         } catch {
             fatalError("Failed to decode clothesPreview.json")
         }
+    }
+
+    func clothingImage() -> Image {
+        let url = clothingImageUrl()
+        return Image(uiImage: UIImage(contentsOfFile: url.path)!)
+    }
+}
+
+// MARK: Private
+
+private extension ClothesPreview {
+
+    private func clothingImageUrl() -> URL {
+        /// Get bundle for json localization
+        let bundle = Bundle(for: ClothesPreview.self)
+
+        /// Get url of preview picture
+        guard let clothingImageUrl = bundle.url(forResource: "clothingImage", withExtension: "jpg") else {
+            fatalError("Failed to get url of clothingImageUrl.jpg")
+        }
+        return clothingImageUrl
     }
 }

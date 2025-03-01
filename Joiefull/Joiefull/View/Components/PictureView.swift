@@ -15,7 +15,7 @@ struct PictureView: View {
 
     // MARK: Properties
 
-    @State private var isExpanded: Bool = false
+    @State private var showFullScreen: Bool = false
 
     private let clothing: Clothing
     private let width: CGFloat
@@ -64,7 +64,10 @@ private extension PictureView {
                         .resizable()
                         .scaledToFill()
                         .onTapGesture {
-                            withAnimation(.bouncy(duration: 0.3)) { isExpanded.toggle() }
+                            showFullScreen.toggle()
+                        }
+                        .fullScreenCover(isPresented: $showFullScreen) {
+                            FullScreenPictureView(isPresented: $showFullScreen, image: fetchedImage)
                         }
                 } else {
                     fetchedImage
@@ -81,11 +84,10 @@ private extension PictureView {
             idealWidth: width == .infinity ? nil : width,
             maxWidth: width,
             minHeight: 0,
-            idealHeight: isExpanded || height == .infinity ? nil : height,
-            maxHeight: isExpanded ? .infinity : height
+            idealHeight: height == .infinity ? nil : height,
+            maxHeight: height
         )
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        /// Use contentShape to avoid tap detection on hidden parts of the image (when image isn't expanded)
         .contentShape(RoundedRectangle(cornerRadius: 20))
         .background(
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
