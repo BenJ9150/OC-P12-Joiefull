@@ -9,14 +9,22 @@ import SwiftUI
 
 struct FullScreenPictureView: View {
 
+    // MARK: Public properties
+
+    @Binding var isPresented: Bool
+    let image: Image
+
+    // MARK: Private properties
+
+    /// Zoom
     @State private var relativeZoom: CGFloat = 0
     @State private var lastZoom: CGFloat = 1
     @State private var scale: CGFloat = 1
-    @State var offset: CGSize = .zero
-    @State var lastOffset: CGSize = .zero
-    @Binding var isPresented: Bool
 
-    let image: Image
+    /// Offset
+    @State private var offset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
+    @State private var imageRatio: CGFloat = 1
 
     var body: some View {
         ZStack {
@@ -44,9 +52,10 @@ struct FullScreenPictureView: View {
                                 })
                         )
                 )
-                .onAppear {
-                    print(image)
-                }
+                .background(GeometryReader { geo in
+                    Color.clear
+                        .onAppear { imageRatio = geo.size.width / geo.size.height }
+                })
         }
         .overlay(alignment: .bottom) {
             Button("Fermer") {
@@ -70,13 +79,17 @@ private extension FullScreenPictureView {
         } else {
             relativeZoom = (magnification - 1) * abs(lastZoom)
         }
+        if relativeZoom < 0 {
+            /// Zoom out
+            reinitOffset(animDuration: 1)
+        }
         updateScale()
     }
 
     func handleOnEndedZoom() {
         /// If lastZoom == 1, image was not zoom before this gesture
         /// Check if this gesture is a zoom out and close view if relativeZoom is significant
-        if lastZoom == 1 && relativeZoom < -0.5 {
+        if lastZoom == 1 && relativeZoom < -0.6 {
             var transaction = Transaction()
             transaction.disablesAnimations = true
             withTransaction(transaction) {
@@ -102,8 +115,8 @@ private extension FullScreenPictureView {
 
     func handleOnChangedOffset(_ translation: CGSize) {
         let newOffset = CGSize(
-            width: clampOffset(translation.width + lastOffset.width, axis: .horizontal),
-            height: clampOffset(translation.height + lastOffset.height, axis: .vertical)
+            width: newOffset(translation.width + lastOffset.width, axis: .horizontal),
+            height: newOffset(translation.height + lastOffset.height, axis: .vertical)
         )
 
         withAnimation(.interactiveSpring) {
@@ -118,18 +131,22 @@ private extension FullScreenPictureView {
 
     func reinitOffsetIfNeeded() {
         if scale == 1 {
-            lastOffset = .zero
-            withAnimation(.interactiveSpring) {
-                offset = .zero
-            }
+            reinitOffset()
         }
     }
 
-    func clampOffset(_ value: CGFloat, axis: Axis.Set) -> CGFloat {
+    func reinitOffset(animDuration: TimeInterval = 0.3) {
+        lastOffset = .zero
+        withAnimation(.interactiveSpring(duration: animDuration)) {
+            offset = .zero
+        }
+    }
+
+    func newOffset(_ value: CGFloat, axis: Axis.Set) -> CGFloat {
         guard scale > 1 else { return 0 }
 
         let screenSize = UIScreen.main.bounds.size
-        let imageSize = imageSizeInView()
+        let imageSize =  CGSize(width: screenSize.width * scale, height: screenSize.width / imageRatio * scale)
 
         let maxOffset: CGFloat
         if axis == .horizontal {
@@ -139,21 +156,6 @@ private extension FullScreenPictureView {
         }
 
         return min(max(value, -maxOffset), maxOffset)
-    }
-
-    func imageSizeInView() -> CGSize {
-        let screenSize = UIScreen.main.bounds.size
-        let imageAspectRatio = imageSizeRatio()
-
-        let displayWidth = screenSize.width * scale
-        let displayHeight = screenSize.width / imageAspectRatio * scale
-
-        return CGSize(width: displayWidth, height: displayHeight)
-    }
-
-    func imageSizeRatio() -> CGFloat {
-        let screenSize = UIScreen.main.bounds.size
-        return screenSize.width / screenSize.height
     }
 }
 
