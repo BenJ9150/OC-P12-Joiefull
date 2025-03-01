@@ -12,7 +12,6 @@ struct HomeView: View {
     @Environment(\.horizontalSizeClass) var horizontalSC
 
     @ObservedObject var viewModel: HomeViewModel
-    private let isPad = UIDevice.current.userInterfaceIdiom == .pad
 
     private var isSplitView: Bool {
         return horizontalSC == .regular
@@ -89,7 +88,7 @@ private extension HomeView {
     var clothesList: some View {
         List(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
             if let clothes = viewModel.clothesByCategory[category] {
-                CategoryRowView(category: category, items: clothes, isPad: isPad)
+                CategoryRowView(category: category, items: clothes)
                     .listRowSeparator(.hidden)
                     .listRowInsets(
                         EdgeInsets(
@@ -144,34 +143,23 @@ private extension HomeView {
 
 // MARK: - Preview
 
-struct HomeView_Previews: PreviewProvider {
+#Preview {
+    let previewMode: ClothesPreview.PreviewMode = .content
 
-    enum PreviewMode {
-        case loading
-        case error
-        case clothes
-    }
-
-    static let device: MyPreviewDevice = .iPhoneMax
-    static let previewMode: PreviewMode = .error
-    static let viewModel = HomeViewModel()
-
-    static var previews: some View {
-        HomeView(viewModel: viewModel)
-            .previewDevice(device.preview)
-            .onAppear {
-                switch previewMode {
-                case .loading:
-                    break
-                case .error:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        viewModel.showError()
-                        viewModel.firstLoading = false
-                    }
-                case .clothes:
-                    viewModel.handleFetchResult(ClothesPreview().getClothes())
+    let viewModel = HomeViewModel()
+    HomeView(viewModel: viewModel)
+        .onAppear {
+            switch previewMode {
+            case .loading:
+                break
+            case .error:
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    viewModel.showError()
                     viewModel.firstLoading = false
                 }
+            case .content:
+                viewModel.handleFetchResult(ClothesPreview().getClothes())
+                viewModel.firstLoading = false
             }
-    }
+        }
 }

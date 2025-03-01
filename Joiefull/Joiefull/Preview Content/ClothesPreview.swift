@@ -9,6 +9,12 @@ import SwiftUI
 
 class ClothesPreview {
 
+    enum PreviewMode {
+        case loading
+        case error
+        case content
+    }
+
     enum ClothingType: Int {
         case withSmallDescription = 5
         case withBigDescription = 12

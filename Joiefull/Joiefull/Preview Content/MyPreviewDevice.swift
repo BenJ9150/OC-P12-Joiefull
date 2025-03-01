@@ -17,8 +17,4 @@ enum MyPreviewDevice: String {
     var preview: PreviewDevice {
         PreviewDevice(rawValue: rawValue)
     }
-
-    var isPad: Bool {
-        rawValue.hasPrefix("iPad")
-    }
 }

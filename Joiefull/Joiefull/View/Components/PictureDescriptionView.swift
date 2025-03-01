@@ -16,16 +16,14 @@ struct PictureDescriptionView: View {
     // MARK: Properties
 
     private let clothing: Clothing
-    private let isPad: Bool
     private let showOriginalPrice: Bool
     private let isDetailView: Bool
     private let descriptionFont: Font
 
     // MARK: init
 
-    init(for clothing: Clothing, isDetailView: Bool = false, _ isPad: Bool) {
+    init(for clothing: Clothing, isDetailView: Bool = false) {
         self.clothing = clothing
-        self.isPad = isPad
         self.isDetailView = isDetailView
         self.descriptionFont = isDetailView ? .adaptiveBody : .adaptiveFootnote
 
@@ -136,43 +134,28 @@ private extension PictureDescriptionView {
     }
 }
 
-// MARK: - Preview for item view
+// MARK: - Preview
 
-struct PictureDescriptionViewForItemView_Previews: PreviewProvider {
-
-    static let device: MyPreviewDevice = .iPhoneMini
-    static let clothing = ClothesPreview().getClothing(.withBigDescription)
-
-    static var previews: some View {
-        PreviewWrapper()
-            .previewDevice(device.preview)
-    }
-
-    struct PreviewWrapper: View {
-        @Environment(\.dynamicTypeSize) var dynamicTypeSize
-
-        var pictureWidth: CGFloat {
-            let originalWidth: CGFloat = device.isPad ? 234 : 198
-            return originalWidth.adaptTo(dynamicTypeSize)
-        }
-
-        var body: some View {
-            PictureDescriptionView(for: clothing, device.isPad)
-                .frame(width: pictureWidth)
-        }
-    }
+#Preview("Detail view") {
+    PictureDescriptionView(for: ClothesPreview().getClothing(12), isDetailView: true)
+        .padding(.horizontal, UIDevice.isPad ? 32 : 16)
 }
 
-// MARK: - Preview for detail view
+#Preview("Item view", traits: .modifier(ItemView())) {
+    PictureDescriptionView(for: ClothesPreview().getClothing(12))
+}
 
-struct PictureDescriptionViewForDetailView_Previews: PreviewProvider {
+private struct ItemView: PreviewModifier {
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
-    static let device: MyPreviewDevice = .iPhoneMini
-    static let clothing = ClothesPreview().getClothing(12)
+    var pictureWidth: CGFloat {
+        let originalWidth: CGFloat = UIDevice.isPad ? 234 : 198
+        return originalWidth.adaptTo(dynamicTypeSize)
+    }
 
-    static var previews: some View {
-        PictureDescriptionView(for: clothing, isDetailView: true, device.isPad)
-            .padding(.horizontal, device.isPad ? 32 : 16)
-            .previewDevice(device.preview)
+    func body(content: Content, context: ()) -> some View {
+        content
+            .frame(width: pictureWidth)
+            .background(.red)
     }
 }

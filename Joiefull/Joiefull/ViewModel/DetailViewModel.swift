@@ -23,9 +23,11 @@ import SwiftUI
     @Published var postLikeError = ""
 
     private let clothingService: ClothingService
+    let clothing: Clothing
 
-    init(using httpClient: HTTPClient = URLSession.shared) {
+    init(clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
         self.clothingService = ClothingService(using: httpClient)
+        self.clothing = clothing
     }
 }
 
@@ -33,11 +35,11 @@ import SwiftUI
 
 extension DetailViewModel {
 
-    func postReview(clothingId: Int) async {
+    func postReview() async {
         postingReview = true
         postReviewError = ""
         do {
-            try await clothingService.postReview(review, withRating: rating, clothingId: clothingId)
+            try await clothingService.postReview(review, withRating: rating, clothingId: clothing.id)
             postReviewSuccess = true
         } catch {
             print("💥 Post review failed: \(error)")
@@ -52,11 +54,11 @@ extension DetailViewModel {
 
 extension DetailViewModel {
 
-    func postLike(clothingId: Int) async {
+    func postLike() async {
         postingLike = true
         postLikeError = ""
         do {
-            try await clothingService.postLike(clothingId: clothingId)
+            try await clothingService.postLike(clothingId: clothing.id)
         } catch {
             withAnimation(.bouncy) {
                 print("💥 Post like failed: \(error)")

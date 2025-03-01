@@ -17,7 +17,6 @@ struct CategoryItemView: View {
     // MARK: Properties
 
     private let clothing: Clothing
-    private let isPad: Bool
     private let originalPictureWidth: CGFloat
     private let originalPictureHeight: CGFloat
 
@@ -37,11 +36,10 @@ struct CategoryItemView: View {
 
     // MARK: Init
 
-    init(for clothing: Clothing, _ isPad: Bool) {
+    init(for clothing: Clothing) {
         self.clothing = clothing
-        self.isPad = isPad
-        self.originalPictureWidth = isPad ? 234 : 198
-        self.originalPictureHeight = isPad ? 256 : 198
+        self.originalPictureWidth = UIDevice.isPad ? 234 : 198
+        self.originalPictureHeight = UIDevice.isPad ? 256 : 198
     }
 
     // MARK: Body
@@ -53,13 +51,13 @@ struct CategoryItemView: View {
             if isPhoneInLandscape && dynamicTypeSize.isAccessibilitySize {
                 HStack(spacing: 24) {
                     PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
-                    PictureDescriptionView(for: clothing, isPad)
+                    PictureDescriptionView(for: clothing)
                         .frame(width: dynamicTypeSize.isHigh ? pictureWidth : originalPictureWidth)
                 }
             } else {
                 VStack(spacing: isPad ? 12 : 8) {
                     PictureView(for: clothing, width: pictureWidth, height: pictureHeight)
-                    PictureDescriptionView(for: clothing, isPad)
+                    PictureDescriptionView(for: clothing)
                         .padding(.horizontal, 8)
                 }
                 .frame(width: pictureWidth)
@@ -70,13 +68,6 @@ struct CategoryItemView: View {
 
 // MARK: - Preview
 
-struct CategoryItemView_Previews: PreviewProvider {
-
-    static let device: MyPreviewDevice = .iPhoneMini
-    static let clothing = ClothesPreview().getClothing(12)
-
-    static var previews: some View {
-        CategoryItemView(for: clothing, device.isPad)
-            .previewDevice(device.preview)
-    }
+#Preview {
+    CategoryItemView(for: ClothesPreview().getClothing(12))
 }

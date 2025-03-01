@@ -17,12 +17,10 @@ struct DetailView: View {
 
     // MARK: Properties
 
-    @StateObject private var viewModel = DetailViewModel()
+    @ObservedObject private var viewModel: DetailViewModel
     @FocusState private var reviewIsFocused: Bool
 
     private let avatar: Image
-    private let clothing: Clothing
-    private let isPad: Bool
 
     private var isNavigationStack: Bool {
         horizontalSC == .compact
@@ -30,10 +28,9 @@ struct DetailView: View {
 
     // MARK: Init
 
-    init(for clothing: Clothing, isPad: Bool, avatar: Image = Image(systemName: "person.crop.circle")) {
+    init(viewModel: DetailViewModel, avatar: Image = Image(systemName: "person.crop.circle")) {
         self.avatar = avatar
-        self.clothing = clothing
-        self.isPad = isPad
+        self.viewModel = viewModel
     }
 
     // MARK: Body
@@ -55,35 +52,12 @@ struct DetailView: View {
         )
         /// Alert to confirm sending review
         .reviewAlert(show: $viewModel.showReviewAlert, addCommentBtn: viewModel.review.isEmpty, onSubmit: {
-            Task { await viewModel.postReview(clothingId: clothing.id) }
+            Task { await viewModel.postReview() }
         }, onAddComment: {
             reviewIsFocused = true
         })
         /// Alert if error when sending review
         .alert(viewModel.postReviewError, isPresented: $viewModel.showReviewError, actions: {})
-    }
-}
-
-extension View {
-
-    func alertForReview(
-        isPresented: Binding<Bool>,
-        title: String,
-        viewModel: DetailViewModel,
-        clothingId: Int,
-        reviewIsFocused: Binding<Bool>
-    ) -> some View {
-        self.alert(title, isPresented: isPresented) {
-            Button("Partager", role: .none) {
-                Task { await viewModel.postReview(clothingId: clothingId) }
-            }
-            if viewModel.review.isEmpty {
-                Button("Ajouter un commentaire", role: .none) {
-                    reviewIsFocused.wrappedValue = true
-                }
-            }
-            Button("Annuler", role: .cancel) { }
-        }
     }
 }
 
@@ -94,7 +68,7 @@ private extension DetailView {
     var verticalDetails: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PictureView(for: clothing, height: 406, isDetailView: true)
+                PictureView(for: viewModel.clothing, height: 406, isDetailView: true)
                 clothingDetails
                 ratingAndReviewSection
             }
@@ -105,7 +79,7 @@ private extension DetailView {
 
     var horizontalDetails: some View {
         HStack(spacing: 24) {
-            PictureView(for: clothing, width: 234, isDetailView: true)
+            PictureView(for: viewModel.clothing, width: 234, isDetailView: true)
                 .padding(.top, 24)
             ScrollView {
                 clothingDetails
@@ -122,10 +96,10 @@ private extension DetailView {
 
     var clothingDetails: some View {
         VStack(spacing: 12) {
-            PictureDescriptionView(for: clothing, isDetailView: true, isPad)
+            PictureDescriptionView(for: viewModel.clothing, isDetailView: true)
                 .accessibilityHidden(true)
 
-            Text(clothing.picture.description)
+            Text(viewModel.clothing.picture.description)
                 .font(.adaptiveFootnote)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -273,21 +247,9 @@ private extension DetailView {
 
 // MARK: - Preview
 
-struct DetailView_Previews: PreviewProvider {
-
-    static let device: MyPreviewDevice = .iPhoneMini
-    static let clothing = ClothesPreview().getClothing(.withSmallDescription)
-
-    static var previews: some View {
-        DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
-            .previewDevice(device.preview)
-    }
-}
-
-#Preview("Details in Split View", traits: .modifier(SplitView())) {
-    let device: MyPreviewDevice = .iPhoneMax
-    let clothing = ClothesPreview().getClothing(.withSmallDescription)
-    DetailView(for: clothing, isPad: device.isPad, avatar: Image(.avatar))
+#Preview(traits: .modifier(SplitView())) {
+    @Previewable var viewModel = DetailViewModel(clothing: ClothesPreview().getClothing(.withSmallDescription))
+    DetailView(viewModel: viewModel, avatar: Image(.avatar))
 }
 
 private struct SplitView: PreviewModifier {

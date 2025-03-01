@@ -19,6 +19,8 @@ struct JoifullButton: ButtonStyle {
         }
 }
 
+//MARK: - Preview
+
 #Preview {
     Button("Mon bouton") {
         print("button pressed")

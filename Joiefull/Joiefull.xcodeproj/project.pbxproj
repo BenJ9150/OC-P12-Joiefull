@@ -27,6 +27,7 @@
 		4399797C2D70D9AC00C793EA /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4399797B2D70D9AC00C793EA /* DetailViewModelTests.swift */; };
 		43A29EE02D608C5F001F9FF3 /* Font+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A29EDF2D608C5F001F9FF3 /* Font+Adaptive.swift */; };
 		43ABD5CF2D5F6DD800733873 /* MyPreviewDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ABD5CE2D5F6DD800733873 /* MyPreviewDevice.swift */; };
+		43AD7E4C2D72FD5200A51C9A /* View+UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AD7E4B2D72FD5200A51C9A /* View+UIDevice.swift */; };
 		43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2BA4C2D4D1EEC002DF50A /* PictureView.swift */; };
 		43B2BA4F2D4D1FA3002DF50A /* clothesPreview.json in Resources */ = {isa = PBXBuildFile; fileRef = 43B2BA4E2D4D1FA3002DF50A /* clothesPreview.json */; };
 		43B2BA512D4D2033002DF50A /* ClothesPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2BA502D4D2033002DF50A /* ClothesPreview.swift */; };
@@ -81,6 +82,7 @@
 		4399797B2D70D9AC00C793EA /* DetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
 		43A29EDF2D608C5F001F9FF3 /* Font+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Adaptive.swift"; sourceTree = "<group>"; };
 		43ABD5CE2D5F6DD800733873 /* MyPreviewDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPreviewDevice.swift; sourceTree = "<group>"; };
+		43AD7E4B2D72FD5200A51C9A /* View+UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+UIDevice.swift"; sourceTree = "<group>"; };
 		43B2BA4C2D4D1EEC002DF50A /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		43B2BA4E2D4D1FA3002DF50A /* clothesPreview.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clothesPreview.json; sourceTree = "<group>"; };
 		43B2BA502D4D2033002DF50A /* ClothesPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesPreview.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				4352DC942D6B2653002A2B77 /* View+Overlay.swift */,
 				43052BAB2D71F75800573414 /* View+Keyboard.swift */,
 				43052BAD2D71F78200573414 /* View+Alert.swift */,
+				43AD7E4B2D72FD5200A51C9A /* View+UIDevice.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43BABE562D3AB6740079B4E8 /* JoiefullApp.swift in Sources */,
+				43AD7E4C2D72FD5200A51C9A /* View+UIDevice.swift in Sources */,
 				43BABE922D3ACF410079B4E8 /* HomeViewModel.swift in Sources */,
 				43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */,
 				43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */,

@@ -11,7 +11,6 @@ struct CategoryRowView: View {
 
     let category: String
     let items: [Clothing]
-    let isPad: Bool
 
     // MARK: Body
 
@@ -35,9 +34,9 @@ private extension CategoryRowView {
             HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
                     NavigationLink {
-                        DetailView(for: clothing, isPad: isPad)
+                        DetailView(viewModel: DetailViewModel(clothing: clothing))
                     } label: {
-                        CategoryItemView(for: clothing, isPad)
+                        CategoryItemView(for: clothing)
                     }
                     .foregroundStyle(.primary)
                     /// VoiceOver accessibility
@@ -62,6 +61,5 @@ private extension CategoryRowView {
 
 #Preview {
     let clothes = ClothesPreview().getClothes()
-    let isPad = UIDevice.current.userInterfaceIdiom == .pad
-    CategoryRowView(category: clothes[0].category, items: clothes, isPad: isPad)
+    CategoryRowView(category: clothes[0].category, items: clothes)
 }
