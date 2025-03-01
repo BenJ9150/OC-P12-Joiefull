@@ -77,7 +77,7 @@ class ClothesPreview {
         return Image(uiImage: UIImage(contentsOfFile: url.path)!)
     }
 
-    @MainActor func modelContainer() -> ModelContainer {
+    @MainActor func previewModelContainer() -> ModelContainer {
         do {
             return try ModelContainer(for: ReviewAndRating.self, configurations: .init(isStoredInMemoryOnly: true))
         } catch {
@@ -85,12 +85,12 @@ class ClothesPreview {
         }
     }
 
-    @MainActor func reviewAndRatingModelContext(clothingType: ClothingType) -> ModelContext {
-        let context = modelContainer().mainContext
-        let review = ReviewAndRating(clothingId: clothingType.rawValue, review: "Ma review", rating: 4)
-        context.insert(review)
-        try? context.save()
-        return context
+    @MainActor func previewModelContext(clothingType: ClothingType) -> ModelContext {
+        let review = ReviewAndRating(clothingId: clothingType.rawValue, review: "test", rating: 4)
+        let container = previewModelContainer()
+        let service = SwiftDataService(modelContext: container.mainContext)
+        service.saveReviewAndRating(review)
+        return container.mainContext
     }
 }
 

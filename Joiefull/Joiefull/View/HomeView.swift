@@ -148,7 +148,7 @@ private extension HomeView {
 
     let viewModel = HomeViewModel()
     HomeView(viewModel: viewModel)
-        .modelContainer(ClothesPreview().modelContainer())
+        .modelContainer(ClothesPreview().previewModelContainer())
         .onAppear {
             switch previewMode {
             case .loading:
