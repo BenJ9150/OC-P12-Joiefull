@@ -37,6 +37,7 @@ struct HomeView: View {
             } else if viewModel.fetchClothesError.isEmpty {
                 if isPad {
                     clothesList
+                        .listStyle(.grouped)
                         .background(Color(UIColor.systemGroupedBackground))
                         .inspector(isPresented: isInspectorPresented) {
                             if let clothing = selectedItem {
@@ -75,7 +76,6 @@ private extension HomeView {
             }
         }
         .scrollContentBackground(.hidden)
-        .listStyle(.inset)
         .refreshable {
             await viewModel.fetchClothes()
         }
