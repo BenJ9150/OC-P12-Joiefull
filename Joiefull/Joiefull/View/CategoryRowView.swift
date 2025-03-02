@@ -10,9 +10,9 @@ import SwiftData
 
 struct CategoryRowView: View {
 
-    @Environment(\.modelContext) private var modelContext
-    @Binding var selectedItem: Clothing?
+    // MARK: Properties
 
+    @Binding var selectedItem: Clothing?
     let category: String
     let items: [Clothing]
 
@@ -25,7 +25,12 @@ struct CategoryRowView: View {
                 .accessibilityAddTraits(.isHeader)
 
             itemsList
+                .padding(.bottom, isPad ? 16 : 12)
         }
+        .padding(.leading, isPad ? 20 : 16)
+        .background(
+            Color(isPad ? UIColor.systemGroupedBackground : UIColor.systemBackground)
+        )
     }
 }
 
@@ -38,7 +43,11 @@ private extension CategoryRowView {
             HStack(alignment: .top, spacing: isPad ? 16 : 8) {
                 ForEach(items) { clothing in
                     Button {
-                        selectedItem = clothing
+                        if selectedItem == clothing {
+                            selectedItem = nil
+                        } else {
+                            selectedItem = clothing
+                        }
                     } label: {
                         CategoryItemView(
                             for: clothing,

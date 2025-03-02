@@ -9,26 +9,23 @@ import SwiftUI
 
 struct DetailView: View {
 
-    // MARK: Environment
+    // MARK: Properties
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    @Environment(\.horizontalSizeClass) var horizontalSC
-    @Environment(\.verticalSizeClass) var verticalSC
-
-    // MARK: Properties
+    @Environment(\.verticalSizeClass) var verticalSizeClass
 
     @ObservedObject private var viewModel: DetailViewModel
     @FocusState private var reviewIsFocused: Bool
-
     private let avatar: Image
 
-    private var isNavigationStack: Bool {
-        horizontalSC == .compact
+    private var isPhoneInLandscape: Bool {
+        if isPad { return false }
+        return verticalSizeClass == .compact
     }
 
     // MARK: Init
 
-    init(viewModel: DetailViewModel, avatar: Image = Image(systemName: "person.crop.circle")) {
+    init(with viewModel: DetailViewModel, avatar: Image = Image(systemName: "person.crop.circle")) {
         self.avatar = avatar
         self.viewModel = viewModel
     }
@@ -37,18 +34,16 @@ struct DetailView: View {
 
     var body: some View {
         ZStack {
-            /// If view is presented like a navigation stack (horizontalSizeClass == compact)
-            /// and is an iPhone in landscape (verticalSizeClass == compact), show details to the right of the picture.
-            if isNavigationStack && verticalSC == .compact {
+            /// If it is an iPhone in landscape, show details to the right of the picture.
+            if isPhoneInLandscape {
                 horizontalDetails
             } else {
                 verticalDetails
             }
         }
-        .navigationBarBackButtonHidden(!isNavigationStack)
         .onTapGesture { hideKeyboard() }
         .background(
-            Color(isNavigationStack ? UIColor.systemBackground : UIColor.systemGroupedBackground)
+            Color(isPad ? UIColor.systemGroupedBackground : UIColor.systemBackground)
         )
         /// Alert to confirm sending review
         .reviewAlert(show: $viewModel.showReviewAlert, addCommentBtn: viewModel.review.isEmpty, onSubmit: {
@@ -68,7 +63,7 @@ private extension DetailView {
     var verticalDetails: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PictureView(for: viewModel.clothing, height: 406, isDetailView: true)
+                PictureView(for: viewModel.clothing, height: .detailPictureHeight, isDetailView: true)
                 clothingDetails
                 ratingAndReviewSection
             }
@@ -79,8 +74,7 @@ private extension DetailView {
 
     var horizontalDetails: some View {
         HStack(spacing: 24) {
-            PictureView(for: viewModel.clothing, width: 234, isDetailView: true)
-                .padding(.top, 24)
+            PictureView(for: viewModel.clothing, width: .detailPictureWidth, isDetailView: true)
             ScrollView {
                 clothingDetails
                 ratingAndReviewSection
@@ -247,16 +241,42 @@ private extension DetailView {
 
 // MARK: - Preview
 
-#Preview(traits: .modifier(SplitView())) {
+#Preview(traits: .modifier(Inspector())) {
     @Previewable var viewModel = DetailViewModel(
 //        modelContext: ClothesPreview().previewModelContext(clothingType: .withSmallDescription),
-        clothing: ClothesPreview().getClothing(.withSmallDescription)
+        for: ClothesPreview().getClothing(.withSmallDescription)
     )
-    DetailView(viewModel: viewModel, avatar: Image(.avatar))
+    DetailView(with: viewModel, avatar: Image(.avatar))
+}
+
+private struct Inspector: PreviewModifier {
+    @State private var navigateToDetail = false
+
+    func body(content: Content, context: ()) -> some View {
+        NavigationStack {
+            if UIDevice.isPad {
+                Text("PREVIEW")
+                    .inspector(isPresented: $navigateToDetail) {
+                        content
+                            .inspectorColumnWidth(min: 400, ideal: 514)
+                    }
+            } else {
+                Text("PREVIEW")
+                    .navigationDestination(isPresented: $navigateToDetail) {
+                        content
+                    }
+            }
+        }
+        .onTapGesture {
+            navigateToDetail.toggle()
+        }
+        .onAppear {
+            navigateToDetail = true
+        }
+    }
 }
 
 private struct SplitView: PreviewModifier {
-
     @State private var navigateToDetail = false
 
     func body(content: Content, context: ()) -> some View {

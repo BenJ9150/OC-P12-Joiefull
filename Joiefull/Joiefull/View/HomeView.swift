@@ -9,81 +9,50 @@ import SwiftUI
 
 struct HomeView: View {
 
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.horizontalSizeClass) var horizontalSC
+    // MARK: Properties
 
+    @Environment(\.modelContext) private var context
     @ObservedObject var viewModel: HomeViewModel
     @State private var selectedItem: Clothing?
 
-    private var isSplitView: Bool {
-        return horizontalSC == .regular
+    private var isInspectorPresented: Binding<Bool> {
+        Binding(
+            get: { selectedItem != nil },
+            set: { if !$0 { selectedItem = nil } }
+        )
     }
 
     // MARK: Body
 
     var body: some View {
-        /// Using geometry reader to update sidebar width after iPad rotations
-        GeometryReader { geo in
-            NavigationSplitView(columnVisibility: .constant(.all)) {
-                if isSplitView {
-                    splitViewSidebar
-                        .navigationSplitViewColumnWidth(sidebar(screenSize: geo.size))
-                        .toolbar(.hidden, for: .navigationBar)
-                        .listStyle(.sidebar)
-                } else {
-                    splitViewSidebar
-                        .listStyle(.plain)
-                }
-            } detail: {
-                splitViewDetail
-            }
-            .navigationSplitViewStyle(.balanced)
-        }
-    }
-}
-
-// MARK: Split view columns
-
-private extension HomeView {
-
-    var splitViewSidebar: some View {
-        ZStack {
+        NavigationStack {
             if viewModel.firstLoading {
                 firstLoadingProgressView
                     .onAppear {
                         /// At the begining, firstLoading is already set to true, so state is not udpaded.
                         /// Using announcement notification instead of accessibilityLabel
                         /// to force VoiceOver announcement.
-                        UIAccessibility.post(
-                            notification: .announcement,
-                            argument: "Chargement des vêtements."
-                        )
+                        UIAccessibility.post(notification: .announcement, argument: "Chargement des vêtements")
                     }
             } else if viewModel.fetchClothesError.isEmpty {
-                clothesList
+                if isPad {
+                    clothesList
+                        .background(Color(UIColor.systemGroupedBackground))
+                        .inspector(isPresented: isInspectorPresented) {
+                            if let clothing = selectedItem {
+                                DetailView(with: DetailViewModel(modelContext: context, for: clothing))
+                                    .inspectorColumnWidth(min: 400, ideal: 514)
+                            }
+                        }
+                } else {
+                    clothesList
+                        .listStyle(.inset)
+                        .navigationDestination(item: $selectedItem) { clothing in
+                            DetailView(with: DetailViewModel(modelContext: context, for: clothing))
+                        }
+                }
             } else {
                 fetchError
-            }
-        }
-    }
-
-    private func sidebar(screenSize: CGSize) -> CGFloat {
-        let isLandscape = screenSize.width > screenSize.height
-        let maxWidth: CGFloat = screenSize.width - 1
-        let landscapeWidth = screenSize.width * 766/1280
-        return selectedItem == nil ? maxWidth : (isLandscape ? landscapeWidth : 0)
-    }
-
-    var splitViewDetail: some View {
-        ZStack {
-            if viewModel.firstLoading || !viewModel.fetchClothesError.isEmpty {
-                Color
-                    .launchScreenBackground
-                    .ignoresSafeArea()
-
-            } else {
-                Color(UIColor.systemGroupedBackground)
-                    .ignoresSafeArea()
             }
         }
     }
@@ -102,22 +71,11 @@ private extension HomeView {
                     items: clothes
                 )
                 .listRowSeparator(.hidden)
-                .listRowInsets(
-                    EdgeInsets(
-                        top: 0,
-                        leading: 16,
-                        bottom: 12,
-                        trailing: 0
-                    )
-                )
+                .listRowInsets(EdgeInsets())
             }
         }
-        .navigationDestination(item: $selectedItem) { clothing in
-            DetailView(viewModel: DetailViewModel(
-                modelContext: modelContext,
-                clothing: clothing)
-            )
-        }
+        .scrollContentBackground(.hidden)
+        .listStyle(.inset)
         .refreshable {
             await viewModel.fetchClothes()
         }

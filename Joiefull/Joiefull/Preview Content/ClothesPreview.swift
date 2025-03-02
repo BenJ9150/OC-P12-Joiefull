@@ -17,8 +17,8 @@ class ClothesPreview {
     }
 
     enum ClothingType: Int {
-        case withSmallDescription = 5
-        case withBigDescription = 12
+        case withSmallDescription = 1
+        case withBigDescription = 0
     }
 
     func getClothing(_ clothingType: ClothingType) -> Clothing {

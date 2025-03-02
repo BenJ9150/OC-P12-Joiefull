@@ -50,6 +50,7 @@
 		43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE932D3AD4300079B4E8 /* CategoryRowView.swift */; };
 		43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE952D3AD4EB0079B4E8 /* DetailView.swift */; };
 		43BABE982D3AD5270079B4E8 /* CategoryItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE972D3AD5270079B4E8 /* CategoryItemView.swift */; };
+		43D75D6B2D7457ED00CE8FA5 /* CGFloat+PictureWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D75D6A2D7457ED00CE8FA5 /* CGFloat+PictureWidth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		43BABE932D3AD4300079B4E8 /* CategoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRowView.swift; sourceTree = "<group>"; };
 		43BABE952D3AD4EB0079B4E8 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		43BABE972D3AD5270079B4E8 /* CategoryItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItemView.swift; sourceTree = "<group>"; };
+		43D75D6A2D7457ED00CE8FA5 /* CGFloat+PictureWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+PictureWidth.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 			children = (
 				4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */,
 				437722AE2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift */,
+				43D75D6A2D7457ED00CE8FA5 /* CGFloat+PictureWidth.swift */,
 				437722B02D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift */,
 				43A29EDF2D608C5F001F9FF3 /* Font+Adaptive.swift */,
 				4352DC942D6B2653002A2B77 /* View+Overlay.swift */,
@@ -449,6 +452,7 @@
 				43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */,
 				437722B12D56634800E0A88E /* DynamicTypeSize+HighAccessSize.swift in Sources */,
 				43BABE5D2D3AB6AD0079B4E8 /* ClothingService.swift in Sources */,
+				43D75D6B2D7457ED00CE8FA5 /* CGFloat+PictureWidth.swift in Sources */,
 				43AD7E4E2D7306E600A51C9A /* ReviewAndRating.swift in Sources */,
 				43BABE5E2D3AB6AD0079B4E8 /* Picture.swift in Sources */,
 				43BABE902D3ACF2B0079B4E8 /* HomeView.swift in Sources */,

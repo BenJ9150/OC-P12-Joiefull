@@ -9,30 +9,26 @@ import SwiftUI
 
 struct CategoryItemView: View {
 
-    // MARK: Environment
-
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    @Environment(\.verticalSizeClass) var verticalSC
-
     // MARK: Properties
 
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     private let clothing: Clothing
-    private let originalPictureWidth: CGFloat
-    private let originalPictureHeight: CGFloat
     private let isSelected: Bool
-
-    private var isPhoneInLandscape: Bool {
-        return verticalSC == .compact
-    }
 
     private var pictureWidth: CGFloat {
         /// Increase  width when dynamic type size increases to give more spaces for clothing description
-        return originalPictureWidth.adaptTo(dynamicTypeSize)
+        return .originalPictureWidth.adaptTo(dynamicTypeSize)
     }
 
     private var pictureHeight: CGFloat {
         /// Increase picture height when picture width increases to keep original aspect ratio
-        return pictureWidth * originalPictureHeight / originalPictureWidth
+        return pictureWidth * .originalPictureHeight / .originalPictureWidth
+    }
+
+    private var isPhoneInLandscape: Bool {
+        if isPad { return false }
+        return verticalSizeClass == .compact
     }
 
     // MARK: Init
@@ -40,8 +36,6 @@ struct CategoryItemView: View {
     init(for clothing: Clothing, isSelected: Bool) {
         self.clothing = clothing
         self.isSelected = isSelected
-        self.originalPictureWidth = UIDevice.isPad ? 234 : 198
-        self.originalPictureHeight = UIDevice.isPad ? 256 : 198
     }
 
     // MARK: Body
@@ -54,7 +48,7 @@ struct CategoryItemView: View {
                 HStack(spacing: 24) {
                     picture
                     description
-                        .frame(width: dynamicTypeSize.isHigh ? pictureWidth : originalPictureWidth)
+                        .frame(width: dynamicTypeSize.isHigh ? pictureWidth : .originalPictureWidth)
                 }
             } else {
                 VStack(spacing: isPad ? 12 : 8) {

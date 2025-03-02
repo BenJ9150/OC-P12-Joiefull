@@ -27,7 +27,7 @@ import SwiftData
     private let clothingService: ClothingService
     let clothing: Clothing
 
-    init(modelContext: ModelContext? = nil, clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
+    init(modelContext: ModelContext? = nil, for clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
         self.clothingService = ClothingService(using: httpClient)
         self.swiftDataService = SwiftDataService(modelContext: modelContext)
         self.clothing = clothing
