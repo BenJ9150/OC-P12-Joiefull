@@ -13,6 +13,7 @@ struct CategoryItemView: View {
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.verticalSizeClass) var verticalSizeClass
+
     private let clothing: Clothing
     private let isSelected: Bool
 
@@ -89,17 +90,11 @@ private extension CategoryItemView {
 // MARK: - Preview
 
 #Preview {
-    ScrollView(.horizontal) {
-        HStack(alignment: .top, spacing: UIDevice.isPad ? 16 : 8) {
-            CategoryItemView(
-                for: ClothesPreview().getClothing(.withBigDescription),
-                isSelected: true
-            )
-            CategoryItemView(
-                for: ClothesPreview().getClothing(.withSmallDescription),
-                isSelected: false
-            )
+    @Previewable @State var isSelected = false
+    let clothing = ClothesPreview().getClothing(.withBigDescription)
+
+    CategoryItemView(for: clothing, isSelected: isSelected)
+        .onTapGesture {
+            isSelected.toggle()
         }
-        .padding()
-    }
 }

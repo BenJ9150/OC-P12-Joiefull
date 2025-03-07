@@ -76,9 +76,11 @@ private extension CategoryRowView {
 // MARK: - Preview
 
 #Preview {
+    @Previewable @State var selectedItem: Clothing?
     let clothes = ClothesPreview().getClothes()
+
     CategoryRowView(
-        selectedItem: .constant(nil),
+        selectedItem: $selectedItem,
         category: clothes[0].category,
         items: clothes
     )

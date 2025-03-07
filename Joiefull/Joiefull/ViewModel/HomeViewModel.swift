@@ -12,6 +12,7 @@ import SwiftUI
     @Published var clothesByCategory: [String: [Clothing]] = [:]
     @Published var firstLoading = true
     @Published var fetchClothesError = ""
+    @Published var selectedItem: Clothing?
 
     private let clothingService: ClothingService
 
@@ -44,6 +45,30 @@ extension HomeViewModel {
     func showError() {
         withAnimation(.bouncy) {
             fetchClothesError = "Oups... Une erreur s'est produite."
+        }
+    }
+}
+
+// MARK: Open detail from url
+
+extension HomeViewModel {
+
+    func opendDetails(from url: URL) {
+        print("Deep link received: \(url.absoluteString)")
+
+        /// Get clothing id from url
+        guard url.scheme == Clothing.shareUrlScheme,
+              url.host == Clothing.shareUrlHost,
+              let clothingId = Int(url.lastPathComponent) else {
+            return
+        }
+        /// Get clothing that match with id from url
+        if let clothing = clothesByCategory
+            .values
+            .flatMap({ $0 })
+            .first(where: { $0.id == clothingId }) {
+            /// Show clothing
+            selectedItem = clothing
         }
     }
 }

@@ -84,14 +84,6 @@ class ClothesPreview {
             fatalError("Could not initialize ModelContainer")
         }
     }
-
-    @MainActor func previewModelContext(clothingType: ClothingType) -> ModelContext {
-        let review = ReviewAndRating(clothingId: clothingType.rawValue, review: "test", rating: 4)
-        let container = previewModelContainer()
-        let service = SwiftDataService(modelContext: container.mainContext)
-        service.saveReviewAndRating(review)
-        return container.mainContext
-    }
 }
 
 // MARK: Private

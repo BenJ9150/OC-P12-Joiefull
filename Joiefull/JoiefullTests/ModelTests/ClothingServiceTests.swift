@@ -10,7 +10,7 @@ import XCTest
 
 final class ClothingServiceTests: XCTestCase {
 
-    // MARK: fetch clothes
+    // MARK: Fetch clothes
 
     func testFetchClothesSuccess() async throws {
         // Given

@@ -13,12 +13,11 @@ struct HomeView: View {
 
     @Environment(\.modelContext) private var context
     @ObservedObject var viewModel: HomeViewModel
-    @State private var selectedItem: Clothing?
 
     private var isInspectorPresented: Binding<Bool> {
         Binding(
-            get: { selectedItem != nil },
-            set: { if !$0 { selectedItem = nil } }
+            get: { viewModel.selectedItem != nil },
+            set: { if !$0 { viewModel.selectedItem = nil } }
         )
     }
 
@@ -40,7 +39,7 @@ struct HomeView: View {
                         .listStyle(.grouped)
                         .background(Color(UIColor.systemGroupedBackground))
                         .inspector(isPresented: isInspectorPresented) {
-                            if let clothing = selectedItem {
+                            if let clothing = viewModel.selectedItem {
                                 DetailView(with: DetailViewModel(modelContext: context, for: clothing))
                                     .inspectorColumnWidth(min: 400, ideal: 514)
                             }
@@ -48,7 +47,7 @@ struct HomeView: View {
                 } else {
                     clothesList
                         .listStyle(.inset)
-                        .navigationDestination(item: $selectedItem) { clothing in
+                        .navigationDestination(item: $viewModel.selectedItem) { clothing in
                             DetailView(with: DetailViewModel(modelContext: context, for: clothing))
                         }
                 }
@@ -67,7 +66,7 @@ private extension HomeView {
         List(viewModel.clothesByCategory.keys.sorted(), id: \.self) { category in
             if let clothes = viewModel.clothesByCategory[category] {
                 CategoryRowView(
-                    selectedItem: $selectedItem,
+                    selectedItem: $viewModel.selectedItem,
                     category: category,
                     items: clothes
                 )
@@ -76,6 +75,7 @@ private extension HomeView {
             }
         }
         .scrollContentBackground(.hidden)
+        .onOpenURL { viewModel.opendDetails(from: $0) }
         .refreshable {
             await viewModel.fetchClothes()
         }

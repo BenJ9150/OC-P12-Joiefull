@@ -241,12 +241,18 @@ private extension DetailView {
 
 // MARK: - Preview
 
-#Preview(traits: .modifier(Inspector())) {
-    @Previewable var viewModel = DetailViewModel(
-//        modelContext: ClothesPreview().previewModelContext(clothingType: .withSmallDescription),
-        for: ClothesPreview().getClothing(.withSmallDescription)
+#Preview("With navigation", traits: .modifier(Inspector())) {
+    DetailView(
+        with: DetailViewModel(for: ClothesPreview().getClothing(.withSmallDescription)),
+        avatar: Image(.avatar)
     )
-    DetailView(with: viewModel, avatar: Image(.avatar))
+}
+
+#Preview() {
+    DetailView(
+        with: DetailViewModel(for: ClothesPreview().getClothing(.withSmallDescription))
+        , avatar: Image(.avatar)
+    )
 }
 
 private struct Inspector: PreviewModifier {

@@ -10,16 +10,16 @@ import SwiftUI
 struct JoifullButton: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
-            configuration.label
+        configuration.label
             .font(.headline.weight(.bold))
             .foregroundStyle(Color.buttonText)
             .padding()
             .padding(.horizontal)
             .background(Color.buttonBackground, in: .capsule)
-        }
+    }
 }
 
-//MARK: - Preview
+// MARK: - Preview
 
 #Preview {
     Button("Mon bouton") {

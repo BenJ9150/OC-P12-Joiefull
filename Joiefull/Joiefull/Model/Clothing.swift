@@ -26,4 +26,13 @@ struct Clothing: Decodable, Identifiable, Hashable {
         case price
         case originalPrice = "original_price"
     }
+
+    // MARK: Share properties
+
+    static let shareUrlScheme: String = "joiefull"
+    static let shareUrlHost: String = "clothing"
+
+    var shareURL: URL? {
+        return URL(string: "\(Clothing.shareUrlScheme)://\(Clothing.shareUrlHost)/\(id)")
+    }
 }

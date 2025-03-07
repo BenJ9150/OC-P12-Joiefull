@@ -156,6 +156,5 @@ private struct ItemView: PreviewModifier {
     func body(content: Content, context: ()) -> some View {
         content
             .frame(width: pictureWidth)
-            .background(.red)
     }
 }

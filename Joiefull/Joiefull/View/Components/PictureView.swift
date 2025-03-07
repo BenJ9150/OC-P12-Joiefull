@@ -21,6 +21,7 @@ struct PictureView: View {
     private let width: CGFloat
     private let height: CGFloat
     private let isDetailView: Bool
+    @State private var clothingImage: Image?
 
     // MARK: Init
 
@@ -56,24 +57,8 @@ private extension PictureView {
     var asyncPicture: some View {
         AsyncImage(url: URL(string: clothing.picture.url)) { phase in
             switch phase {
-            case .empty:
-                ProgressView()
-            case .success(let fetchedImage):
-                if isDetailView {
-                    fetchedImage
-                        .resizable()
-                        .scaledToFill()
-                        .onTapGesture {
-                            showFullScreen.toggle()
-                        }
-                        .fullScreenCover(isPresented: $showFullScreen) {
-                            FullScreenPictureView(isPresented: $showFullScreen, image: fetchedImage)
-                        }
-                } else {
-                    fetchedImage
-                        .resizable()
-                        .scaledToFill()
-                }
+            case .empty: ProgressView()
+            case .success(let image): clothingImage(from: image)
             default:
                 Image(systemName: "photo")
                     .foregroundStyle(.gray)
@@ -93,6 +78,32 @@ private extension PictureView {
             RoundedRectangle(cornerRadius: 20).stroke(Color.gray.opacity(0.5), lineWidth: 0.5)
         )
         .accessibilityHidden(true)
+    }
+}
+
+// MARK: Clothing image
+
+private extension PictureView {
+
+    func clothingImage(from fetchedImage: Image) -> some View {
+        ZStack {
+            if isDetailView {
+                fetchedImage
+                    .resizable()
+                    .scaledToFill()
+                    .onAppear { clothingImage = fetchedImage }
+                    .onTapGesture {
+                        if isDetailView { showFullScreen.toggle() }
+                    }
+                    .fullScreenCover(isPresented: $showFullScreen) {
+                        FullScreenPictureView(isPresented: $showFullScreen, image: fetchedImage)
+                    }
+            } else {
+                fetchedImage
+                    .resizable()
+                    .scaledToFill()
+            }
+        }
     }
 }
 
@@ -121,19 +132,25 @@ private extension PictureView {
 private extension PictureView {
 
     var shareButton: some View {
-        Button {
-            // TODO: apple shared
-        } label: {
-            Image(systemName: "square.and.arrow.up")
-                .padding(.all, 6)
-                .padding(.bottom, 3)
-                .background(
-                    Circle().fill(.background)
-                )
+        ZStack {
+            if let shareURL = clothing.shareURL, let image = clothingImage {
+                ShareLink(
+                    item: shareURL,
+                    message: Text("Regarde ça !"),
+                    preview: SharePreview(clothing.name, image: image)
+                ) {
+                    Image(systemName: "square.and.arrow.up")
+                        .padding(.all, 6)
+                        .padding(.bottom, 3)
+                        .background(
+                            Circle().fill(.background)
+                        )
+                }
+                .foregroundStyle(.primary)
+                .padding(.top, 9)
+                .padding(.trailing, 12)
+            }
         }
-        .foregroundStyle(.primary)
-        .padding(.top, 9)
-        .padding(.trailing, 12)
     }
 }
 
