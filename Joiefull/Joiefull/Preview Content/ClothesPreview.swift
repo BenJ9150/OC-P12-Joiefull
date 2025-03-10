@@ -79,7 +79,10 @@ class ClothesPreview {
 
     @MainActor func previewModelContainer() -> ModelContainer {
         do {
-            return try ModelContainer(for: ReviewAndRating.self, configurations: .init(isStoredInMemoryOnly: true))
+            return try ModelContainer(
+                for: ReviewAndRating.self, Favorite.self,
+                configurations: .init(isStoredInMemoryOnly: true)
+            )
         } catch {
             fatalError("Could not initialize ModelContainer")
         }

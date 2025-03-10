@@ -20,6 +20,6 @@ struct JoiefullApp: App {
                     await viewModel.fetchClothes()
                 }
         }
-        .modelContainer(for: ReviewAndRating.self)
+        .modelContainer(for: [ReviewAndRating.self, Favorite.self])
     }
 }

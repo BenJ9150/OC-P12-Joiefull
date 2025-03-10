@@ -11,7 +11,9 @@ import SwiftData
 
 @MainActor final class SwiftDataServiceTests: XCTestCase {
 
-    func test_addAndFetchReviewSuccess() throws {
+    // MARK: Review
+
+    func testAddAndFetchReviewSuccess() throws {
         // Given
         let review = ReviewAndRating(clothingId: 1234, review: "test", rating: 4)
         let container = try ModelContainer(for: ReviewAndRating.self, configurations: .init(isStoredInMemoryOnly: true))
@@ -28,7 +30,7 @@ import SwiftData
         XCTAssertEqual(savedReview?.rating, 4)
     }
 
-    func test_addAndFetchReviewFailure() throws {
+    func testAddAndFetchReviewFailure() {
         // Given
         let review = ReviewAndRating(clothingId: 1234, review: "test", rating: 4)
         let service = SwiftDataService(modelContext: nil)
@@ -39,5 +41,23 @@ import SwiftData
         // Then
         let savedReview = service.fetchReview(clothingId: 1234)
         XCTAssertNil(savedReview)
+    }
+
+    // MARK: Favorite
+
+    func testAddAndDeleteFavorite() throws {
+        // Given
+        let clothingId: Int = 1234
+        let container = try ModelContainer(for: Favorite.self, configurations: .init(isStoredInMemoryOnly: true))
+        let service = SwiftDataService(modelContext: container.mainContext)
+        XCTAssertEqual(service.isFavorite(clothingId: clothingId), false)
+
+        // When
+        service.addToFavorite(clothingId: clothingId)
+        XCTAssertEqual(service.isFavorite(clothingId: clothingId), true)
+        service.deleteFavorite(clothingId: clothingId)
+
+        // Then
+        XCTAssertEqual(service.isFavorite(clothingId: clothingId), false)
     }
 }

@@ -37,7 +37,16 @@ extension NetworkClient {
         let ( _, response) = try await httpClient.data(for: request)
 
         /// Check response
+#if DEBUG
+        /// Post methods are not implemented on Joiefull API
+        /// So skip handle response for development (use handleUrlResponse only on unit test)
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            /// Unit test: test final code
+            try handleUrlResponse(response)
+        }
+#else
         try handleUrlResponse(response)
+#endif
     }
 }
 

@@ -16,12 +16,13 @@ struct PictureView: View {
     // MARK: Properties
 
     @State private var showFullScreen: Bool = false
+    @State private var clothingImage: Image?
+    @Binding var isFavorite: Bool
 
     private let clothing: Clothing
     private let width: CGFloat
     private let height: CGFloat
     private let isDetailView: Bool
-    @State private var clothingImage: Image?
 
     // MARK: Init
 
@@ -29,12 +30,14 @@ struct PictureView: View {
         for clothing: Clothing,
         width: CGFloat = .infinity,
         height: CGFloat = .infinity,
-        isDetailView: Bool = false
+        isDetailView: Bool = false,
+        isFavorite: Binding<Bool> = .constant(false)
     ) {
         self.clothing = clothing
         self.width = width
         self.height = height
         self.isDetailView = isDetailView
+        self._isFavorite = isFavorite
     }
 
     // MARK: Body
@@ -107,22 +110,23 @@ private extension PictureView {
     }
 }
 
-// MARK: Likes banner
+// MARK: Favorite
 
 private extension PictureView {
 
     var likesBanner: some View {
         HStack(spacing: 2) {
-            Image(systemName: "heart")
-            Text("\(clothing.likes)")
+            Image(systemName: isFavorite ? "heart.fill" : "heart")
+            Text("\(isFavorite ? clothing.likes + 1 : clothing.likes)")
         }
+        .contentTransition(.symbolEffect(.replace))
+        .foregroundStyle(isFavorite ? .red : .primary)
         .font(isDetailView ? .adaptiveBody : .footnote)
         .fontWeight(.semibold)
         .padding(.all, 6)
         .padding(.horizontal, 2)
-        .background(
-            Capsule().fill(.background)
-        )
+        .background(Capsule().fill(.background))
+        .onTapGesture { isFavorite.toggle() }
         .padding(.all, 12)
     }
 }
@@ -157,10 +161,11 @@ private extension PictureView {
 // MARK: - Preview
 
 #Preview {
+    @Previewable @State var isFavorite = false
     let clothing = ClothesPreview().getClothing()
 
     VStack {
-        PictureView(for: clothing, height: 300, isDetailView: true)
+        PictureView(for: clothing, height: 300, isDetailView: true, isFavorite: $isFavorite)
         PictureView(for: clothing, width: 198, height: 198)
     }
     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 32 : 16)

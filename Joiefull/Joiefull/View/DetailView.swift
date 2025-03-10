@@ -63,7 +63,7 @@ private extension DetailView {
     var verticalDetails: some View {
         ScrollView {
             VStack(spacing: 0) {
-                PictureView(for: viewModel.clothing, height: .detailPictureHeight, isDetailView: true)
+                picture
                 clothingDetails
                 ratingAndReviewSection
             }
@@ -74,13 +74,23 @@ private extension DetailView {
 
     var horizontalDetails: some View {
         HStack(spacing: 24) {
-            PictureView(for: viewModel.clothing, width: .detailPictureWidth, isDetailView: true)
+            picture
             ScrollView {
                 clothingDetails
                 ratingAndReviewSection
             }
             .scrollIndicators(.hidden)
         }
+    }
+
+    var picture: some View {
+        PictureView(
+            for: viewModel.clothing,
+            width: isPhoneInLandscape ? .detailPictureWidth : .infinity,
+            height: isPhoneInLandscape ? .infinity : .detailPictureHeight,
+            isDetailView: true,
+            isFavorite: $viewModel.isFavorite
+        )
     }
 }
 

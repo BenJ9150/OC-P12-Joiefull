@@ -11,15 +11,39 @@ import SwiftData
 
 @MainActor final class DetailViewModelTests: XCTestCase {
 
+    var container: ModelContainer!
+    var modelContext: ModelContext!
+    var swiftDataService: SwiftDataService!
+
+    // MARK: Setup
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
+        /// SwiftData
+        container = try ModelContainer(
+            for: ReviewAndRating.self, Favorite.self,
+            configurations: .init(isStoredInMemoryOnly: true)
+        )
+        modelContext = container.mainContext
+        swiftDataService = SwiftDataService(modelContext: modelContext)
+    }
+
+    override func tearDown() {
+        container = nil
+        modelContext = nil
+        swiftDataService = nil
+        super.tearDown()
+    }
+
     // MARK: Review
 
     func testSuccessToPostReview() async throws {
         // Given
-        let container = try ModelContainer(for: ReviewAndRating.self, configurations: .init(isStoredInMemoryOnly: true))
         let mockHTTPClient = MockHTTPClient(with: .success)
         let clothing = mockHTTPClient.getClothing()
 
-        let viewModel = DetailViewModel(modelContext: container.mainContext, for: clothing, using: mockHTTPClient)
+        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
 
         XCTAssertEqual(viewModel.postingReview, false)
         XCTAssertEqual(viewModel.postReviewSuccess, false)
@@ -38,8 +62,7 @@ import SwiftData
         XCTAssertEqual(viewModel.showReviewError, false)
 
         // ... and review is saved
-        let service = SwiftDataService(modelContext: container.mainContext)
-        let savedReview = service.fetchReview(clothingId: clothing.id)
+        let savedReview = swiftDataService.fetchReview(clothingId: clothing.id)
         XCTAssertNotNil(savedReview)
         XCTAssertEqual(savedReview?.clothingId, clothing.id)
         XCTAssertEqual(savedReview?.review, "testSuccessToPostReview")
@@ -48,17 +71,15 @@ import SwiftData
 
     func testSuccessToLoadReview() async throws {
         // Given
-        let container = try ModelContainer(for: ReviewAndRating.self, configurations: .init(isStoredInMemoryOnly: true))
         let mockHTTPClient = MockHTTPClient(with: .success)
         let clothing = mockHTTPClient.getClothing()
 
         /// Save review for test
         let reviewAndRating = ReviewAndRating(clothingId: clothing.id, review: "testSuccessToLoadReview", rating: 2)
-        let service = SwiftDataService(modelContext: container.mainContext)
-        service.saveReviewAndRating(reviewAndRating)
+        swiftDataService.saveReviewAndRating(reviewAndRating)
 
         // When
-        let viewModel = DetailViewModel(modelContext: container.mainContext, for: clothing, using: mockHTTPClient)
+        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
 
         // Then there is a saved review
         XCTAssertEqual(viewModel.postReviewSuccess, true)
@@ -86,35 +107,35 @@ import SwiftData
         XCTAssertEqual(viewModel.showReviewError, true)
     }
 
-    // MARK: Like
+    // MARK: Favorite
 
-    func testSuccessToPostLike() async {
+    func testAddToFavorite() throws {
         // Given
         let mockHTTPClient = MockHTTPClient(with: .success)
-        let viewModel = DetailViewModel(for: mockHTTPClient.getClothing(), using: mockHTTPClient)
-        XCTAssertEqual(viewModel.postingLike, false)
-        XCTAssertTrue(viewModel.postLikeError == "")
+        let clothing = mockHTTPClient.getClothing()
+        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
+        XCTAssertEqual(viewModel.isFavorite, false)
 
-        // When post review
-        await viewModel.postLike()
+        // When
+        viewModel.isFavorite.toggle()
 
-        // Then there is no error
-        XCTAssertEqual(viewModel.postingLike, false)
-        XCTAssertTrue(viewModel.postLikeError.isEmpty)
+        // Then
+        XCTAssertEqual(swiftDataService.isFavorite(clothingId: clothing.id), true)
     }
 
-    func testFailedToPostLike() async {
+    func testDeleteFavorite() throws {
         // Given
-        let mockHTTPClient = MockHTTPClient(with: .failed)
-        let viewModel = DetailViewModel(for: mockHTTPClient.getClothing(), using: mockHTTPClient)
-        XCTAssertEqual(viewModel.postingLike, false)
-        XCTAssertTrue(viewModel.postLikeError == "")
+        let mockHTTPClient = MockHTTPClient(with: .success)
+        let clothing = mockHTTPClient.getClothing()
+        swiftDataService.addToFavorite(clothingId: clothing.id)
+        XCTAssertEqual(swiftDataService.isFavorite(clothingId: clothing.id), true)
 
-        // When post review
-        await viewModel.postLike()
+        // When
+        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
+        XCTAssertEqual(viewModel.isFavorite, true)
+        viewModel.isFavorite.toggle()
 
-        // Then there is an error
-        XCTAssertEqual(viewModel.postingLike, false)
-        XCTAssertTrue(viewModel.postLikeError != "")
+        // Then
+        XCTAssertEqual(swiftDataService.isFavorite(clothingId: clothing.id), false)
     }
 }

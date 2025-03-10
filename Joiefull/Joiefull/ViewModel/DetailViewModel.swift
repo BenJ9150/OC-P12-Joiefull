@@ -20,8 +20,11 @@ import SwiftData
     @Published var rating: Int = 0
 
     /// Like
-    @Published var postingLike = false
-    @Published var postLikeError = ""
+    @Published var isFavorite = false {
+        didSet {
+            isFavoriteToggle()
+        }
+    }
 
     private let swiftDataService: SwiftDataService
     private let clothingService: ClothingService
@@ -31,7 +34,10 @@ import SwiftData
         self.clothingService = ClothingService(using: httpClient)
         self.swiftDataService = SwiftDataService(modelContext: modelContext)
         self.clothing = clothing
+
+        /// SwiftData
         fetchReview()
+        isFavorite = swiftDataService.isFavorite(clothingId: clothing.id)
     }
 }
 
@@ -56,35 +62,37 @@ extension DetailViewModel {
     }
 }
 
-// MARK: Post like
+// MARK: Favorite
 
 extension DetailViewModel {
 
-    func postLike() async {
-        postingLike = true
-        postLikeError = ""
-        do {
-            try await clothingService.postLike(clothingId: clothing.id)
-        } catch {
-            withAnimation(.bouncy) {
-                print("💥 Post like failed: \(error)")
-                postLikeError = "Oups... Une erreur s'est produite, veuillez réessayer."
-            }
+    private func isFavoriteToggle() {
+        guard isFavorite else {
+            /// Favorite removed
+            swiftDataService.deleteFavorite(clothingId: clothing.id)
+            return
         }
-        postingLike = false
+        swiftDataService.addToFavorite(clothingId: clothing.id)
+
+        /// Post like  to update the number of likes for other users
+        Task {
+            /// TODO: When the call will be implemented on the API, if call fails:
+            /// Try to make the call later to update the number of likes for other users
+            try? await clothingService.postLike(clothingId: clothing.id)
+        }
     }
 }
 
 // MARK: SwiftData review
 
-private extension DetailViewModel {
+extension DetailViewModel {
 
-    func saveReviewAndRating() {
+    private func saveReviewAndRating() {
         let reviewAndRating = ReviewAndRating(clothingId: clothing.id, review: review, rating: rating)
         swiftDataService.saveReviewAndRating(reviewAndRating)
     }
 
-    func fetchReview() {
+    private func fetchReview() {
         guard let reviewAndRating = swiftDataService.fetchReview(clothingId: clothing.id) else {
             return
         }

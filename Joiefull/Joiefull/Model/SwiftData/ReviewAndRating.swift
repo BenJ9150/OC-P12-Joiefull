@@ -10,6 +10,7 @@ import SwiftData
 
 @Model class ReviewAndRating {
 
+    /// Do not mark clothingId as unique if the review may be edited
     var clothingId: Int
     var review: String
     var rating: Int
