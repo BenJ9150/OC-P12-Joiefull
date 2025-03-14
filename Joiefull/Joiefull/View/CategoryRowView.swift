@@ -30,6 +30,9 @@ struct CategoryRowView: View {
         .padding(.leading, isPad ? 20 : 16)
         .background(
             Color(isPad ? UIColor.systemGroupedBackground : UIColor.systemBackground)
+                .onTapGesture {
+                    selectedItem = nil
+                }
         )
     }
 }
@@ -75,7 +78,7 @@ private extension CategoryRowView {
 
 // MARK: - Preview
 
-#Preview {
+#Preview(traits: .modifier(FavoritesViewModelInEnvironment())) {
     @Previewable @State var selectedItem: Clothing?
     let clothes = ClothesPreview().getClothes()
 

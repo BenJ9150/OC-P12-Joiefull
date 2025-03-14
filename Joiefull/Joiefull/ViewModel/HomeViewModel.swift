@@ -32,7 +32,7 @@ extension HomeViewModel {
             handleFetchResult(clothes)
             print("✅ Fetch clothes with success")
         } catch {
-            print("💥 Fetch cltothes failed: \(error)")
+            print("💥 Fetch clothes failed: \(error)")
             showError()
         }
         firstLoading = false

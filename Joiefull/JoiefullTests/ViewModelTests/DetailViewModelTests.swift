@@ -106,36 +106,4 @@ import SwiftData
         XCTAssertTrue(viewModel.postReviewError != "")
         XCTAssertEqual(viewModel.showReviewError, true)
     }
-
-    // MARK: Favorite
-
-    func testAddToFavorite() throws {
-        // Given
-        let mockHTTPClient = MockHTTPClient(with: .success)
-        let clothing = mockHTTPClient.getClothing()
-        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
-        XCTAssertEqual(viewModel.isFavorite, false)
-
-        // When
-        viewModel.isFavorite.toggle()
-
-        // Then
-        XCTAssertEqual(swiftDataService.isFavorite(clothingId: clothing.id), true)
-    }
-
-    func testDeleteFavorite() throws {
-        // Given
-        let mockHTTPClient = MockHTTPClient(with: .success)
-        let clothing = mockHTTPClient.getClothing()
-        swiftDataService.addToFavorite(clothingId: clothing.id)
-        XCTAssertEqual(swiftDataService.isFavorite(clothingId: clothing.id), true)
-
-        // When
-        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
-        XCTAssertEqual(viewModel.isFavorite, true)
-        viewModel.isFavorite.toggle()
-
-        // Then
-        XCTAssertEqual(swiftDataService.isFavorite(clothingId: clothing.id), false)
-    }
 }

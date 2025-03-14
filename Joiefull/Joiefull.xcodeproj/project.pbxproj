@@ -26,6 +26,10 @@
 		437A7AEA2D4401A800EC3536 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */; };
 		437A7AED2D440C5700EC3536 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 437A7AEB2D440C5700EC3536 /* Localizable.strings */; };
 		4386E1452D7331FF003F777E /* DetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4386E1442D7331FF003F777E /* DetailViewModelTests.swift */; };
+		439DECCE2D845F2300343557 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439DECCD2D845F2300343557 /* FavoritesViewModel.swift */; };
+		439DECD02D8478FC00343557 /* PreviewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439DECCF2D8478FC00343557 /* PreviewModifiers.swift */; };
+		439DECD22D847ED100343557 /* HTTPClientPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439DECD12D847ED100343557 /* HTTPClientPreview.swift */; };
+		439DECD42D84851000343557 /* FavoritesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439DECD32D84851000343557 /* FavoritesViewModelTests.swift */; };
 		43A29EE02D608C5F001F9FF3 /* Font+Adaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A29EDF2D608C5F001F9FF3 /* Font+Adaptive.swift */; };
 		43AD7E4C2D72FD5200A51C9A /* View+UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AD7E4B2D72FD5200A51C9A /* View+UIDevice.swift */; };
 		43AD7E4E2D7306E600A51C9A /* ReviewAndRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AD7E4D2D7306E600A51C9A /* ReviewAndRating.swift */; };
@@ -86,6 +90,10 @@
 		437A7AE92D4401A800EC3536 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		437A7AEE2D440CB700EC3536 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4386E1442D7331FF003F777E /* DetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModelTests.swift; sourceTree = "<group>"; };
+		439DECCD2D845F2300343557 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
+		439DECCF2D8478FC00343557 /* PreviewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewModifiers.swift; sourceTree = "<group>"; };
+		439DECD12D847ED100343557 /* HTTPClientPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientPreview.swift; sourceTree = "<group>"; };
+		439DECD32D84851000343557 /* FavoritesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModelTests.swift; sourceTree = "<group>"; };
 		43A29EDF2D608C5F001F9FF3 /* Font+Adaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Adaptive.swift"; sourceTree = "<group>"; };
 		43AD7E4B2D72FD5200A51C9A /* View+UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+UIDevice.swift"; sourceTree = "<group>"; };
 		43AD7E4D2D7306E600A51C9A /* ReviewAndRating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewAndRating.swift; sourceTree = "<group>"; };
@@ -197,6 +205,7 @@
 			children = (
 				437A7AE52D438CBA00EC3536 /* HomeViewModelTests.swift */,
 				4386E1442D7331FF003F777E /* DetailViewModelTests.swift */,
+				439DECD32D84851000343557 /* FavoritesViewModelTests.swift */,
 			);
 			path = ViewModelTests;
 			sourceTree = "<group>";
@@ -232,6 +241,8 @@
 				4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */,
 				43B2BA4E2D4D1FA3002DF50A /* clothesPreview.json */,
 				43B2BA502D4D2033002DF50A /* ClothesPreview.swift */,
+				439DECD12D847ED100343557 /* HTTPClientPreview.swift */,
+				439DECCF2D8478FC00343557 /* PreviewModifiers.swift */,
 				43BABE4A2D3AB6740079B4E8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -267,6 +278,7 @@
 			children = (
 				43BABE912D3ACF410079B4E8 /* HomeViewModel.swift */,
 				436A7D1A2D70C8650065AE5C /* DetailViewModel.swift */,
+				439DECCD2D845F2300343557 /* FavoritesViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -442,17 +454,20 @@
 				43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */,
 				43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */,
 				43052BAC2D71F75800573414 /* View+Keyboard.swift in Sources */,
+				439DECD02D8478FC00343557 /* PreviewModifiers.swift in Sources */,
 				437722B32D566C5800E0A88E /* PictureDescriptionView.swift in Sources */,
 				43A29EE02D608C5F001F9FF3 /* Font+Adaptive.swift in Sources */,
 				43052BB02D720E4F00573414 /* FullScreenPictureView.swift in Sources */,
 				43052BA82D71E24000573414 /* ButtonStyle.swift in Sources */,
 				436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */,
+				439DECD22D847ED100343557 /* HTTPClientPreview.swift in Sources */,
 				437722AF2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift in Sources */,
 				4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */,
 				436A7D1B2D70C8650065AE5C /* DetailViewModel.swift in Sources */,
 				43B2BA512D4D2033002DF50A /* ClothesPreview.swift in Sources */,
 				4352DC952D6B2653002A2B77 /* View+Overlay.swift in Sources */,
 				43052BAA2D71F45B00573414 /* ReviewAlertModifier.swift in Sources */,
+				439DECCE2D845F2300343557 /* FavoritesViewModel.swift in Sources */,
 				43BABE5C2D3AB6AD0079B4E8 /* Clothing.swift in Sources */,
 				436A99CF2D7D86EA00FDBA6B /* Favorite.swift in Sources */,
 				43BABE962D3AD4EB0079B4E8 /* DetailView.swift in Sources */,
@@ -475,6 +490,7 @@
 			files = (
 				43BABE672D3AB7A10079B4E8 /* NetworkingMock.swift in Sources */,
 				43BABE6C2D3AB7EA0079B4E8 /* ClothingServiceTests.swift in Sources */,
+				439DECD42D84851000343557 /* FavoritesViewModelTests.swift in Sources */,
 				436A7D192D70AE610065AE5C /* RequestBuilderTests.swift in Sources */,
 				4386E1452D7331FF003F777E /* DetailViewModelTests.swift in Sources */,
 				43BABE6D2D3AB7EA0079B4E8 /* NetworkClientTests.swift in Sources */,
@@ -653,7 +669,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.benjaminlefrancois.Joiefull;
+				PRODUCT_BUNDLE_IDENTIFIER = com.benjaminlefrancois.JoiefullApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -697,7 +713,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.1;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.benjaminlefrancois.Joiefull;
+				PRODUCT_BUNDLE_IDENTIFIER = com.benjaminlefrancois.JoiefullApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

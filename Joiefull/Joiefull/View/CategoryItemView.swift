@@ -89,7 +89,7 @@ private extension CategoryItemView {
 
 // MARK: - Preview
 
-#Preview {
+#Preview(traits: .modifier(FavoritesViewModelInEnvironment())) {
     @Previewable @State var isSelected = false
     let clothing = ClothesPreview().getClothing(.withBigDescription)
 

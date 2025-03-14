@@ -10,7 +10,6 @@ import SwiftData
 
 @MainActor class DetailViewModel: ObservableObject {
 
-    /// Review
     @Published var showReviewAlert: Bool = false
     @Published var postingReview = false
     @Published var postReviewSuccess = false
@@ -19,25 +18,19 @@ import SwiftData
     @Published var review: String = ""
     @Published var rating: Int = 0
 
-    /// Like
-    @Published var isFavorite = false {
-        didSet {
-            isFavoriteToggle()
-        }
-    }
-
     private let swiftDataService: SwiftDataService
     private let clothingService: ClothingService
     let clothing: Clothing
+
+    // MARK: Init
 
     init(modelContext: ModelContext? = nil, for clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
         self.clothingService = ClothingService(using: httpClient)
         self.swiftDataService = SwiftDataService(modelContext: modelContext)
         self.clothing = clothing
 
-        /// SwiftData
+        /// Fetch saved review if exist
         fetchReview()
-        isFavorite = swiftDataService.isFavorite(clothingId: clothing.id)
     }
 }
 
@@ -62,28 +55,7 @@ extension DetailViewModel {
     }
 }
 
-// MARK: Favorite
-
-extension DetailViewModel {
-
-    private func isFavoriteToggle() {
-        guard isFavorite else {
-            /// Favorite removed
-            swiftDataService.deleteFavorite(clothingId: clothing.id)
-            return
-        }
-        swiftDataService.addToFavorite(clothingId: clothing.id)
-
-        /// Post like  to update the number of likes for other users
-        Task {
-            /// TODO: When the call will be implemented on the API, if call fails:
-            /// Try to make the call later to update the number of likes for other users
-            try? await clothingService.postLike(clothingId: clothing.id)
-        }
-    }
-}
-
-// MARK: SwiftData review
+// MARK: Save or fetch review
 
 extension DetailViewModel {
 

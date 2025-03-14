@@ -76,17 +76,6 @@ class ClothesPreview {
         let url = clothingImageUrl()
         return Image(uiImage: UIImage(contentsOfFile: url.path)!)
     }
-
-    @MainActor func previewModelContainer() -> ModelContainer {
-        do {
-            return try ModelContainer(
-                for: ReviewAndRating.self, Favorite.self,
-                configurations: .init(isStoredInMemoryOnly: true)
-            )
-        } catch {
-            fatalError("Could not initialize ModelContainer")
-        }
-    }
 }
 
 // MARK: Private

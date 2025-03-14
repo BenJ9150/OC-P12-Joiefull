@@ -14,11 +14,18 @@ struct HomeView: View {
     @Environment(\.modelContext) private var context
     @ObservedObject var viewModel: HomeViewModel
 
+    private let httpClient: HTTPClient
+
     private var isInspectorPresented: Binding<Bool> {
         Binding(
             get: { viewModel.selectedItem != nil },
             set: { if !$0 { viewModel.selectedItem = nil } }
         )
+    }
+
+    init(viewModel: HomeViewModel, using httpClient: HTTPClient = URLSession.shared) {
+        self.viewModel = viewModel
+        self.httpClient = httpClient
     }
 
     // MARK: Body
@@ -40,21 +47,24 @@ struct HomeView: View {
                         .background(Color(UIColor.systemGroupedBackground))
                         .inspector(isPresented: isInspectorPresented) {
                             if let clothing = viewModel.selectedItem {
-                                DetailView(with: DetailViewModel(modelContext: context, for: clothing))
-                                    .inspectorColumnWidth(min: 400, ideal: 514)
+                                DetailView(
+                                    with: DetailViewModel(modelContext: context, for: clothing, using: httpClient)
+                                )
+                                .inspectorColumnWidth(min: 400, ideal: 514)
                             }
                         }
                 } else {
                     clothesList
                         .listStyle(.inset)
                         .navigationDestination(item: $viewModel.selectedItem) { clothing in
-                            DetailView(with: DetailViewModel(modelContext: context, for: clothing))
+                            DetailView(with: DetailViewModel(modelContext: context, for: clothing, using: httpClient))
                         }
                 }
             } else {
                 fetchError
             }
         }
+        .environmentObject(FavoritesViewModel(modelContext: context))
     }
 }
 
@@ -119,12 +129,11 @@ private extension HomeView {
 
 // MARK: - Preview
 
-#Preview {
+#Preview(traits: .modifier(SampleFavorites())) {
     let previewMode: ClothesPreview.PreviewMode = .content
+    let viewModel = HomeViewModel(using: HTTPClientPreview())
 
-    let viewModel = HomeViewModel()
-    HomeView(viewModel: viewModel)
-        .modelContainer(ClothesPreview().previewModelContainer())
+    HomeView(viewModel: viewModel, using: HTTPClientPreview())
         .onAppear {
             switch previewMode {
             case .loading:

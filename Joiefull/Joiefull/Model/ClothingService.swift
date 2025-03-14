@@ -41,8 +41,11 @@ extension ClothingService {
         try await networkClient.post(toUrl: "\(apiUrl)/review", body: body)
     }
 
-    func postLike(clothingId: Int) async throws {
+    func postLike(clothingId: Int, isLiked: Bool) async throws {
         /// Post data
-        try await networkClient.post(toUrl: "\(apiUrl)/like", body: ["clothing_id": clothingId])
+        try await networkClient.post(
+            toUrl: "\(apiUrl)/like",
+            body: ["clothing_id": clothingId, "is_liked": isLiked]
+        )
     }
 }

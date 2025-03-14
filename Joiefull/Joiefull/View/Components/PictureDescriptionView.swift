@@ -136,25 +136,11 @@ private extension PictureDescriptionView {
 
 // MARK: - Preview
 
-#Preview("Detail view") {
-    PictureDescriptionView(for: ClothesPreview().getClothing(12), isDetailView: true)
-        .padding(.horizontal, UIDevice.isPad ? 32 : 16)
-}
-
-#Preview("Item view", traits: .modifier(ItemView())) {
+#Preview("Item view", traits: .modifier(ItemDetailWithDynamicWidth())) {
     PictureDescriptionView(for: ClothesPreview().getClothing(12))
 }
 
-private struct ItemView: PreviewModifier {
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
-
-    var pictureWidth: CGFloat {
-        let originalWidth: CGFloat = UIDevice.isPad ? 234 : 198
-        return originalWidth.adaptTo(dynamicTypeSize)
-    }
-
-    func body(content: Content, context: ()) -> some View {
-        content
-            .frame(width: pictureWidth)
-    }
+#Preview("Detail view") {
+    PictureDescriptionView(for: ClothesPreview().getClothing(12), isDetailView: true)
+        .padding(.horizontal, UIDevice.isPad ? 32 : 16)
 }

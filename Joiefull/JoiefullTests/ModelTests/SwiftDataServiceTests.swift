@@ -50,14 +50,28 @@ import SwiftData
         let clothingId: Int = 1234
         let container = try ModelContainer(for: Favorite.self, configurations: .init(isStoredInMemoryOnly: true))
         let service = SwiftDataService(modelContext: container.mainContext)
-        XCTAssertEqual(service.isFavorite(clothingId: clothingId), false)
 
-        // When
+        // When add...
         service.addToFavorite(clothingId: clothingId)
-        XCTAssertEqual(service.isFavorite(clothingId: clothingId), true)
+        let favorites = service.fetchFavorites()
+        XCTAssertEqual(favorites.count, 1)
+        XCTAssertEqual(favorites.first?.clothingId, clothingId)
+
+        // ... and delete
         service.deleteFavorite(clothingId: clothingId)
 
         // Then
-        XCTAssertEqual(service.isFavorite(clothingId: clothingId), false)
+        XCTAssertEqual(service.fetchFavorites().count, 0)
+    }
+
+    func testFetchFavoritesFailure() throws {
+        // Given
+        let service = SwiftDataService(modelContext: nil)
+
+        // When
+        let favorites = service.fetchFavorites()
+
+        // Then
+        XCTAssertEqual(favorites.count, 0)
     }
 }

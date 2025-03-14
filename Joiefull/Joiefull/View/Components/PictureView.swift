@@ -12,12 +12,12 @@ struct PictureView: View {
     // MARK: Environment
 
     @Environment(\.horizontalSizeClass) var horizontalSC
+    @EnvironmentObject private var favoritesVM: FavoritesViewModel
 
     // MARK: Properties
 
     @State private var showFullScreen: Bool = false
     @State private var clothingImage: Image?
-    @Binding var isFavorite: Bool
 
     private let clothing: Clothing
     private let width: CGFloat
@@ -30,14 +30,12 @@ struct PictureView: View {
         for clothing: Clothing,
         width: CGFloat = .infinity,
         height: CGFloat = .infinity,
-        isDetailView: Bool = false,
-        isFavorite: Binding<Bool> = .constant(false)
+        isDetailView: Bool = false
     ) {
         self.clothing = clothing
         self.width = width
         self.height = height
         self.isDetailView = isDetailView
-        self._isFavorite = isFavorite
     }
 
     // MARK: Body
@@ -115,19 +113,29 @@ private extension PictureView {
 private extension PictureView {
 
     var likesBanner: some View {
-        HStack(spacing: 2) {
-            Image(systemName: isFavorite ? "heart.fill" : "heart")
-            Text("\(isFavorite ? clothing.likes + 1 : clothing.likes)")
+        let favorite = favoritesVM.isFavorite(clothingId: clothing.id)
+
+        return HStack(spacing: 2) {
+            Image(systemName: favorite ? "heart.fill" : "heart")
+            Text("\(favorite ? clothing.likes + 1 : clothing.likes)")
         }
         .contentTransition(.symbolEffect(.replace))
-        .foregroundStyle(isFavorite ? .red : .primary)
         .font(isDetailView ? .adaptiveBody : .footnote)
+        .foregroundStyle(favorite ? .red : .primary)
         .fontWeight(.semibold)
         .padding(.all, 6)
         .padding(.horizontal, 2)
         .background(Capsule().fill(.background))
-        .onTapGesture { isFavorite.toggle() }
         .padding(.all, 12)
+        .onTapGesture {
+            if favorite {
+                /// Remove clothing from favorites
+                favoritesVM.deleteFavorite(clothingId: clothing.id)
+            } else {
+                /// Add clothing to favorites
+                favoritesVM.addToFavorite(clothingId: clothing.id)
+            }
+        }
     }
 }
 
@@ -160,12 +168,12 @@ private extension PictureView {
 
 // MARK: - Preview
 
-#Preview {
+#Preview(traits: .modifier(FavoritesViewModelInEnvironment())) {
     @Previewable @State var isFavorite = false
     let clothing = ClothesPreview().getClothing()
 
     VStack {
-        PictureView(for: clothing, height: 300, isDetailView: true, isFavorite: $isFavorite)
+        PictureView(for: clothing, height: 300, isDetailView: true)
         PictureView(for: clothing, width: 198, height: 198)
     }
     .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 32 : 16)

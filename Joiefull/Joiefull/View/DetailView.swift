@@ -88,8 +88,7 @@ private extension DetailView {
             for: viewModel.clothing,
             width: isPhoneInLandscape ? .detailPictureWidth : .infinity,
             height: isPhoneInLandscape ? .infinity : .detailPictureHeight,
-            isDetailView: true,
-            isFavorite: $viewModel.isFavorite
+            isDetailView: true
         )
     }
 }
@@ -251,66 +250,29 @@ private extension DetailView {
 
 // MARK: - Preview
 
-#Preview("With navigation", traits: .modifier(Inspector())) {
+#Preview(
+    "With navigation",
+    traits: .modifier(InspectorPresentation()), .modifier(FavoritesViewModelInEnvironment())
+) {
+    @Previewable @Environment(\.modelContext) var context
     DetailView(
-        with: DetailViewModel(for: ClothesPreview().getClothing(.withSmallDescription)),
+        with: DetailViewModel(
+            modelContext: context,
+            for: ClothesPreview().getClothing(.withSmallDescription),
+            using: HTTPClientPreview()
+        ),
         avatar: Image(.avatar)
     )
 }
 
-#Preview() {
+#Preview(traits: .modifier(FavoritesViewModelInEnvironment())) {
+    @Previewable @Environment(\.modelContext) var context
     DetailView(
-        with: DetailViewModel(for: ClothesPreview().getClothing(.withSmallDescription))
-        , avatar: Image(.avatar)
+        with: DetailViewModel(
+            modelContext: context,
+            for: ClothesPreview().getClothing(.withSmallDescription),
+            using: HTTPClientPreview()
+        ),
+        avatar: Image(.avatar)
     )
-}
-
-private struct Inspector: PreviewModifier {
-    @State private var navigateToDetail = false
-
-    func body(content: Content, context: ()) -> some View {
-        NavigationStack {
-            if UIDevice.isPad {
-                Text("PREVIEW")
-                    .inspector(isPresented: $navigateToDetail) {
-                        content
-                            .inspectorColumnWidth(min: 400, ideal: 514)
-                    }
-            } else {
-                Text("PREVIEW")
-                    .navigationDestination(isPresented: $navigateToDetail) {
-                        content
-                    }
-            }
-        }
-        .onTapGesture {
-            navigateToDetail.toggle()
-        }
-        .onAppear {
-            navigateToDetail = true
-        }
-    }
-}
-
-private struct SplitView: PreviewModifier {
-    @State private var navigateToDetail = false
-
-    func body(content: Content, context: ()) -> some View {
-        NavigationSplitView(columnVisibility: .constant(.all)) {
-            Text("PREVIEW")
-                .toolbar(.hidden, for: .navigationBar)
-                .navigationDestination(isPresented: $navigateToDetail) {
-                    content
-                }
-                .onTapGesture {
-                    navigateToDetail.toggle()
-                }
-        } detail: {
-            EmptyView()
-        }
-        .navigationSplitViewStyle(.balanced)
-        .onAppear {
-            navigateToDetail = true
-        }
-    }
 }

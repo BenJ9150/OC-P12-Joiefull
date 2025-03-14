@@ -47,7 +47,7 @@ final class ClothingServiceTests: XCTestCase {
 
         // When
         do {
-            try await clothingService.postLike(clothingId: 1234)
+            try await clothingService.postLike(clothingId: 1234, isLiked: true)
             // Then the post method is executed without error.
         } catch {
             XCTFail("Expected success when post data, but got \(error).")

@@ -43,18 +43,16 @@ extension SwiftDataService {
         save()
     }
 
-    func isFavorite(clothingId: Int) -> Bool {
-        if fetchFavorite(clothingId: clothingId) != nil {
-            return true
-        }
-        return false
-    }
-
     func deleteFavorite(clothingId: Int) {
         if let favorite = fetchFavorite(clothingId: clothingId) {
             modelContext?.delete(favorite)
             save()
         }
+    }
+
+    func fetchFavorites() -> [Favorite] {
+        let descriptor = FetchDescriptor<Favorite>()
+        return (try? modelContext?.fetch(descriptor)) ?? []
     }
 
     private func fetchFavorite(clothingId: Int) -> Favorite? {
