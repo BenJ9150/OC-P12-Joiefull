@@ -42,7 +42,7 @@ struct PictureView: View {
 
     var body: some View {
         asyncPicture
-            .overlay(alignment: .bottomTrailing, when: clothing.likes > 0) {
+            .overlay(alignment: .bottomTrailing) {
                 likesBanner
             }
             .overlay(alignment: .topTrailing, when: isDetailView) {
@@ -136,6 +136,17 @@ private extension PictureView {
                 favoritesVM.addToFavorite(clothingId: clothing.id)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label(isFavorite: favorite))
+        .accessibilityAddTraits(.isButton)
+        .accessibilitySortPriority(1)
+    }
+
+    func label(isFavorite: Bool) -> String {
+        if isFavorite {
+            return "Aimé par \(clothing.likes + 1) personnes, cliqué pour retirer des favoris"
+        }
+        return "Aimé par \(clothing.likes) personnes, cliqué pour ajouter aux favoris"
     }
 }
 
@@ -161,6 +172,7 @@ private extension PictureView {
                 .foregroundStyle(.primary)
                 .padding(.top, 9)
                 .padding(.trailing, 12)
+                .accessibilitySortPriority(0)
             }
         }
     }

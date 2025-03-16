@@ -186,20 +186,23 @@ private extension DetailView {
             }
             Spacer()
         }
+        .accessibilityElement(children: viewModel.postReviewSuccess ? .ignore : .contain)
+        .accessibilityLabel(labelForPostedRate)
     }
 
     func updateRating(with value: Int) {
-        if viewModel.rating != value {
-            viewModel.rating = value
-        } else {
-            /// Clic on the same rating value, delete the rating if it's the first star
-            viewModel.rating = value == 1 ? 0 : value
-        }
+        /// If clic on the same rating value, delete the rating
+        viewModel.rating = viewModel.rating != value ? value : 0
+    }
+
+    var labelForPostedRate: String {
+        viewModel.postReviewSuccess ? "Vous avez mis une note de \(viewModel.rating) sur 5," : ""
     }
 
     func label(for newRatingValue: Int) -> String {
         if newRatingValue == viewModel.rating {
-            return "Vous avez mis une note de \(newRatingValue) sur 5"
+            return "Vous avez noté \(newRatingValue) sur 5,"
+            + "ajoutez un commentaire ou cliquez directement sur 'partager mon avis'"
         }
         return "Mettre une note de \(newRatingValue) sur 5"
     }
@@ -225,6 +228,7 @@ private extension DetailView {
                         .opacity(0.5)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 18)
+                        .accessibilityHidden(true)
                 }
                 TextEditor(text: $viewModel.review)
                     .padding(.horizontal, 6)
@@ -237,6 +241,7 @@ private extension DetailView {
                             Button("Fermer", action: { hideKeyboard() })
                         })
                     }
+                    .accessibilityLabel("Partagez ici vos impressions sur cette pièce")
             }
             .frame(height: 120)
             .overlay(
