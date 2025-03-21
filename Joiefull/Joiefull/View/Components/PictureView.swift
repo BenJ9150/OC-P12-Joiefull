@@ -158,8 +158,8 @@ private extension PictureView {
         ZStack {
             if let shareURL = clothing.shareURL, let image = clothingImage {
                 ShareLink(
-                    item: shareURL,
-                    message: Text("Regarde ça !"),
+                    item: clothing.picture.url,
+                    message: Text("\(shareURL.absoluteString)\n---\nRegarde ça !"),
                     preview: SharePreview(clothing.name, image: image)
                 ) {
                     Image(systemName: "square.and.arrow.up")

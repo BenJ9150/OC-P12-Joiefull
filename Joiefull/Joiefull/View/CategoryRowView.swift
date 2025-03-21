@@ -10,6 +10,8 @@ import SwiftData
 
 struct CategoryRowView: View {
 
+    @EnvironmentObject private var favoritesVM: FavoritesViewModel
+
     // MARK: Properties
 
     @Binding var selectedItem: Clothing?
@@ -68,8 +70,10 @@ private extension CategoryRowView {
     }
 
     func label(for clothing: Clothing) -> String {
+        let isFavorite = favoritesVM.isFavorite(clothingId: clothing.id)
         return "\(clothing.name), "
-        + "aimé par \(clothing.likes) personnes, "
+        + "\(isFavorite ? "en favoris," : "")"
+        + "aimé par \(isFavorite ? clothing.likes + 1 : clothing.likes) personnes, "
         + "noté \(clothing.rating.toString()) sur 5. "
         + "\(clothing.price.toEuros())"
         + "\(clothing.price == clothing.originalPrice ? "." : ", au lieu de \(clothing.originalPrice.toEuros()) !")"

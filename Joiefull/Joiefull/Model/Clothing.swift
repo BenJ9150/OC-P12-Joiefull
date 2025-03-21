@@ -30,7 +30,7 @@ struct Clothing: Decodable, Identifiable, Hashable {
     // MARK: Share properties
 
     static let shareUrlScheme: String = "joiefull"
-    static let shareUrlHost: String = "clothing"
+    static let shareUrlHost: String = "vetement"
 
     var shareURL: URL? {
         return URL(string: "\(Clothing.shareUrlScheme)://\(Clothing.shareUrlHost)/\(id)")
