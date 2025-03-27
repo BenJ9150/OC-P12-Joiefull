@@ -120,6 +120,8 @@ private extension PictureDescriptionView {
                 .font(descriptionFont)
                 .fixedSize(horizontal: true, vertical: false)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("noté \(clothing.rating.toString()) sur 5.")
     }
 
     var price: some View {
@@ -131,7 +133,8 @@ private extension PictureDescriptionView {
         Text(clothing.originalPrice.toEuros())
             .font(descriptionFont)
             .strikethrough()
-            .opacity(0.7)
+            .opacity(0.8)
+            .accessibilityLabel("au lieu de \(clothing.originalPrice.toEuros())")
     }
 }
 

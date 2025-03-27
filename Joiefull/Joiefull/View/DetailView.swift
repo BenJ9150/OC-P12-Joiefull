@@ -100,7 +100,6 @@ private extension DetailView {
     var clothingDetails: some View {
         VStack(spacing: 16) {
             PictureDescriptionView(for: viewModel.clothing, isDetailView: true)
-                .accessibilityHidden(true)
 
             Text(viewModel.clothing.picture.description)
                 .font(.adaptiveFootnote)
@@ -109,6 +108,7 @@ private extension DetailView {
                 .multilineTextAlignment(.leading)
         }
         .padding(.top, 24)
+        .accessibilitySortPriority(2)
     }
 }
 

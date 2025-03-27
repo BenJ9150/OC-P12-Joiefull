@@ -24,6 +24,7 @@ struct CategoryRowView: View {
         VStack(alignment: .leading, spacing: isPad ? 16 : 12) {
             Text(NSLocalizedString(category, comment: "").capitalized)
                 .font(.title2.weight(.semibold))
+                .dynamicTypeSize(.xSmall ... .accessibility3)
                 .accessibilityAddTraits(.isHeader)
 
             itemsList

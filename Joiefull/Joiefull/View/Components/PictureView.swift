@@ -121,7 +121,7 @@ private extension PictureView {
         }
         .contentTransition(.symbolEffect(.replace))
         .font(isDetailView ? .adaptiveBody : .footnote)
-        .foregroundStyle(favorite ? .red : .primary)
+        .foregroundStyle(favorite ? Color.favorite : .primary)
         .fontWeight(.semibold)
         .padding(.all, 6)
         .padding(.horizontal, 2)
@@ -142,7 +142,6 @@ private extension PictureView {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(label(isFavorite: favorite))
         .accessibilityAddTraits(.isButton)
-        .accessibilitySortPriority(1)
     }
 
     func label(isFavorite: Bool) -> String {
@@ -175,7 +174,6 @@ private extension PictureView {
                 .foregroundStyle(.primary)
                 .padding(.top, 5)
                 .padding(.trailing, 5)
-                .accessibilitySortPriority(0)
             }
         }
     }
@@ -184,7 +182,6 @@ private extension PictureView {
 // MARK: - Preview
 
 #Preview(traits: .modifier(FavoritesViewModelInEnvironment())) {
-    @Previewable @State var isFavorite = false
     let clothing = ClothesPreview().getClothing()
 
     VStack {
