@@ -126,7 +126,10 @@ private extension PictureView {
         .padding(.all, 6)
         .padding(.horizontal, 2)
         .background(Capsule().fill(.background))
-        .padding(.all, 12)
+        /// Set min size for button accessibility
+        .frame(minWidth: .minButtonSize, minHeight: .minButtonSize)
+        .padding(.trailing, 12)
+        .padding(.bottom, isDetailView ? 6 : 4)
         .onTapGesture {
             if favorite {
                 /// Remove clothing from favorites
@@ -165,13 +168,13 @@ private extension PictureView {
                     Image(systemName: "square.and.arrow.up")
                         .padding(.all, 6)
                         .padding(.bottom, 3)
-                        .background(
-                            Circle().fill(.background)
-                        )
+                        .background( Circle().fill(.background))
+                        /// Set min size for button accessibility
+                        .frame(minWidth: .minButtonSize, minHeight: .minButtonSize)
                 }
                 .foregroundStyle(.primary)
-                .padding(.top, 9)
-                .padding(.trailing, 12)
+                .padding(.top, 5)
+                .padding(.trailing, 5)
                 .accessibilitySortPriority(0)
             }
         }

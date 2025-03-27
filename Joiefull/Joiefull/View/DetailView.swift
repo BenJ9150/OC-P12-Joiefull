@@ -68,7 +68,7 @@ private extension DetailView {
                 ratingAndReviewSection
             }
         }
-        .padding(.horizontal, isPad ? 32 : 16)
+        .padding(.horizontal, isPad ? 24 : 16)
         .scrollIndicators(.hidden)
     }
 
@@ -98,7 +98,7 @@ private extension DetailView {
 private extension DetailView {
 
     var clothingDetails: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             PictureDescriptionView(for: viewModel.clothing, isDetailView: true)
                 .accessibilityHidden(true)
 
@@ -142,7 +142,7 @@ private extension DetailView {
                 }
             }
         }
-        .padding(.top, 24)
+        .padding(.top, 26)
     }
 }
 
@@ -151,9 +151,7 @@ private extension DetailView {
 private extension DetailView {
 
     var ratingBanner: some View {
-        let starSize: CGFloat = isPad ? 43 : 39
-
-        return HStack(spacing: isPad ? 6 : 2) {
+        HStack(spacing: isPad ? 6 : 1) {
             if dynamicTypeSize.isHigh {
                 Spacer()
             } else {
@@ -161,7 +159,7 @@ private extension DetailView {
                     .resizable()
                     .scaledToFill()
                     .clipShape(Circle())
-                    .frame(width: starSize, height: starSize)
+                    .frame(width: .minButtonSize, height: .minButtonSize)
                     .padding(.trailing, 6)
                     .accessibilityHidden(true)
             }
@@ -174,7 +172,7 @@ private extension DetailView {
                         .foregroundStyle(viewModel.postReviewSuccess ? .orange : .primary)
                         .accessibilityRemoveTraits(.isImage)
                 }
-                .frame(minWidth: starSize, minHeight: starSize)
+                .frame(minWidth: .minButtonSize, minHeight: .minButtonSize)
                 .onTapGesture {
                     /// Rating is read only if review has already sended
                     if !viewModel.postReviewSuccess {

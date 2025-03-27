@@ -52,7 +52,7 @@ struct CategoryItemView: View {
                         .frame(width: dynamicTypeSize.isHigh ? pictureWidth : .originalPictureWidth)
                 }
             } else {
-                VStack(spacing: isPad ? 12 : 8) {
+                VStack(spacing: isPad ? 14 : 8) {
                     picture
                     description
                         .padding(.horizontal, 8)

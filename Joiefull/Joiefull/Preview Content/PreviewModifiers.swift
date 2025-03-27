@@ -56,7 +56,7 @@ struct InspectorPresentation: PreviewModifier {
                     }
                     .inspector(isPresented: $navigateToDetail) {
                         content
-                            .inspectorColumnWidth(min: 400, ideal: 514)
+                            .inspectorColumnWidth(min: 400, ideal: 480)
                     }
             } else {
                 Text("PREVIEW")

@@ -27,7 +27,7 @@ struct CategoryRowView: View {
                 .accessibilityAddTraits(.isHeader)
 
             itemsList
-                .padding(.bottom, isPad ? 16 : 12)
+                .padding(.bottom, isPad ? 12 : 18)
         }
         .padding(.leading, isPad ? 20 : 16)
         .background(

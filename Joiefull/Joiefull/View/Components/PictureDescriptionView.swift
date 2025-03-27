@@ -52,7 +52,7 @@ private extension PictureDescriptionView {
     /// If original price equal to price, show stars on the second line
     /// to have more space for clothing name
     var defaultDescription: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: isDetailView ? 8 : 2) {
             HStack(spacing: 4) {
                 clothingName
                 if showOriginalPrice { stars }
@@ -67,10 +67,11 @@ private extension PictureDescriptionView {
                 }
             }
         }
+        .padding(.trailing, isDetailView ? 10 : 0)
     }
 
     var verticalDescription: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             clothingName
             if dynamicTypeSize.isVeryHigh {
                 /// Not enough place to show price and stars on the same line

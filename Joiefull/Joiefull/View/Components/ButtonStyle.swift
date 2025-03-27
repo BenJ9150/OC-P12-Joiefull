@@ -15,6 +15,8 @@ struct JoifullButton: ButtonStyle {
             .foregroundStyle(Color.buttonText)
             .padding()
             .padding(.horizontal)
+            /// Set min size for button accessibility
+            .frame(minWidth: .minButtonSize, minHeight: .minButtonSize)
             .background(Color.buttonBackground, in: .capsule)
     }
 }

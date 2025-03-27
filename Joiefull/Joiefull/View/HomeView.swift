@@ -43,19 +43,20 @@ struct HomeView: View {
             } else if viewModel.fetchClothesError.isEmpty {
                 if isPad {
                     clothesList
-                        .listStyle(.grouped)
-                        .background(Color(UIColor.systemGroupedBackground))
+                        .background(
+                            Color(UIColor.systemGroupedBackground)
+                                .ignoresSafeArea()
+                        )
                         .inspector(isPresented: isInspectorPresented) {
                             if let clothing = viewModel.selectedItem {
                                 DetailView(
                                     with: DetailViewModel(modelContext: context, for: clothing, using: httpClient)
                                 )
-                                .inspectorColumnWidth(min: 400, ideal: 514)
+                                .inspectorColumnWidth(min: 400, ideal: 480)
                             }
                         }
                 } else {
                     clothesList
-                        .listStyle(.inset)
                         .navigationDestination(item: $viewModel.selectedItem) { clothing in
                             DetailView(with: DetailViewModel(modelContext: context, for: clothing, using: httpClient))
                         }
@@ -84,7 +85,9 @@ private extension HomeView {
                 .listRowInsets(EdgeInsets())
             }
         }
+        .listStyle(.inset)
         .scrollContentBackground(.hidden)
+        .padding(.top, isPad ? 5 : 0)
         .onOpenURL { viewModel.opendDetails(from: $0) }
         .refreshable {
             await viewModel.fetchClothes()

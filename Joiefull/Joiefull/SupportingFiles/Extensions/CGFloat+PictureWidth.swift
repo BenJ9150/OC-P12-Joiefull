@@ -9,9 +9,11 @@ import SwiftUI
 
 extension CGFloat {
 
-    static let originalPictureWidth: CGFloat = UIDevice.isPad ? 234 : 198
-    static let originalPictureHeight: CGFloat = UIDevice.isPad ? 256 : 198
+    static let originalPictureWidth: CGFloat = UIDevice.isPad ? 212 : 186
+    static let originalPictureHeight: CGFloat = UIDevice.isPad ? 244 : 186
 
     static let detailPictureWidth: CGFloat = UIScreen.main.bounds.width / 2
-    static let detailPictureHeight: CGFloat = UIScreen.main.bounds.height / 2 // 406
+    static let detailPictureHeight: CGFloat = UIScreen.main.bounds.height / 2
+
+    static let minButtonSize: CGFloat = 44
 }
