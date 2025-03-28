@@ -10,8 +10,6 @@ import Foundation
 class ClothingService {
 
     private let networkClient: NetworkClient
-    private let apiUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/"
-                        + "Cr-ez-une-interface-dynamique-et-accessible-avec-SwiftUI/main/api"
 
     init(using httpClient: HTTPClient = URLSession.shared) {
         self.networkClient = NetworkClient(using: httpClient)
@@ -24,7 +22,7 @@ extension ClothingService {
 
     func fetchClothes() async throws -> [Clothing] {
         /// Fetch data
-        let data = try await networkClient.getData(from: "\(apiUrl)/clothes.json")
+        let data = try await networkClient.getData(endpoint: .getClothes)
 
         /// Try return decoded data
         return try JSONDecoder().decode([Clothing].self, from: data)
@@ -38,13 +36,13 @@ extension ClothingService {
             "rating": rating
         ]
         /// Post data
-        try await networkClient.post(toUrl: "\(apiUrl)/review", body: body)
+        try await networkClient.post(endpoint: .postReview, body: body)
     }
 
     func postLike(clothingId: Int, isLiked: Bool) async throws {
         /// Post data
         try await networkClient.post(
-            toUrl: "\(apiUrl)/like",
+            endpoint: .postLike,
             body: ["clothing_id": clothingId, "is_liked": isLiked]
         )
     }

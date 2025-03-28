@@ -18,7 +18,7 @@ final class NetworkClientTests: XCTestCase {
 
         // When
         do {
-            _ = try await networkClient.getData(from: "www.joifull-test.com")
+            _ = try await networkClient.getData(endpoint: .getClothes)
             XCTFail("Expected URLError(.badServerResponse), but no error was thrown.")
 
         } catch let urlError as URLError {
@@ -35,7 +35,7 @@ final class NetworkClientTests: XCTestCase {
 
         // When
         do {
-            _ = try await networkClient.getData(from: "www.joifull-test.com")
+            _ = try await networkClient.getData(endpoint: .getClothes)
             XCTFail("Expected HTTPError(.badServerResponse), but no error was thrown.")
 
         } catch let nsError as NSError {
@@ -53,7 +53,7 @@ final class NetworkClientTests: XCTestCase {
 
         // When
         do {
-            _ = try await networkClient.getData(from: "www.joifull-test.com")
+            _ = try await networkClient.getData(endpoint: .getClothes)
             XCTFail("Expected URLError(.cannotLoadFromNetwork), but no error was thrown.")
 
         } catch let urlError as URLError {
@@ -71,7 +71,7 @@ final class NetworkClientTests: XCTestCase {
         let networkClient = NetworkClient(using: MockHTTPClient(with: .success))
 
         // When
-        let fetchedData = try await networkClient.getData(from: "www.joifull-test.com")
+        let fetchedData = try await networkClient.getData(endpoint: .getClothes)
 
         // Then
         XCTAssertTrue(fetchedData.count > 0)
@@ -81,13 +81,12 @@ final class NetworkClientTests: XCTestCase {
 
     func testSuccessToPostData() async {
         // Given
-        let url = "www.joifull-test.com"
         let body: [String: Any] = ["id": 1234, "name": "John"]
         let networkClient = NetworkClient(using: MockHTTPClient(with: .success))
 
         // When
         do {
-            try await networkClient.post(toUrl: url, body: body)
+            try await networkClient.post(endpoint: .postReview, body: body)
             // Then the post method is executed without error.
         } catch {
             XCTFail("Expected success when post data, but got \(error).")

@@ -14,9 +14,9 @@ class RequestBuilder {
         case post = "POST"
     }
 
-    func build(httpMethod: Method, forUrl urlString: String, httpBody: [String: Any]? = nil) throws -> URLRequest {
+    func build(httpMethod: Method, url: URL?, httpBody: [String: Any]? = nil) throws -> URLRequest {
         /// Build URL
-        guard let url = URL(string: urlString) else {
+        guard let url = url else {
             throw URLError(.badURL)
         }
         /// Build request

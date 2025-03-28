@@ -21,9 +21,9 @@ class NetworkClient {
 
 extension NetworkClient {
 
-    func getData(from url: String) async throws -> Data {
+    func getData(endpoint: Endpoint) async throws -> Data {
         /// Fetch data
-        let request = try requestBuilder.build(httpMethod: .get, forUrl: url)
+        let request = try requestBuilder.build(httpMethod: .get, url: endpoint.url)
         let (data, response) = try await httpClient.data(for: request)
 
         /// Check response and return data
@@ -31,9 +31,9 @@ extension NetworkClient {
         return data
     }
 
-    func post(toUrl url: String, body: [String: Any]) async throws {
+    func post(endpoint: Endpoint, body: [String: Any]) async throws {
         /// Post data
-        let request = try requestBuilder.build(httpMethod: .post, forUrl: url, httpBody: body)
+        let request = try requestBuilder.build(httpMethod: .post, url: endpoint.url, httpBody: body)
         let ( _, response) = try await httpClient.data(for: request)
 
         /// Check response
