@@ -33,7 +33,8 @@ struct FavoritesViewModelInEnvironment: PreviewModifier {
             for: ReviewAndRating.self, Favorite.self,
             configurations: .init(isStoredInMemoryOnly: true)
         )
-        let viewModel = FavoritesViewModel(modelContext: container.mainContext, using: HTTPClientPreview())
+        let favoriteRepo = SwiftDataService(modelContext: container.mainContext)
+        let viewModel = FavoritesViewModel(favoriteRepo: favoriteRepo, using: HTTPClientPreview())
         return (container, viewModel)
     }
 

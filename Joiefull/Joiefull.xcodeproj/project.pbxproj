@@ -15,6 +15,8 @@
 		4322E9CC2D4D265900B5BEDD /* clothingImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4322E9CB2D4D265900B5BEDD /* clothingImage.jpg */; };
 		4344C8DD2D4C017E0019F5D8 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */; };
 		4352DC952D6B2653002A2B77 /* View+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC942D6B2653002A2B77 /* View+Overlay.swift */; };
+		435EC7862D9924B800BBC238 /* FavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EC7852D9924B800BBC238 /* FavoriteRepository.swift */; };
+		435EC7892D99284600BBC238 /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EC7882D99284600BBC238 /* ReviewRepository.swift */; };
 		436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D162D70A8700065AE5C /* RequestBuilder.swift */; };
 		436A7D192D70AE610065AE5C /* RequestBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */; };
 		436A7D1B2D70C8650065AE5C /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D1A2D70C8650065AE5C /* DetailViewModel.swift */; };
@@ -80,6 +82,8 @@
 		4333578D2D3A6C860027478C /* Joiefull.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Joiefull.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4344C8DC2D4C017E0019F5D8 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		4352DC942D6B2653002A2B77 /* View+Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Overlay.swift"; sourceTree = "<group>"; };
+		435EC7852D9924B800BBC238 /* FavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepository.swift; sourceTree = "<group>"; };
+		435EC7882D99284600BBC238 /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		436A7D162D70A8700065AE5C /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilderTests.swift; sourceTree = "<group>"; };
 		436A7D1A2D70C8650065AE5C /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
@@ -180,6 +184,16 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		435EC7872D9924C500BBC238 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */,
+				435EC7852D9924B800BBC238 /* FavoriteRepository.swift */,
+				435EC7882D99284600BBC238 /* ReviewRepository.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		437722B42D566F4C00E0A88E /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +234,7 @@
 				43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */,
 				43AD7E4D2D7306E600A51C9A /* ReviewAndRating.swift */,
 				436A99CE2D7D86EA00FDBA6B /* Favorite.swift */,
+				435EC7872D9924C500BBC238 /* Protocols */,
 				43E2B9D52D97142A005064D2 /* Network */,
 				43E2B9D62D971457005064D2 /* Services */,
 			);
@@ -309,7 +324,6 @@
 		43E2B9D52D97142A005064D2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */,
 				43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */,
 				436A7D162D70A8700065AE5C /* RequestBuilder.swift */,
 				43E2B9D32D970A96005064D2 /* Endpoint.swift */,
@@ -461,6 +475,7 @@
 				43BABE562D3AB6740079B4E8 /* JoiefullApp.swift in Sources */,
 				43AD7E502D731A7000A51C9A /* SwiftDataService.swift in Sources */,
 				43AD7E4C2D72FD5200A51C9A /* View+UIDevice.swift in Sources */,
+				435EC7862D9924B800BBC238 /* FavoriteRepository.swift in Sources */,
 				43BABE922D3ACF410079B4E8 /* HomeViewModel.swift in Sources */,
 				43BABE942D3AD4300079B4E8 /* CategoryRowView.swift in Sources */,
 				43B2BA4D2D4D1EEC002DF50A /* PictureView.swift in Sources */,
@@ -471,6 +486,7 @@
 				43052BB02D720E4F00573414 /* FullScreenPictureView.swift in Sources */,
 				43052BA82D71E24000573414 /* ButtonStyle.swift in Sources */,
 				436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */,
+				435EC7892D99284600BBC238 /* ReviewRepository.swift in Sources */,
 				439DECD22D847ED100343557 /* HTTPClientPreview.swift in Sources */,
 				43E2B9D42D970A96005064D2 /* Endpoint.swift in Sources */,
 				437722AF2D56520100E0A88E /* CGFloat+DynamicTypeSize.swift in Sources */,

@@ -19,14 +19,14 @@ class SwiftDataService {
 
 // MARK: Review
 
-extension SwiftDataService {
+extension SwiftDataService: ReviewRepository {
 
     func saveReviewAndRating(_ reviewAndRating: ReviewAndRating) {
         modelContext?.insert(reviewAndRating)
         save()
     }
 
-    func fetchReview(clothingId: Int) -> ReviewAndRating? {
+    func fetchReviewAndRating(clothingId: Int) -> ReviewAndRating? {
         let descriptor = FetchDescriptor<ReviewAndRating>(predicate: #Predicate { review in
             review.clothingId == clothingId
         })
@@ -36,7 +36,7 @@ extension SwiftDataService {
 
 // MARK: Favorite
 
-extension SwiftDataService {
+extension SwiftDataService: FavoriteRepository {
 
     func addToFavorite(clothingId: Int) {
         modelContext?.insert(Favorite(clothingId: clothingId))

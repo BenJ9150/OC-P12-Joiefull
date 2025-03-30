@@ -260,8 +260,8 @@ private extension DetailView {
     @Previewable @Environment(\.modelContext) var context
     DetailView(
         with: DetailViewModel(
-            modelContext: context,
             for: ClothesPreview().getClothing(.withSmallDescription),
+            reviewRepo: SwiftDataService(modelContext: context),
             using: HTTPClientPreview()
         ),
         avatar: Image(.avatar)
@@ -272,8 +272,8 @@ private extension DetailView {
     @Previewable @Environment(\.modelContext) var context
     DetailView(
         with: DetailViewModel(
-            modelContext: context,
             for: ClothesPreview().getClothing(.withSmallDescription),
+            reviewRepo: SwiftDataService(modelContext: context),
             using: HTTPClientPreview()
         ),
         avatar: Image(.avatar)

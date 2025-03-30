@@ -18,15 +18,15 @@ import SwiftData
     @Published var review: String = ""
     @Published var rating: Int = 0
 
-    private let swiftDataService: SwiftDataService
+    private let reviewRepo: ReviewRepository
     private let clothingService: ClothingService
     let clothing: Clothing
 
     // MARK: Init
 
-    init(modelContext: ModelContext? = nil, for clothing: Clothing, using httpClient: HTTPClient = URLSession.shared) {
+    init(for clothing: Clothing, reviewRepo: ReviewRepository, using httpClient: HTTPClient = URLSession.shared) {
         self.clothingService = ClothingService(using: httpClient)
-        self.swiftDataService = SwiftDataService(modelContext: modelContext)
+        self.reviewRepo = reviewRepo
         self.clothing = clothing
 
         /// Fetch saved review if exist
@@ -61,11 +61,11 @@ extension DetailViewModel {
 
     private func saveReviewAndRating() {
         let reviewAndRating = ReviewAndRating(clothingId: clothing.id, review: review, rating: rating)
-        swiftDataService.saveReviewAndRating(reviewAndRating)
+        reviewRepo.saveReviewAndRating(reviewAndRating)
     }
 
     private func fetchReview() {
-        guard let reviewAndRating = swiftDataService.fetchReview(clothingId: clothing.id) else {
+        guard let reviewAndRating = reviewRepo.fetchReviewAndRating(clothingId: clothing.id) else {
             return
         }
         review = reviewAndRating.review

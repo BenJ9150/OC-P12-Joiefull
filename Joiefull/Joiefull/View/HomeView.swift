@@ -41,6 +41,7 @@ struct HomeView: View {
                         UIAccessibility.post(notification: .announcement, argument: "Chargement des vêtements")
                     }
             } else if viewModel.fetchClothesError.isEmpty {
+                let reviewRepo = SwiftDataService(modelContext: context)
                 if isPad {
                     clothesList
                         .background(
@@ -50,7 +51,7 @@ struct HomeView: View {
                         .inspector(isPresented: isInspectorPresented) {
                             if let clothing = viewModel.selectedItem {
                                 DetailView(
-                                    with: DetailViewModel(modelContext: context, for: clothing, using: httpClient)
+                                    with: DetailViewModel( for: clothing, reviewRepo: reviewRepo, using: httpClient)
                                 )
                                 .inspectorColumnWidth(min: 400, ideal: 480)
                             }
@@ -58,14 +59,16 @@ struct HomeView: View {
                 } else {
                     clothesList
                         .navigationDestination(item: $viewModel.selectedItem) { clothing in
-                            DetailView(with: DetailViewModel(modelContext: context, for: clothing, using: httpClient))
+                            DetailView(
+                                with: DetailViewModel( for: clothing, reviewRepo: reviewRepo, using: httpClient)
+                            )
                         }
                 }
             } else {
                 fetchError
             }
         }
-        .environmentObject(FavoritesViewModel(modelContext: context))
+        .environmentObject(FavoritesViewModel(favoriteRepo: SwiftDataService(modelContext: context)))
     }
 }
 

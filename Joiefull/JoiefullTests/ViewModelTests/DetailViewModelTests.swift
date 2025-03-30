@@ -13,7 +13,7 @@ import SwiftData
 
     var container: ModelContainer!
     var modelContext: ModelContext!
-    var swiftDataService: SwiftDataService!
+    var reviewRepo: SwiftDataService!
 
     // MARK: Setup
 
@@ -26,13 +26,13 @@ import SwiftData
             configurations: .init(isStoredInMemoryOnly: true)
         )
         modelContext = container.mainContext
-        swiftDataService = SwiftDataService(modelContext: modelContext)
+        reviewRepo = SwiftDataService(modelContext: modelContext)
     }
 
     override func tearDown() {
         container = nil
         modelContext = nil
-        swiftDataService = nil
+        reviewRepo = nil
         super.tearDown()
     }
 
@@ -43,7 +43,7 @@ import SwiftData
         let mockHTTPClient = MockHTTPClient(with: .success)
         let clothing = mockHTTPClient.getClothing()
 
-        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
+        let viewModel = DetailViewModel(for: clothing, reviewRepo: reviewRepo, using: mockHTTPClient)
 
         XCTAssertEqual(viewModel.postingReview, false)
         XCTAssertEqual(viewModel.postReviewSuccess, false)
@@ -62,7 +62,7 @@ import SwiftData
         XCTAssertEqual(viewModel.showReviewError, false)
 
         // ... and review is saved
-        let savedReview = swiftDataService.fetchReview(clothingId: clothing.id)
+        let savedReview = reviewRepo.fetchReviewAndRating(clothingId: clothing.id)
         XCTAssertNotNil(savedReview)
         XCTAssertEqual(savedReview?.clothingId, clothing.id)
         XCTAssertEqual(savedReview?.review, "testSuccessToPostReview")
@@ -76,10 +76,10 @@ import SwiftData
 
         /// Save review for test
         let reviewAndRating = ReviewAndRating(clothingId: clothing.id, review: "testSuccessToLoadReview", rating: 2)
-        swiftDataService.saveReviewAndRating(reviewAndRating)
+        reviewRepo.saveReviewAndRating(reviewAndRating)
 
         // When
-        let viewModel = DetailViewModel(modelContext: modelContext, for: clothing, using: mockHTTPClient)
+        let viewModel = DetailViewModel(for: clothing, reviewRepo: reviewRepo, using: mockHTTPClient)
 
         // Then there is a saved review
         XCTAssertEqual(viewModel.postReviewSuccess, true)
@@ -91,7 +91,8 @@ import SwiftData
     func testFailedToPostReview() async {
         // Given
         let mockHTTPClient = MockHTTPClient(with: .failed)
-        let viewModel = DetailViewModel(for: mockHTTPClient.getClothing(), using: mockHTTPClient)
+        let clothing = mockHTTPClient.getClothing()
+        let viewModel = DetailViewModel(for: clothing, reviewRepo: reviewRepo, using: mockHTTPClient)
         XCTAssertEqual(viewModel.postingReview, false)
         XCTAssertEqual(viewModel.postReviewSuccess, false)
         XCTAssertTrue(viewModel.postReviewError == "")

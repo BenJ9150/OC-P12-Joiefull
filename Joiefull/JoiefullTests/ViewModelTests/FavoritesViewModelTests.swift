@@ -17,16 +17,16 @@ import SwiftData
             for: ReviewAndRating.self, Favorite.self,
             configurations: .init(isStoredInMemoryOnly: true)
         )
-        let swiftDataService = SwiftDataService(modelContext: container.mainContext)
-        let viewModel = FavoritesViewModel(modelContext: container.mainContext, using: MockHTTPClient(with: .success))
+        let favoriteRepo = SwiftDataService(modelContext: container.mainContext)
+        let viewModel = FavoritesViewModel(favoriteRepo: favoriteRepo, using: MockHTTPClient(with: .success))
         XCTAssertEqual(viewModel.isFavorite(clothingId: 1234), false)
-        XCTAssertEqual(swiftDataService.fetchFavorites().count, 0)
+        XCTAssertEqual(favoriteRepo.fetchFavorites().count, 0)
 
         // When add...
         viewModel.addToFavorite(clothingId: 1234)
         XCTAssertEqual(viewModel.isFavorite(clothingId: 1234), true)
 
-        let favorites = swiftDataService.fetchFavorites()
+        let favorites = favoriteRepo.fetchFavorites()
         XCTAssertEqual(favorites.count, 1)
         XCTAssertEqual(favorites.first?.clothingId, 1234)
 
@@ -35,6 +35,6 @@ import SwiftData
 
         // Then
         XCTAssertEqual(viewModel.isFavorite(clothingId: 1234), false)
-        XCTAssertEqual(swiftDataService.fetchFavorites().count, 0)
+        XCTAssertEqual(favoriteRepo.fetchFavorites().count, 0)
     }
 }

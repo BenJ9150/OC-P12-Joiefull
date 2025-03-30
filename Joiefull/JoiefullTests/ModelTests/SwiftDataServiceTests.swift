@@ -23,7 +23,7 @@ import SwiftData
         service.saveReviewAndRating(review)
 
         // Then
-        let savedReview = service.fetchReview(clothingId: 1234)
+        let savedReview = service.fetchReviewAndRating(clothingId: 1234)
         XCTAssertNotNil(savedReview)
         XCTAssertEqual(savedReview?.clothingId, 1234)
         XCTAssertEqual(savedReview?.review, "test")
@@ -39,7 +39,7 @@ import SwiftData
         service.saveReviewAndRating(review)
 
         // Then
-        let savedReview = service.fetchReview(clothingId: 1234)
+        let savedReview = service.fetchReviewAndRating(clothingId: 1234)
         XCTAssertNil(savedReview)
     }
 

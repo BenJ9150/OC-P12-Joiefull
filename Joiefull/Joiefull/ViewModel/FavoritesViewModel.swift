@@ -12,17 +12,17 @@ import SwiftData
 
     @Published var favorites: [Favorite] = []
 
-    private let swiftDataService: SwiftDataService
+    private let favoriteRepo: FavoriteRepository
     private let clothingService: ClothingService
 
     // MARK: Init
 
-    init(modelContext: ModelContext? = nil, using httpClient: HTTPClient = URLSession.shared) {
+    init(favoriteRepo: FavoriteRepository, using httpClient: HTTPClient = URLSession.shared) {
         self.clothingService = ClothingService(using: httpClient)
-        self.swiftDataService = SwiftDataService(modelContext: modelContext)
+        self.favoriteRepo = favoriteRepo
 
         /// Fetch favorites
-        favorites = swiftDataService.fetchFavorites()
+        favorites = favoriteRepo.fetchFavorites()
     }
 }
 
@@ -40,18 +40,18 @@ extension FavoritesViewModel {
 extension FavoritesViewModel {
 
     func addToFavorite(clothingId: Int) {
-        swiftDataService.addToFavorite(clothingId: clothingId)
+        favoriteRepo.addToFavorite(clothingId: clothingId)
         postLike(clothingId: clothingId, isLiked: true)
     }
 
     func deleteFavorite(clothingId: Int) {
-        swiftDataService.deleteFavorite(clothingId: clothingId)
+        favoriteRepo.deleteFavorite(clothingId: clothingId)
         postLike(clothingId: clothingId, isLiked: false)
     }
 
     private func postLike(clothingId: Int, isLiked: Bool) {
         /// Update favorites for views
-        favorites = swiftDataService.fetchFavorites()
+        favorites = favoriteRepo.fetchFavorites()
 
         /// Post like or dislike to update the number of likes for other users
         Task(priority: .background) {
