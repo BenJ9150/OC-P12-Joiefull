@@ -1,5 +1,5 @@
 //
-//  NetworkingMock.swift
+//  MockHTTPClient.swift
 //  JoiefullTests
 //
 //  Created by Benjamin LEFRANCOIS on 17/01/2025.

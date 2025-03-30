@@ -6,35 +6,9 @@
 //
 
 import XCTest
-import SwiftData
 @testable import Joiefull
 
 @MainActor final class DetailViewModelTests: XCTestCase {
-
-    var container: ModelContainer!
-    var modelContext: ModelContext!
-    var reviewRepo: SwiftDataService!
-
-    // MARK: Setup
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-
-        /// SwiftData
-        container = try ModelContainer(
-            for: ReviewAndRating.self, Favorite.self,
-            configurations: .init(isStoredInMemoryOnly: true)
-        )
-        modelContext = container.mainContext
-        reviewRepo = SwiftDataService(modelContext: modelContext)
-    }
-
-    override func tearDown() {
-        container = nil
-        modelContext = nil
-        reviewRepo = nil
-        super.tearDown()
-    }
 
     // MARK: Review
 
@@ -42,6 +16,7 @@ import SwiftData
         // Given
         let mockHTTPClient = MockHTTPClient(with: .success)
         let clothing = mockHTTPClient.getClothing()
+        let reviewRepo = MockReviewRepository()
 
         let viewModel = DetailViewModel(for: clothing, reviewRepo: reviewRepo, using: mockHTTPClient)
 
@@ -73,6 +48,7 @@ import SwiftData
         // Given
         let mockHTTPClient = MockHTTPClient(with: .success)
         let clothing = mockHTTPClient.getClothing()
+        let reviewRepo = MockReviewRepository()
 
         /// Save review for test
         let reviewAndRating = ReviewAndRating(clothingId: clothing.id, review: "testSuccessToLoadReview", rating: 2)
@@ -92,7 +68,8 @@ import SwiftData
         // Given
         let mockHTTPClient = MockHTTPClient(with: .failed)
         let clothing = mockHTTPClient.getClothing()
-        let viewModel = DetailViewModel(for: clothing, reviewRepo: reviewRepo, using: mockHTTPClient)
+
+        let viewModel = DetailViewModel(for: clothing, reviewRepo: MockReviewRepository(), using: mockHTTPClient)
         XCTAssertEqual(viewModel.postingReview, false)
         XCTAssertEqual(viewModel.postReviewSuccess, false)
         XCTAssertTrue(viewModel.postReviewError == "")

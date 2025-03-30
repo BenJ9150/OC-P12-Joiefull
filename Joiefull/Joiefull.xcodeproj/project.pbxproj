@@ -17,6 +17,8 @@
 		4352DC952D6B2653002A2B77 /* View+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC942D6B2653002A2B77 /* View+Overlay.swift */; };
 		435EC7862D9924B800BBC238 /* FavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EC7852D9924B800BBC238 /* FavoriteRepository.swift */; };
 		435EC7892D99284600BBC238 /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EC7882D99284600BBC238 /* ReviewRepository.swift */; };
+		435EC78B2D9934E400BBC238 /* MockFavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EC78A2D9934E400BBC238 /* MockFavoriteRepository.swift */; };
+		435EC78D2D99493700BBC238 /* MockReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EC78C2D99493700BBC238 /* MockReviewRepository.swift */; };
 		436A7D172D70A8700065AE5C /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D162D70A8700065AE5C /* RequestBuilder.swift */; };
 		436A7D192D70AE610065AE5C /* RequestBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */; };
 		436A7D1B2D70C8650065AE5C /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436A7D1A2D70C8650065AE5C /* DetailViewModel.swift */; };
@@ -48,7 +50,7 @@
 		43BABE5E2D3AB6AD0079B4E8 /* Picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */; };
 		43BABE5F2D3AB6AD0079B4E8 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE5A2D3AB6AD0079B4E8 /* NetworkClient.swift */; };
 		43BABE612D3AB70C0079B4E8 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */; };
-		43BABE672D3AB7A10079B4E8 /* NetworkingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE662D3AB7A10079B4E8 /* NetworkingMock.swift */; };
+		43BABE672D3AB7A10079B4E8 /* MockHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE662D3AB7A10079B4E8 /* MockHTTPClient.swift */; };
 		43BABE682D3AB7A10079B4E8 /* clothesExample.json in Resources */ = {isa = PBXBuildFile; fileRef = 43BABE652D3AB7A10079B4E8 /* clothesExample.json */; };
 		43BABE6C2D3AB7EA0079B4E8 /* ClothingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE6A2D3AB7EA0079B4E8 /* ClothingServiceTests.swift */; };
 		43BABE6D2D3AB7EA0079B4E8 /* NetworkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BABE6B2D3AB7EA0079B4E8 /* NetworkClientTests.swift */; };
@@ -84,6 +86,8 @@
 		4352DC942D6B2653002A2B77 /* View+Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Overlay.swift"; sourceTree = "<group>"; };
 		435EC7852D9924B800BBC238 /* FavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepository.swift; sourceTree = "<group>"; };
 		435EC7882D99284600BBC238 /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
+		435EC78A2D9934E400BBC238 /* MockFavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFavoriteRepository.swift; sourceTree = "<group>"; };
+		435EC78C2D99493700BBC238 /* MockReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReviewRepository.swift; sourceTree = "<group>"; };
 		436A7D162D70A8700065AE5C /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		436A7D182D70AE610065AE5C /* RequestBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilderTests.swift; sourceTree = "<group>"; };
 		436A7D1A2D70C8650065AE5C /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
@@ -118,7 +122,7 @@
 		43BABE5B2D3AB6AD0079B4E8 /* Picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picture.swift; sourceTree = "<group>"; };
 		43BABE602D3AB70C0079B4E8 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		43BABE652D3AB7A10079B4E8 /* clothesExample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clothesExample.json; sourceTree = "<group>"; };
-		43BABE662D3AB7A10079B4E8 /* NetworkingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingMock.swift; sourceTree = "<group>"; };
+		43BABE662D3AB7A10079B4E8 /* MockHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHTTPClient.swift; sourceTree = "<group>"; };
 		43BABE6A2D3AB7EA0079B4E8 /* ClothingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothingServiceTests.swift; sourceTree = "<group>"; };
 		43BABE6B2D3AB7EA0079B4E8 /* NetworkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientTests.swift; sourceTree = "<group>"; };
 		43BABE6E2D3AB8270079B4E8 /* Joiefull.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Joiefull.xctestplan; sourceTree = "<group>"; };
@@ -316,7 +320,9 @@
 			isa = PBXGroup;
 			children = (
 				43BABE652D3AB7A10079B4E8 /* clothesExample.json */,
-				43BABE662D3AB7A10079B4E8 /* NetworkingMock.swift */,
+				43BABE662D3AB7A10079B4E8 /* MockHTTPClient.swift */,
+				435EC78A2D9934E400BBC238 /* MockFavoriteRepository.swift */,
+				435EC78C2D99493700BBC238 /* MockReviewRepository.swift */,
 			);
 			path = MockData;
 			sourceTree = "<group>";
@@ -516,8 +522,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43BABE672D3AB7A10079B4E8 /* NetworkingMock.swift in Sources */,
+				43BABE672D3AB7A10079B4E8 /* MockHTTPClient.swift in Sources */,
 				43BABE6C2D3AB7EA0079B4E8 /* ClothingServiceTests.swift in Sources */,
+				435EC78B2D9934E400BBC238 /* MockFavoriteRepository.swift in Sources */,
+				435EC78D2D99493700BBC238 /* MockReviewRepository.swift in Sources */,
 				439DECD42D84851000343557 /* FavoritesViewModelTests.swift in Sources */,
 				436A7D192D70AE610065AE5C /* RequestBuilderTests.swift in Sources */,
 				4386E1452D7331FF003F777E /* DetailViewModelTests.swift in Sources */,
