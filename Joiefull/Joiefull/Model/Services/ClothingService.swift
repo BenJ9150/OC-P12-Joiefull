@@ -11,7 +11,7 @@ class ClothingService {
 
     private let networkClient: NetworkClient
 
-    init(using httpClient: HTTPClient = URLSession.shared) {
+    init(using httpClient: HTTPClient = URLSession(configuration: .ephemeral)) {
         self.networkClient = NetworkClient(using: httpClient)
     }
 }
